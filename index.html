@@ -544,26 +544,7 @@ textarea{font-family:inherit}
   .sum-card{box-shadow:none;border-radius:0;max-width:100%}
   body{padding-bottom:0}
 }
-/* ═══ FASE PROGRESS ════════════════════════════════════════════════════════ */
-.fase-bar{display:flex;align-items:center;gap:0;margin:10px 16px 0;background:#fff;border:1px solid var(--line);border-radius:var(--r12);overflow:hidden;box-shadow:var(--sh)}
-.fase-step{flex:1;padding:8px 6px;text-align:center;position:relative;transition:all .2s;cursor:default}
-.fase-step::after{content:'›';position:absolute;right:-1px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--line2);z-index:1}
-.fase-step:last-child::after{display:none}
-.fase-step-icon{font-size:14px;display:block;margin-bottom:2px}
-.fase-step-lbl{font-family:'Sora',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--ink3)}
-.fase-step-pct{font-size:9px;color:var(--ink3);margin-top:1px}
-.fase-step.done{background:var(--ok-bg)}
-.fase-step.done .fase-step-lbl{color:var(--ok)}
-.fase-step.done .fase-step-pct{color:var(--ok)}
-.fase-step.active{background:var(--red-light)}
-.fase-step.active .fase-step-lbl{color:var(--red)}
-.fase-step.active .fase-step-pct{color:var(--red)}
-.fase-step.locked{opacity:.45}
-.fase-unlock-banner{margin:8px 16px 0;background:#FFFBEB;border:1px solid var(--warn-bg);border-radius:var(--r8);padding:8px 12px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--warn)}
-.fase-unlock-btn{margin-left:auto;padding:4px 12px;border-radius:var(--r99);background:var(--warn);color:#fff;font-size:11px;font-weight:700;flex-shrink:0}
-
 </style>
-/* ═══ RESPONSIVE ════════════════════════════════════════════════════════════ */
 
 
 
@@ -619,160 +600,159 @@ const ITEMS=[
   // ── MANHÃ ────────────────────────────────────────────────────────────────────
   // cond: null=sempre | 'delivery' | 'novato' | 'falta' | 'troco' | 'feriado' | 'equipamento' | 'promocao' | 'chuva'
   // dias: [0-6] 0=dom | null=todos os dias
-  // fase: 'abertura' | 'operacao' | 'fechamento'
 
   // ABASTECIMENTO
   {id:'m1',t:'manha',s:'Abastecimento',e:'📦',n:'critico',
     ti:'Verifiquei o estoque atual',
-    d:(ctx)=>'Conferir todos: recheios, massa, embalagens, insumos.',fase:'abertura'},
+    d:(ctx)=>'Conferir todos: recheios, massa, embalagens, insumos.'},
   {id:'m2',t:'manha',s:'Abastecimento',e:'📦',n:'critico',
     ti:'Antecipei falta para este e o próximo turno',
-    d:(ctx)=>'Débora→compras | Cíntia→recheio | Dorival→logística',fase:'abertura'},
+    d:(ctx)=>'Débora→compras | Cíntia→recheio | Dorival→logística'},
 
   // MASSA — meta dinâmica por dia
-  {id:'m3',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Conferi quantidade atual de massa',d:()=>'Garantir massa suficiente para o dia.',fase:'abertura'},
-  {id:'m4',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção: 60 massas',d:()=>'Terça-feira — produção mínima obrigatória.',dias:[2],fase:'abertura'},
-  {id:'m4b',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção: 70 massas + 90 rolos',d:()=>'Quarta-feira — produção dupla obrigatória.',dias:[3],fase:'abertura'},
-  {id:'m4c',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Garanti produção mínima do dia',d:()=>'Confirmar meta com a liderança.',dias:[0,1,4,5,6],fase:'abertura'},
-  {id:'m5',t:'manha',s:'Massa',e:'📊',n:'importante',ti:'Garanti produção do dia seguinte',d:()=>'Antecipar para não comprometer o próximo turno.',fase:'operacao'},
+  {id:'m3',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Conferi quantidade atual de massa',d:()=>'Garantir massa suficiente para o dia.'},
+  {id:'m4',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção: 60 massas',d:()=>'Terça-feira — produção mínima obrigatória.',dias:[2]},
+  {id:'m4b',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção: 70 massas + 90 rolos',d:()=>'Quarta-feira — produção dupla obrigatória.',dias:[3]},
+  {id:'m4c',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Garanti produção mínima do dia',d:()=>'Confirmar meta com a liderança.',dias:[0,1,4,5,6]},
+  {id:'m5',t:'manha',s:'Massa',e:'📊',n:'importante',ti:'Garanti produção do dia seguinte',d:()=>'Antecipar para não comprometer o próximo turno.'},
 
   // DELIVERY — só aparece se delivery ativo
-  {id:'m6',t:'manha',s:'Delivery',e:'🛵',n:'critico',ti:'Acompanhando pedidos em tempo real',d:()=>'Monitorar pedidos ativos e tempo de entrega.',cond:'delivery',fase:'operacao'},
-  {id:'m7',t:'manha',s:'Delivery',e:'🛵',n:'critico',ti:'Intervim antes de qualquer pedido atrasar',d:()=>'Pedido parado→ajustar operação. Sistêmico→Bruna.',cond:'delivery',fase:'operacao'},
+  {id:'m6',t:'manha',s:'Delivery',e:'🛵',n:'critico',ti:'Acompanhando pedidos em tempo real',d:()=>'Monitorar pedidos ativos e tempo de entrega.',cond:'delivery'},
+  {id:'m7',t:'manha',s:'Delivery',e:'🛵',n:'critico',ti:'Intervim antes de qualquer pedido atrasar',d:()=>'Pedido parado→ajustar operação. Sistêmico→Bruna.',cond:'delivery'},
 
   // EQUIPE
   {id:'m8',t:'manha',s:'Equipe',e:'👥',n:'importante',ti:'Defini função de todos no turno',
-    d:(ctx)=>ctx.falta==='sim'?'Atenção: cobertura ativa — redistribuir funções do colaborador ausente.':'Cada colaborador sabe exatamente o que fazer.',fase:'abertura'},
+    d:(ctx)=>ctx.falta==='sim'?'Atenção: cobertura ativa — redistribuir funções do colaborador ausente.':'Cada colaborador sabe exatamente o que fazer.'},
   {id:'m8b',t:'manha',s:'Equipe',e:'👥',n:'critico',ti:'Acionei Viviane (RH) para freelance urgente',
-    d:(ctx)=>'Falta confirmada → acionar Viviane (RH) imediatamente para cobertura freelance. Redistribuir tarefas até chegada.',cond:'falta',fase:'abertura'},
-  {id:'m9',t:'manha',s:'Equipe',e:'👥',n:'importante',ti:'Corrigi quem travou',d:()=>'Nenhum colaborador parado sem direcionamento.',fase:'operacao'},
+    d:(ctx)=>'Falta confirmada → acionar Viviane (RH) imediatamente para cobertura freelance. Redistribuir tarefas até chegada.',cond:'falta'},
+  {id:'m9',t:'manha',s:'Equipe',e:'👥',n:'importante',ti:'Corrigi quem travou',d:()=>'Nenhum colaborador parado sem direcionamento.'},
   {id:'m10',t:'manha',s:'Equipe',e:'👥',n:'critico',ti:'Não deixei novato sozinho',
-    d:()=>'Supervisão direta obrigatória. Não sai do campo de visão.',cond:'novato',fase:'operacao'},
+    d:()=>'Supervisão direta obrigatória. Não sai do campo de visão.',cond:'novato'},
 
   // PROCESSOS
-  {id:'m11',t:'manha',s:'Processos',e:'🎯',n:'importante',ti:'Verifiquei execução real dos processos',d:()=>'Verificar se está sendo feito — não apenas orientar.',fase:'operacao'},
-  {id:'m12',t:'manha',s:'Processos',e:'🎯',n:'importante',ti:'Corrigi desvios de padrão',d:()=>'Qualquer desvio corrigido na hora e registrado.',fase:'operacao'},
+  {id:'m11',t:'manha',s:'Processos',e:'🎯',n:'importante',ti:'Verifiquei execução real dos processos',d:()=>'Verificar se está sendo feito — não apenas orientar.'},
+  {id:'m12',t:'manha',s:'Processos',e:'🎯',n:'importante',ti:'Corrigi desvios de padrão',d:()=>'Qualquer desvio corrigido na hora e registrado.'},
 
   // CHECKLIST
-  {id:'m13',t:'manha',s:'Checklist',e:'📋',n:'critico',ti:'Todos responderam o checklist',d:()=>'Checklist falso ou incompleto = corrigir na hora.',fase:'operacao'},
-  {id:'m14',t:'manha',s:'Checklist',e:'📋',n:'critico',ti:'Validei as respostas do checklist',d:()=>'Confirmar que a resposta bate com a realidade.',fase:'operacao'},
+  {id:'m13',t:'manha',s:'Checklist',e:'📋',n:'critico',ti:'Todos responderam o checklist',d:()=>'Checklist falso ou incompleto = corrigir na hora.'},
+  {id:'m14',t:'manha',s:'Checklist',e:'📋',n:'critico',ti:'Validei as respostas do checklist',d:()=>'Confirmar que a resposta bate com a realidade.'},
 
   // CLIENTE
-  {id:'m15',t:'manha',s:'Cliente',e:'👤',n:'critico',ti:'Resolvi problema de cliente na hora',d:()=>'Nenhum problema sem resolução. Se necessário→Bruna.',fase:'operacao'},
-  {id:'m16',t:'manha',s:'Cliente',e:'👤',n:'importante',ti:'Evitei repetição do problema',d:()=>'Identificar causa raiz e corrigir.',fase:'operacao'},
+  {id:'m15',t:'manha',s:'Cliente',e:'👤',n:'critico',ti:'Resolvi problema de cliente na hora',d:()=>'Nenhum problema sem resolução. Se necessário→Bruna.'},
+  {id:'m16',t:'manha',s:'Cliente',e:'👤',n:'importante',ti:'Evitei repetição do problema',d:()=>'Identificar causa raiz e corrigir.'},
 
   // OCORRÊNCIAS
-  {id:'m17',t:'manha',s:'Ocorrências',e:'📘',n:'importante',ti:'Registrei tudo relevante',d:()=>'Ocorrências, desvios, incidentes — tudo registrado.',fase:'operacao'},
-  {id:'m18',t:'manha',s:'Ocorrências',e:'📘',n:'importante',ti:'Informei no grupo',d:()=>'Comunicação feita no grupo da equipe.',fase:'operacao'},
+  {id:'m17',t:'manha',s:'Ocorrências',e:'📘',n:'importante',ti:'Registrei tudo relevante',d:()=>'Ocorrências, desvios, incidentes — tudo registrado.'},
+  {id:'m18',t:'manha',s:'Ocorrências',e:'📘',n:'importante',ti:'Informei no grupo',d:()=>'Comunicação feita no grupo da equipe.'},
 
   // ESTRUTURA
-  {id:'m19',t:'manha',s:'Estrutura',e:'🔧',n:'importante',ti:'Identifiquei problema estrutural',d:()=>'Equipamentos, instalações, limpeza — verificado.',fase:'operacao'},
+  {id:'m19',t:'manha',s:'Estrutura',e:'🔧',n:'importante',ti:'Identifiquei problema estrutural',d:()=>'Equipamentos, instalações, limpeza — verificado.'},
   {id:'m20',t:'manha',s:'Estrutura',e:'🔧',n:'importante',ti:'Acionei responsável',
-    d:(ctx)=>'Dorival→execução | Bruna→direcionamento',fase:'operacao'},
+    d:(ctx)=>'Dorival→execução | Bruna→direcionamento'},
 
   // CAIXA
-  {id:'m21',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Garanti R$300 de troco disponível',d:()=>'Verificar antes de abrir. Problema→Bruna.',fase:'abertura'},
-  {id:'m21b',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Troco insuficiente — acionar Bruna urgente',d:()=>'Troco abaixo do mínimo. Não abrir caixa sem resolver. Contatar Bruna agora.',cond:'troco',fase:'operacao'},
-  {id:'m22',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Registrei todas as movimentações',d:()=>'Sangrias, entradas e saídas registradas.',fase:'abertura'},
+  {id:'m21',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Garanti R$300 de troco disponível',d:()=>'Verificar antes de abrir. Problema→Bruna.'},
+  {id:'m21b',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Troco insuficiente — acionar Bruna urgente',d:()=>'Troco abaixo do mínimo. Não abrir caixa sem resolver. Contatar Bruna agora.',cond:'troco'},
+  {id:'m22',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Registrei todas as movimentações',d:()=>'Sangrias, entradas e saídas registradas.'},
 
   // ESCALA
   {id:'m23',t:'manha',s:'Escala',e:'📅',n:'critico',ti:'Conferi equipe do turno',
-    d:(ctx)=>ctx.falta==='sim'?'Falta confirmada — acionar Viviane (RH) + comunicar Bruna e Camila.':'Todos presentes e nos postos corretos.',fase:'abertura'},
+    d:(ctx)=>ctx.falta==='sim'?'Falta confirmada — acionar Viviane (RH) + comunicar Bruna e Camila.':'Todos presentes e nos postos corretos.'},
   {id:'m24',t:'manha',s:'Escala',e:'📅',n:'critico',ti:'Antecipei escala do domingo',
-    d:()=>'Viviane (RH)→comunicar Bruna e Camila.',dias:[6],fase:'abertura'},
+    d:()=>'Viviane (RH)→comunicar Bruna e Camila.',dias:[6]},
 
   // DECISÕES
-  {id:'m25',t:'manha',s:'Decisões',e:'⚠️',n:'critico',ti:'Não decidi sozinho em assuntos relevantes',d:()=>'Tudo relevante→grupo. Camila/Bruna validam.',fase:'operacao'},
+  {id:'m25',t:'manha',s:'Decisões',e:'⚠️',n:'critico',ti:'Não decidi sozinho em assuntos relevantes',d:()=>'Tudo relevante→grupo. Camila/Bruna validam.'},
 
   // FINAL DE SEMANA — produção sobe
-  {id:'m_fds1',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Reforçei produção para o final de semana',d:()=>'Sábado/domingo: volume maior. Produção mínima 20% acima do normal.',dias:[5,6],fase:'abertura'},
-  {id:'m_fds2',t:'manha',s:'Abastecimento',e:'📦',n:'critico',ti:'Abastecimento reforçado para o fim de semana',d:()=>'Garantir estoque para 2 dias sem reposição. Verificar todos os insumos.',dias:[5,6],fase:'abertura'},
-  {id:'t_fds1',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Produção de massa reforçada para o fim de semana',d:()=>'Sábado/domingo: volume maior. Garantir produção para os próximos 2 turnos.',dias:[5,6],fase:'abertura'},
+  {id:'m_fds1',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Reforçei produção para o final de semana',d:()=>'Sábado/domingo: volume maior. Produção mínima 20% acima do normal.',dias:[5,6]},
+  {id:'m_fds2',t:'manha',s:'Abastecimento',e:'📦',n:'critico',ti:'Abastecimento reforçado para o fim de semana',d:()=>'Garantir estoque para 2 dias sem reposição. Verificar todos os insumos.',dias:[5,6]},
+  {id:'t_fds1',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Produção de massa reforçada para o fim de semana',d:()=>'Sábado/domingo: volume maior. Garantir produção para os próximos 2 turnos.',dias:[5,6]},
 
   // SITUAÇÕES ESPECIAIS DO DIA
-  {id:'m_fer1',t:'manha',s:'Dia Especial',e:'🎉',n:'critico',ti:'Reforçei estoque para volume maior',d:()=>'Feriado/data especial — pedir reposição extra com antecedência.',cond:'feriado',fase:'operacao'},
-  {id:'m_fer2',t:'manha',s:'Dia Especial',e:'🎉',n:'importante',ti:'Equipe alerta para pico de movimento',d:()=>'Comunicar equipe sobre volume esperado acima do normal.',cond:'feriado',fase:'operacao'},
-  {id:'m_eqp1',t:'manha',s:'Manutenção',e:'⚙️',n:'critico',ti:'Registrei e acionei responsável pelo equipamento',d:(ctx)=>'Dorival→execução | Bruna→direcionamento. Descrever problema.',cond:'equipamento',fase:'operacao'},
-  {id:'m_eqp2',t:'manha',s:'Manutenção',e:'⚙️',n:'critico',ti:'Avaliei impacto na operação e comuniquei',d:()=>'O equipamento comprometeu algum processo? Comunicar Bruna/Camila.',cond:'equipamento',fase:'operacao'},
-  {id:'m_pro1',t:'manha',s:'Promoção',e:'🏷️',n:'importante',ti:'Equipe ciente dos termos da promoção',d:()=>'Todos sabem o que oferecer, como comunicar e limite de estoque.',cond:'promocao',fase:'operacao'},
-  {id:'m_pro2',t:'manha',s:'Promoção',e:'🏷️',n:'importante',ti:'Estoque reforçado para demanda da promoção',d:()=>'Verificar se há insumos suficientes para o volume esperado.',cond:'promocao',fase:'operacao'},
-  {id:'m_chu1',t:'manha',s:'Clima',e:'🌧️',n:'importante',ti:'Delivery: possível queda — foco no presencial',d:()=>'Chuva reduz delivery. Equipe focada no atendimento presencial e produção.',cond:'chuva',fase:'operacao'},
+  {id:'m_fer1',t:'manha',s:'Dia Especial',e:'🎉',n:'critico',ti:'Reforçei estoque para volume maior',d:()=>'Feriado/data especial — pedir reposição extra com antecedência.',cond:'feriado'},
+  {id:'m_fer2',t:'manha',s:'Dia Especial',e:'🎉',n:'importante',ti:'Equipe alerta para pico de movimento',d:()=>'Comunicar equipe sobre volume esperado acima do normal.',cond:'feriado'},
+  {id:'m_eqp1',t:'manha',s:'Manutenção',e:'⚙️',n:'critico',ti:'Registrei e acionei responsável pelo equipamento',d:(ctx)=>'Dorival→execução | Bruna→direcionamento. Descrever problema.',cond:'equipamento'},
+  {id:'m_eqp2',t:'manha',s:'Manutenção',e:'⚙️',n:'critico',ti:'Avaliei impacto na operação e comuniquei',d:()=>'O equipamento comprometeu algum processo? Comunicar Bruna/Camila.',cond:'equipamento'},
+  {id:'m_pro1',t:'manha',s:'Promoção',e:'🏷️',n:'importante',ti:'Equipe ciente dos termos da promoção',d:()=>'Todos sabem o que oferecer, como comunicar e limite de estoque.',cond:'promocao'},
+  {id:'m_pro2',t:'manha',s:'Promoção',e:'🏷️',n:'importante',ti:'Estoque reforçado para demanda da promoção',d:()=>'Verificar se há insumos suficientes para o volume esperado.',cond:'promocao'},
+  {id:'m_chu1',t:'manha',s:'Clima',e:'🌧️',n:'importante',ti:'Delivery: possível queda — foco no presencial',d:()=>'Chuva reduz delivery. Equipe focada no atendimento presencial e produção.',cond:'chuva'},
 
   // FECHAMENTO
-  {id:'m26',t:'manha',s:'Fechamento',e:'🔁',n:'critico',ti:'Loja organizada no final do turno',d:()=>'Tudo no lugar para o próximo turno começar bem.',fase:'fechamento'},
-  {id:'m27',t:'manha',s:'Fechamento',e:'🔁',n:'critico',ti:'Próximo turno informado sobre pendências',d:()=>'Passagem de turno feita com clareza.',fase:'fechamento'},
+  {id:'m26',t:'manha',s:'Fechamento',e:'🔁',n:'critico',ti:'Loja organizada no final do turno',d:()=>'Tudo no lugar para o próximo turno começar bem.'},
+  {id:'m27',t:'manha',s:'Fechamento',e:'🔁',n:'critico',ti:'Próximo turno informado sobre pendências',d:()=>'Passagem de turno feita com clareza.'},
 
   // ── TARDE/NOITE ──────────────────────────────────────────────────────────────
 
   // ABASTECIMENTO
   {id:'t1',t:'tarde',s:'Abastecimento',e:'📦',n:'critico',ti:'Verifiquei estoque do turno anterior',
-    d:(ctx)=>'Débora→compras | Cíntia→recheio | Dorival→logística',fase:'abertura'},
-  {id:'t2',t:'tarde',s:'Abastecimento',e:'📦',n:'critico',ti:'Antecipei falta para o próximo dia',d:()=>'Garantir que a abertura de amanhã não terá falta.',fase:'abertura'},
+    d:(ctx)=>'Débora→compras | Cíntia→recheio | Dorival→logística'},
+  {id:'t2',t:'tarde',s:'Abastecimento',e:'📦',n:'critico',ti:'Antecipei falta para o próximo dia',d:()=>'Garantir que a abertura de amanhã não terá falta.'},
 
   // MASSA
-  {id:'t3',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Conferi saldo de massa do turno da manhã',d:()=>'Saber o que sobrou e o que falta produzir.',fase:'abertura'},
-  {id:'t4',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção para amanhã: 60 massas',d:()=>'Terça — produção para Quarta.',dias:[2],fase:'abertura'},
-  {id:'t4b',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção para amanhã: 70 + 90 rolos',d:()=>'Quarta — produção para Quinta.',dias:[3],fase:'abertura'},
-  {id:'t4c',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Garanti produção necessária para amanhã',d:()=>'Confirmar meta com a liderança.',dias:[0,1,4,5,6],fase:'abertura'},
+  {id:'t3',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Conferi saldo de massa do turno da manhã',d:()=>'Saber o que sobrou e o que falta produzir.'},
+  {id:'t4',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção para amanhã: 60 massas',d:()=>'Terça — produção para Quarta.',dias:[2]},
+  {id:'t4b',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção para amanhã: 70 + 90 rolos',d:()=>'Quarta — produção para Quinta.',dias:[3]},
+  {id:'t4c',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Garanti produção necessária para amanhã',d:()=>'Confirmar meta com a liderança.',dias:[0,1,4,5,6]},
 
   // DELIVERY
-  {id:'t5',t:'tarde',s:'Delivery',e:'🛵',n:'critico',ti:'Acompanhei pedidos no pico noturno',d:()=>'Pico da tarde/noite exige atenção máxima.',cond:'delivery',fase:'operacao'},
-  {id:'t6',t:'tarde',s:'Delivery',e:'🛵',n:'critico',ti:'Intervim antes de atrasar qualquer pedido',d:()=>'Se sistêmico→Bruna.',cond:'delivery',fase:'operacao'},
+  {id:'t5',t:'tarde',s:'Delivery',e:'🛵',n:'critico',ti:'Acompanhei pedidos no pico noturno',d:()=>'Pico da tarde/noite exige atenção máxima.',cond:'delivery'},
+  {id:'t6',t:'tarde',s:'Delivery',e:'🛵',n:'critico',ti:'Intervim antes de atrasar qualquer pedido',d:()=>'Se sistêmico→Bruna.',cond:'delivery'},
 
   // EQUIPE
   {id:'t7',t:'tarde',s:'Equipe',e:'👥',n:'importante',ti:'Defini função de todos no turno tarde/noite',
-    d:(ctx)=>ctx.falta==='sim'?'Falta ativa — redistribuir funções do ausente.':'Cada colaborador com função clara.',fase:'abertura'},
+    d:(ctx)=>ctx.falta==='sim'?'Falta ativa — redistribuir funções do ausente.':'Cada colaborador com função clara.'},
   {id:'t7b',t:'tarde',s:'Equipe',e:'👥',n:'critico',ti:'Acionei Viviane (RH) para freelance urgente',
-    d:(ctx)=>'Falta confirmada → acionar Viviane (RH) imediatamente para cobertura freelance. Redistribuir tarefas até chegada.',cond:'falta',fase:'abertura'},
-  {id:'t8',t:'tarde',s:'Equipe',e:'👥',n:'importante',ti:'Recebi passagem do turno da manhã',d:()=>'Informações sobre o que ficou pendente.',fase:'abertura'},
+    d:(ctx)=>'Falta confirmada → acionar Viviane (RH) imediatamente para cobertura freelance. Redistribuir tarefas até chegada.',cond:'falta'},
+  {id:'t8',t:'tarde',s:'Equipe',e:'👥',n:'importante',ti:'Recebi passagem do turno da manhã',d:()=>'Informações sobre o que ficou pendente.'},
   {id:'t9',t:'tarde',s:'Equipe',e:'👥',n:'critico',ti:'Não deixei novato sem supervisão noturna',
-    d:()=>'Turno noturno exige atenção redobrada.',cond:'novato',fase:'operacao'},
+    d:()=>'Turno noturno exige atenção redobrada.',cond:'novato'},
 
   // PROCESSOS
-  {id:'t10',t:'tarde',s:'Processos',e:'🎯',n:'importante',ti:'Verifiquei execução dos processos noturnos',d:()=>'Produção, limpeza, organização — verificado.',fase:'operacao'},
-  {id:'t11',t:'tarde',s:'Processos',e:'🎯',n:'importante',ti:'Corrigi desvios encontrados',d:()=>'Qualquer desvio corrigido imediatamente.',fase:'operacao'},
+  {id:'t10',t:'tarde',s:'Processos',e:'🎯',n:'importante',ti:'Verifiquei execução dos processos noturnos',d:()=>'Produção, limpeza, organização — verificado.'},
+  {id:'t11',t:'tarde',s:'Processos',e:'🎯',n:'importante',ti:'Corrigi desvios encontrados',d:()=>'Qualquer desvio corrigido imediatamente.'},
 
   // CHECKLIST
-  {id:'t12',t:'tarde',s:'Checklist',e:'📋',n:'critico',ti:'Todos responderam o checklist do turno',d:()=>'Checklist falso = corrigir na hora.',fase:'operacao'},
-  {id:'t13',t:'tarde',s:'Checklist',e:'📋',n:'critico',ti:'Validei as respostas do checklist',d:()=>'Confirmar se as respostas batem com a realidade.',fase:'operacao'},
+  {id:'t12',t:'tarde',s:'Checklist',e:'📋',n:'critico',ti:'Todos responderam o checklist do turno',d:()=>'Checklist falso = corrigir na hora.'},
+  {id:'t13',t:'tarde',s:'Checklist',e:'📋',n:'critico',ti:'Validei as respostas do checklist',d:()=>'Confirmar se as respostas batem com a realidade.'},
 
   // CLIENTE
-  {id:'t14',t:'tarde',s:'Cliente',e:'👤',n:'critico',ti:'Resolvi problemas de cliente no turno',d:()=>'Nenhum problema sem resolução. Se necessário→Bruna.',fase:'operacao'},
+  {id:'t14',t:'tarde',s:'Cliente',e:'👤',n:'critico',ti:'Resolvi problemas de cliente no turno',d:()=>'Nenhum problema sem resolução. Se necessário→Bruna.'},
 
   // OCORRÊNCIAS
-  {id:'t15',t:'tarde',s:'Ocorrências',e:'📘',n:'importante',ti:'Registrei ocorrências relevantes',d:()=>'Tudo anotado e comunicado no grupo.',fase:'operacao'},
+  {id:'t15',t:'tarde',s:'Ocorrências',e:'📘',n:'importante',ti:'Registrei ocorrências relevantes',d:()=>'Tudo anotado e comunicado no grupo.'},
 
   // ESTRUTURA
   {id:'t16',t:'tarde',s:'Estrutura',e:'🔧',n:'importante',ti:'Verifiquei equipamentos antes de fechar',
-    d:(ctx)=>'Tudo funcionando para o dia seguinte.',fase:'operacao'},
+    d:(ctx)=>'Tudo funcionando para o dia seguinte.'},
 
   // CAIXA
-  {id:'t17',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Fechei o caixa corretamente',d:()=>'Conferência final antes do fechamento.',fase:'fechamento'},
-  {id:'t17b',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Troco insuficiente — registrar e avisar próximo turno',d:()=>'Troco abaixo do mínimo. Registrar e comunicar. Acionar Bruna se necessário.',cond:'troco',fase:'operacao'},
-  {id:'t18',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Registrei todas as movimentações do turno',d:()=>'Sangrias, entradas e saídas registradas.',fase:'fechamento'},
+  {id:'t17',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Fechei o caixa corretamente',d:()=>'Conferência final antes do fechamento.'},
+  {id:'t17b',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Troco insuficiente — registrar e avisar próximo turno',d:()=>'Troco abaixo do mínimo. Registrar e comunicar. Acionar Bruna se necessário.',cond:'troco'},
+  {id:'t18',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Registrei todas as movimentações do turno',d:()=>'Sangrias, entradas e saídas registradas.'},
 
   // ESCALA
   {id:'t19',t:'tarde',s:'Escala',e:'📅',n:'critico',ti:'Antecipei escala do domingo',
-    d:()=>'Falta?→Viviane (RH)→comunicar Bruna e Camila.',dias:[6],fase:'abertura'},
+    d:()=>'Falta?→Viviane (RH)→comunicar Bruna e Camila.',dias:[6]},
   {id:'t19b',t:'tarde',s:'Escala',e:'📅',n:'critico',ti:'Conferi equipe do turno',
-    d:(ctx)=>ctx.falta==='sim'?'Falta confirmada — acionar Viviane (RH).':'Todos presentes e nos postos corretos.',dias:[0,1,2,3,4,5],fase:'abertura'},
+    d:(ctx)=>ctx.falta==='sim'?'Falta confirmada — acionar Viviane (RH).':'Todos presentes e nos postos corretos.',dias:[0,1,2,3,4,5]},
 
   // DECISÕES
-  {id:'t20',t:'tarde',s:'Decisões',e:'⚠️',n:'critico',ti:'Não decidi sozinho em assuntos relevantes',d:()=>'Camila/Bruna validam.',fase:'operacao'},
+  {id:'t20',t:'tarde',s:'Decisões',e:'⚠️',n:'critico',ti:'Não decidi sozinho em assuntos relevantes',d:()=>'Camila/Bruna validam.'},
 
   // SITUAÇÕES ESPECIAIS DO DIA
-  {id:'t_fer1',t:'tarde',s:'Dia Especial',e:'🎉',n:'critico',ti:'Estoque reforçado para amanhã (feriado)',d:()=>'Garantir insumos extras para o dia seguinte de alta demanda.',cond:'feriado',fase:'operacao'},
-  {id:'t_eqp1',t:'tarde',s:'Manutenção',e:'⚙️',n:'critico',ti:'Registrei problema do equipamento',d:(ctx)=>'Registrar, fotografar e acionar Dorival/Bruna.',cond:'equipamento',fase:'operacao'},
-  {id:'t_pro1',t:'tarde',s:'Promoção',e:'🏷️',n:'importante',ti:'Acompanhei resultado da promoção no turno',d:()=>'Registrar quantidades vendidas e feedback da equipe.',cond:'promocao',fase:'operacao'},
-  {id:'t_chu1',t:'tarde',s:'Clima',e:'🌧️',n:'importante',ti:'Delivery abaixo do esperado — ajustei produção',d:()=>'Chuva reduziu delivery. Ajustar produção e comunicar turno seguinte.',cond:'chuva',fase:'operacao'},
+  {id:'t_fer1',t:'tarde',s:'Dia Especial',e:'🎉',n:'critico',ti:'Estoque reforçado para amanhã (feriado)',d:()=>'Garantir insumos extras para o dia seguinte de alta demanda.',cond:'feriado'},
+  {id:'t_eqp1',t:'tarde',s:'Manutenção',e:'⚙️',n:'critico',ti:'Registrei problema do equipamento',d:(ctx)=>'Registrar, fotografar e acionar Dorival/Bruna.',cond:'equipamento'},
+  {id:'t_pro1',t:'tarde',s:'Promoção',e:'🏷️',n:'importante',ti:'Acompanhei resultado da promoção no turno',d:()=>'Registrar quantidades vendidas e feedback da equipe.',cond:'promocao'},
+  {id:'t_chu1',t:'tarde',s:'Clima',e:'🌧️',n:'importante',ti:'Delivery abaixo do esperado — ajustei produção',d:()=>'Chuva reduziu delivery. Ajustar produção e comunicar turno seguinte.',cond:'chuva'},
 
   // FECHAMENTO
-  {id:'t21',t:'tarde',s:'Fechamento',e:'🔁',n:'critico',ti:'Loja 100% organizada para o próximo dia',d:()=>'Tudo no lugar, limpo e pronto para abertura.',fase:'fechamento'},
+  {id:'t21',t:'tarde',s:'Fechamento',e:'🔁',n:'critico',ti:'Loja 100% organizada para o próximo dia',d:()=>'Tudo no lugar, limpo e pronto para abertura.'},
 
   // SEGURANÇA
-  {id:'t22',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Gás desligado',d:()=>'Verificar TODOS os pontos de gás antes de fechar.',fase:'fechamento'},
-  {id:'t23',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Equipamentos desligados',d:()=>'Fritas, fritadeiras, elétricos — tudo desligado.',fase:'fechamento'},
-  {id:'t24',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Loja travada com segurança',d:()=>'Portas, janelas, alarme — verificado e travado.',fase:'fechamento'},
+  {id:'t22',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Gás desligado',d:()=>'Verificar TODOS os pontos de gás antes de fechar.'},
+  {id:'t23',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Equipamentos desligados',d:()=>'Fritas, fritadeiras, elétricos — tudo desligado.'},
+  {id:'t24',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Loja travada com segurança',d:()=>'Portas, janelas, alarme — verificado e travado.'},
 ];
 
 // ── MOTOR DE INTELIGÊNCIA ─────────────────────────────────────────────────────
@@ -783,34 +763,26 @@ function resolveDesc(item, ctx){
 }
 
 // Filtra itens por turno, dia da semana e contexto
-// Fases por hora
-function getFaseAtual(turno){
-  const h=new Date().getHours();
-  if(turno==='manha'){ if(h<10)return'abertura'; if(h<16)return'operacao'; return'fechamento'; }
-  else{ if(h<17)return'abertura'; if(h<22)return'operacao'; return'fechamento'; }
-}
-function getFasesDisponiveis(turno,faseAtual){
-  const ordem=['abertura','operacao','fechamento'];
-  return ordem.slice(0,ordem.indexOf(faseAtual)+1);
-}
-function filterItems(allItems,turno,ctx,somenteFase){
-  const dow=new Date().getDay();
+function filterItems(allItems, turno, ctx){
+  const dow = new Date().getDay(); // 0=dom 1=seg 2=ter 3=qua 4=qui 5=sex 6=sab
   return allItems
     .filter(item=>{
-      if(item.t!==turno) return false;
-      if(item.dias&&!item.dias.includes(dow)) return false;
-      if(item.cond==='delivery'    &&ctx.delivery!=='sim')    return false;
-      if(item.cond==='novato'      &&ctx.novato!=='sim')      return false;
-      if(item.cond==='falta'       &&ctx.falta!=='sim')       return false;
-      if(item.cond==='troco'       &&ctx.troco!=='sim')       return false;
-      if(item.cond==='feriado'     &&ctx.feriado!=='sim')     return false;
-      if(item.cond==='equipamento' &&ctx.equipamento!=='sim') return false;
-      if(item.cond==='promocao'    &&ctx.promocao!=='sim')    return false;
-      if(item.cond==='chuva'       &&ctx.chuva!=='sim')       return false;
-      if(somenteFase&&item.fase&&item.fase!==somenteFase) return false;
+      if(item.t !== turno) return false;
+      // filtro por dia da semana
+      if(item.dias && !item.dias.includes(dow)) return false;
+      // filtro por contexto
+      if(item.cond==='delivery' && ctx.delivery!=='sim') return false;
+      if(item.cond==='novato'   && ctx.novato!=='sim')   return false;
+      if(item.cond==='falta'    && ctx.falta!=='sim')    return false;
+      if(item.cond==='troco'      && ctx.troco!=='sim')      return false;
+      if(item.cond==='feriado'    && ctx.feriado!=='sim')    return false;
+      if(item.cond==='equipamento'&& ctx.equipamento!=='sim') return false;
+      if(item.cond==='promocao'   && ctx.promocao!=='sim')   return false;
+      if(item.cond==='chuva'      && ctx.chuva!=='sim')      return false;
       return true;
     })
-    .map(item=>({...item,d:resolveDesc(item,ctx)}));
+    // injeta descrição resolvida
+    .map(item=>({...item, d: resolveDesc(item, ctx)}));
 }
 
 const SEC_MANHA=[...new Set(ITEMS.filter(i=>i.t==='manha').map(i=>i.s))];
@@ -830,19 +802,9 @@ const DEMO=genDemo();
 /* ═══════════════════════════
    WEBHOOK
 ═══════════════════════════ */
-async function sendWebhook(textPayload, emailPayload){
+async function sendWebhook(textPayload){
   try{
-    const body={
-      texto:textPayload,
-      timestamp:new Date().toISOString(),
-      sistema:'Koncluí – Pastel da Camila',
-      // email fields for Make to send to pasteldacamilasuporte@gmail.com
-      email_destino:'pasteldacamilasuporte@gmail.com',
-      email_assunto:emailPayload?.assunto||'Koncluí – Relatório de Turno',
-      email_html:emailPayload?.html||textPayload.replace(/\n/g,'<br>'),
-      email_texto:textPayload,
-    };
-    const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({texto:textPayload,timestamp:new Date().toISOString(),sistema:'Koncluí – Pastel da Camila'})});
     return r.ok;
   }catch{return false;}
 }
@@ -986,54 +948,6 @@ function NegFields({data,onChange,secao}){
       </div>
       {!resp&&showErr&&<div className="req-msg" style={{marginTop:5}}>⚠ Obrigatório</div>}
       {resp==='nao'&&<NegFields data={neg} secao={item.s} onChange={d=>onNeg(item.id,d)}/>}
-    </div>
-  );
-}
-
-
-function FaseBar({turno,faseAtual,items,resps,onUnlock}){
-  const fases=[
-    {id:'abertura',icon:'🌅',lbl:'Abertura'},
-    {id:'operacao',icon:'⚡',lbl:'Operação'},
-    {id:'fechamento',icon:'🔒',lbl:'Fechamento'},
-  ];
-  const ordem=['abertura','operacao','fechamento'];
-  const idxAtual=ordem.indexOf(faseAtual);
-
-  function getPct(faseId){
-    const its=items.filter(i=>i.fase===faseId);
-    if(!its.length) return null;
-    const resp=its.filter(i=>resps[i.id]==='sim'||resps[i.id]==='nao').length;
-    return Math.round(resp/its.length*100);
-  }
-  function isFaseDone(faseId){
-    return getPct(faseId)===100;
-  }
-
-  return(
-    <div>
-      <div className="fase-bar">
-        {fases.map((f,i)=>{
-          const pct=getPct(f.id);
-          const isDone=isFaseDone(f.id);
-          const isActive=f.id===faseAtual;
-          const isLocked=i>idxAtual;
-          return(
-            <div key={f.id} className={`fase-step${isDone?' done':isActive?' active':isLocked?' locked':''}`}>
-              <span className="fase-step-icon">{isDone?'✅':f.icon}</span>
-              <div className="fase-step-lbl">{f.lbl}</div>
-              {pct!==null&&<div className="fase-step-pct">{pct}%</div>}
-            </div>
-          );
-        })}
-      </div>
-      {faseAtual!=='fechamento'&&isFaseDone(faseAtual)&&(
-        <div className="fase-unlock-banner">
-          <span>✅</span>
-          <span>{faseAtual==='abertura'?'Abertura concluída!':'Operação concluída!'} Avançar para {faseAtual==='abertura'?'Operação':'Fechamento'}?</span>
-          <button className="fase-unlock-btn" onClick={onUnlock}>Avançar →</button>
-        </div>
-      )}
     </div>
   );
 }
@@ -1287,7 +1201,6 @@ function ChecklistScreen({user,onLogout,onBack}){
   const [screen,setScreen]=useState('entry');
   const [ident,setIdent]=useState(null);
   const [ctx,setCtx]=useState({delivery:'',novato:'',falta:'',troco:'',feriado:'',equipamento:'',promocao:'',chuva:''});
-  const [faseAtual,setFaseAtual]=useState('abertura');
   const [resps,setResps]=useState({});
   const [negs,setNegs]=useState({});
   const [ff,setFF]=useState({obsGerais:'',pendProx:'',manut:'',manutDet:'',compra:'',compraDet:'',disc:'',discDet:'',tec:'',tecDet:''});
@@ -1312,17 +1225,7 @@ function ChecklistScreen({user,onLogout,onBack}){
   },[ident,resps,negs,ff]);
 
   const items=useMemo(()=>ident?filterItems(ITEMS,ident.turno==='manha'?'manha':'tarde',ctx):[],[ident,ctx]);
-  const itemsFase=useMemo(()=>ident?filterItems(ITEMS,ident.turno==='manha'?'manha':'tarde',ctx,faseAtual):[],[ident,ctx,faseAtual]);
-  const secs=useMemo(()=>[...new Set(itemsFase.map(i=>i.s))],[itemsFase]);
-  const allSecs=useMemo(()=>[...new Set(items.map(i=>i.s))],[items]);
-
-  function handleUnlockFase(){
-    const ordem=['abertura','operacao','fechamento'];
-    const idx=ordem.indexOf(faseAtual);
-    if(idx<2) setFaseAtual(ordem[idx+1]);
-    showToast('✅ Fase desbloqueada!');
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
+  const secs=useMemo(()=>ident?.turno==='manha'?SEC_MANHA:SEC_TARDE,[ident]);
 
   const stats=useMemo(()=>{
     const tot=items.length,resp=items.filter(i=>resps[i.id]).length;
@@ -1348,8 +1251,7 @@ function ChecklistScreen({user,onLogout,onBack}){
       if(!resps[item.id]){errs.push(`"${item.ti}" — sem resposta`);return;}
       if(resps[item.id]==='nao'){
         const d=negs[item.id]||{};
-        if(!d.causa&&!d.just) errs.push(`"${item.ti}" — informe o motivo (campo obrigatório)`);
-        if(!d.resp) errs.push(`"${item.ti}" — informe quem resolve (campo obrigatório)`);
+        if(!d.causa&&!d.just) errs.push(`"${item.ti}" — selecione o que aconteceu`);
         if(!d.acao) errs.push(`"${item.ti}" — ação tomada obrigatória`);
         if(item.n==='critico'&&!d.resp) errs.push(`"${item.ti}" — responsável obrigatório (crítico)`);
         if(item.n==='critico'&&!d.prazo) errs.push(`"${item.ti}" — prazo obrigatório (crítico)`);
@@ -1434,68 +1336,7 @@ function ChecklistScreen({user,onLogout,onBack}){
     wppLines.push(sep,`✍️ ${decl.nome} · ${hora} · Koncluí`);
     const textoFinal=wppLines.join('\n');
 
-    // Build HTML email for Make → Gmail
-    const corStatus=criticos>0?'#DC2626':falhas>0?'#D97706':'#16A34A';
-    const tLabel2=ident.turno==='manha'?'Manhã':'Tarde/Noite';
-    let emailHtml=`
-<div style="font-family:Inter,Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #E5E7EB">
-  <div style="background:linear-gradient(135deg,#B5001A,#EA1D2C);color:#fff;padding:20px 24px">
-    <div style="font-size:11px;opacity:.6;font-weight:600;letter-spacing:1.5px;text-transform:uppercase">Pastel da Camila · Koncluí</div>
-    <div style="font-family:Arial;font-size:20px;font-weight:900;margin:4px 0 2px">🥟 Relatório de Turno</div>
-    <div style="font-size:12px;opacity:.75">${user.name} · ${tLabel2} · ${ident.data}</div>
-    <div style="display:inline-block;background:rgba(255,255,255,.15);border-radius:99px;padding:4px 14px;font-size:11px;font-weight:700;margin-top:8px">${status}</div>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #E5E7EB">
-    <div style="padding:12px;text-align:center;border-right:1px solid #E5E7EB">
-      <div style="font-size:22px;font-weight:900;color:#EA1D2C">${score}</div>
-      <div style="font-size:9px;color:#9CA3AF;text-transform:uppercase;font-weight:600">Score</div>
-    </div>
-    <div style="padding:12px;text-align:center;border-right:1px solid #E5E7EB">
-      <div style="font-size:22px;font-weight:900;color:#16A34A">${items.filter(i=>resps[i.id]==='sim').length}</div>
-      <div style="font-size:9px;color:#9CA3AF;text-transform:uppercase;font-weight:600">Sim</div>
-    </div>
-    <div style="padding:12px;text-align:center;border-right:1px solid #E5E7EB">
-      <div style="font-size:22px;font-weight:900;color:#DC2626">${falhas}</div>
-      <div style="font-size:9px;color:#9CA3AF;text-transform:uppercase;font-weight:600">Falhas</div>
-    </div>
-    <div style="padding:12px;text-align:center">
-      <div style="font-size:22px;font-weight:900;color:#D97706">${criticos}</div>
-      <div style="font-size:9px;color:#9CA3AF;text-transform:uppercase;font-weight:600">Críticos</div>
-    </div>
-  </div>`;
-    if(falhasItems.length>0){
-      emailHtml+=`<div style="padding:16px 20px;border-bottom:1px solid #E5E7EB"><div style="font-size:12px;font-weight:700;color:#DC2626;margin-bottom:10px">🔴 FALHAS REGISTRADAS (${falhasItems.length})</div>`;
-      falhasItems.forEach(item=>{
-        const n=negs[item.id]||{};
-        emailHtml+=`<div style="background:#FFF8F8;border-radius:8px;padding:10px 12px;margin-bottom:8px;border-left:3px solid #EA1D2C">
-          <div style="font-size:12px;font-weight:700;margin-bottom:4px">[${item.n.toUpperCase()}] ${item.ti}</div>
-          <div style="font-size:11px;color:#4B5563">Seção: ${item.s}`;
-        if(n.causa) emailHtml+=` · Causa: <b>${n.causa}</b>`;
-        if(n.resp) emailHtml+=` · Responsável: <b>${n.resp}</b>`;
-        if(n.impacto) emailHtml+=` · Impacto: ${n.impacto}`;
-        if(n.just) emailHtml+=`<br>Obs: ${n.just}`;
-        emailHtml+='</div></div>';
-      });
-      emailHtml+='</div>';
-    } else {
-      emailHtml+=`<div style="padding:16px 20px;border-bottom:1px solid #E5E7EB;background:#F0FDF4;text-align:center;color:#16A34A;font-weight:600;font-size:13px">✅ Nenhuma falha registrada neste turno</div>`;
-    }
-    if(ff.obsGerais||ff.pendProx){
-      emailHtml+=`<div style="padding:14px 20px;border-bottom:1px solid #E5E7EB">`;
-      if(ff.pendProx) emailHtml+=`<div style="font-size:11px;color:#4B5563;margin-bottom:6px">⏳ <b>Pendências:</b> ${ff.pendProx}</div>`;
-      if(ff.obsGerais) emailHtml+=`<div style="font-size:11px;color:#4B5563">📝 <b>Observações:</b> ${ff.obsGerais}</div>`;
-      emailHtml+='</div>';
-    }
-    emailHtml+=`<div style="background:#1A1A1A;padding:10px 20px;display:flex;justify-content:space-between;align-items:center">
-      <div style="font-size:10px;color:#666;font-style:italic">Enviado por ${user.name} · ${hora}</div>
-      <div style="font-size:9px;color:#444">Koncluí · Sistema Operacional Pastel da Camila</div>
-    </div></div>`;
-
-    const emailPayload={
-      assunto:`[Koncluí] ${status} – ${user.name} · Turno ${tLabel2} · ${ident.data}`,
-      html:emailHtml,
-    };
-    const ok=await sendWebhook(textoFinal, emailPayload);
+    const ok=await sendWebhook(textoFinal);
     setWebhookOk(ok);
     await new Promise(r=>setTimeout(r,400));
     setSendSteps(s=>{const c=[...s];c[2]={...c[2],st:ok?'ok':'ok'};c[3]={...c[3],st:'go'};return c;});
@@ -1618,8 +1459,6 @@ function ChecklistScreen({user,onLogout,onBack}){
       {sending&&<SendingOverlay steps={sendSteps}/>}
       <Toast msg={toast.msg} show={toast.show}/>
       <div className="hdr"><div className="hdr-inner"><div><div className="hdr-brand">Pastel da Camila · Koncluí</div><div className="hdr-title">{tLabel}</div></div><div className="hdr-right"><div className="hdr-chip">👤 {user.name}</div>{onBack&&<button className="hdr-btn" onClick={onBack}>← Hub</button>}<button className="hdr-btn" onClick={onLogout}>Sair</button></div></div></div>
-
-      <FaseBar turno={ident?.turno} faseAtual={faseAtual} items={items} resps={resps} onUnlock={handleUnlockFase}/>
 
       <div className="status-panel">
         <div style={{display:'flex',flexDirection:'column',gap:1}}>
