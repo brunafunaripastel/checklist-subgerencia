@@ -1,0 +1,2080 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Koncluí – Pastel da Camila v4</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════
+   KONCLUÍ · DESIGN SYSTEM v5
+   iFood-inspired · Mobile first · Multi-device
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#EA1D2C;--brand-dark:#C0111E;--brand-light:#FFF0F1;--brand-mid:#FCCDD0;
+  --bg:#F4F4F6;--surface:#FFF;--surface2:#FAFAFA;
+  --ink:#111827;--ink2:#4B5563;--ink3:#9CA3AF;
+  --line:#E5E7EB;--line2:#F3F4F6;
+  --ok:#16A34A;--ok-bg:#F0FDF4;--ok-line:#BBF7D0;
+  --warn:#D97706;--warn-bg:#FFFBEB;--warn-line:#FDE68A;
+  --danger:#DC2626;--danger-bg:#FEF2F2;--danger-line:#FECACA;
+  --info:#1D4ED8;--info-bg:#EFF6FF;--info-line:#BFDBFE;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--r99:99px;
+  --sh1:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --sh2:0 4px 12px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.04);
+  --sh3:0 8px 24px rgba(0,0,0,.10),0 2px 8px rgba(0,0,0,.06);
+}
+html{font-size:14px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:72px}
+*{font-family:inherit}
+button{cursor:pointer;border:none;outline:none;background:transparent;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:4px}
+a{color:inherit;text-decoration:none}
+textarea{font-family:inherit}
+
+/* ═══ LOGIN ═══════════════════════════════ */
+.login-bg{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+  background:radial-gradient(ellipse at 60% 0%, #3D0007 0%, #1A0003 40%, #0D0D0D 100%)
+}
+.login-card{
+  background:var(--surface);border-radius:var(--r16);padding:32px 28px;
+  width:100%;max-width:360px;box-shadow:0 32px 64px rgba(0,0,0,.45)
+}
+.login-logo{text-align:center;margin-bottom:24px}
+.login-emoji{font-size:44px;line-height:1;display:block;margin-bottom:10px}
+.login-name{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--ink)}
+.login-sub{font-size:11px;color:var(--ink3);margin-top:3px}
+.login-powered{font-size:10px;color:#C0C0C0;margin-top:6px}
+.f-group{margin-bottom:14px}
+.f-label{display:block;font-size:11px;font-weight:600;color:var(--ink2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.f-input{
+  width:100%;border:1.5px solid var(--line);border-radius:var(--r8);
+  padding:10px 13px;font-size:14px;color:var(--ink);background:var(--surface2);
+  transition:border-color .15s,box-shadow .15s
+}
+.f-input:focus{border-color:var(--brand);background:var(--surface);outline:none;box-shadow:0 0 0 3px rgba(234,29,44,.1)}
+.f-input.err{border-color:var(--brand)}
+.f-error{font-size:11px;color:var(--danger);margin-top:4px;font-weight:500}
+.btn-brand{
+  width:100%;padding:12px;background:var(--brand);color:#fff;border-radius:var(--r8);
+  font-family:'Sora',sans-serif;font-size:14px;font-weight:700;letter-spacing:.2px;
+  transition:background .15s,transform .1s;margin-top:4px
+}
+.btn-brand:hover{background:var(--brand-dark)}
+.btn-brand:active{transform:scale(.99)}
+.btn-brand:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.alert-box{
+  background:var(--danger-bg);border:1px solid var(--danger-line);color:#991B1B;
+  border-radius:var(--r8);padding:10px 13px;font-size:12px;font-weight:500;margin-bottom:14px
+}
+
+/* ═══ HEADER ════════════════════════════ */
+.hdr{
+  background:var(--brand);color:#fff;height:52px;padding:0 16px;
+  display:flex;align-items:center;position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 8px rgba(180,0,20,.25)
+}
+.hdr-inner{
+  width:100%;max-width:720px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:10px
+}
+.hdr-left{display:flex;flex-direction:column;line-height:1}
+.hdr-eyebrow{font-size:9px;font-weight:600;letter-spacing:2px;opacity:.6;text-transform:uppercase;margin-bottom:2px}
+.hdr-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:800}
+.hdr-right{display:flex;align-items:center;gap:6px}
+.hdr-chip{
+  background:rgba(255,255,255,.15);border-radius:var(--r99);
+  padding:4px 11px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px
+}
+.hdr-btn{
+  background:transparent;border:1px solid rgba(255,255,255,.28);color:rgba(255,255,255,.85);
+  border-radius:var(--r99);padding:4px 11px;font-size:11px;font-weight:600;transition:background .13s
+}
+.hdr-btn:hover{background:rgba(255,255,255,.12)}
+
+/* ═══ PAGE WRAPPER ══════════════════════ */
+.page{max-width:720px;margin:0 auto}
+
+/* ═══ DAY BADGE ═════════════════════════ */
+.day-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  margin:12px 16px 0;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r99);padding:5px 13px;font-size:11px;font-weight:600;color:var(--ink2)
+}
+.day-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);flex-shrink:0}
+
+/* ═══ CARD ══════════════════════════════ */
+.card{
+  background:var(--surface);border-radius:var(--r12);border:1px solid var(--line);
+  box-shadow:var(--sh1);padding:16px;margin:10px 16px 0
+}
+.card-title{
+  font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--ink);
+  margin-bottom:14px;display:flex;align-items:center;gap:6px
+}
+
+/* ═══ TURNO SELECTOR ════════════════════ */
+.turno-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.turno-btn{
+  padding:18px 12px;border-radius:var(--r12);border:2px solid var(--line);
+  background:var(--surface);text-align:center;transition:all .15s;cursor:pointer;
+  position:relative;overflow:hidden
+}
+.turno-btn:hover{border-color:#CBD5E0;background:var(--surface2);transform:translateY(-1px);box-shadow:var(--sh1)}
+.turno-btn.active{border-color:var(--brand);background:var(--brand-light)}
+.turno-btn.active::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--brand)
+}
+.turno-icon{font-size:26px;display:block;margin-bottom:7px}
+.turno-label{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--ink2)}
+.turno-btn.active .turno-label{color:var(--brand)}
+
+/* ═══ CONTEXT QUESTIONS ════════════════ */
+.ctx-section-hd{
+  font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;
+  letter-spacing:.6px;padding:10px 0 6px;border-bottom:1px solid var(--line);margin-bottom:0
+}
+.ctx-row{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:9px 0;border-bottom:1px solid var(--line2)
+}
+.ctx-row:last-child{border-bottom:none}
+.ctx-q{font-size:13px;font-weight:500;color:var(--ink);flex:1;line-height:1.4}
+.ctx-hint{font-size:10px;color:var(--ink3);margin-top:1px}
+.ctx-toggle{display:flex;gap:5px;flex-shrink:0}
+.ctx-btn{
+  padding:5px 14px;border-radius:var(--r99);border:1.5px solid var(--line);
+  background:var(--surface);font-size:12px;font-weight:600;color:var(--ink2);
+  transition:all .13s;min-width:44px;text-align:center
+}
+.ctx-btn:hover{border-color:#9CA3AF}
+.ctx-btn.yes{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.ctx-btn.no{border-color:#9CA3AF;background:#F9FAFB;color:#6B7280}
+
+/* ═══ START BUTTON ══════════════════════ */
+.start-wrap{padding:12px 16px 0}
+.start-btn{
+  width:100%;padding:14px;background:var(--brand);color:#fff;border-radius:var(--r12);
+  font-family:'Sora',sans-serif;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background .15s,transform .1s;letter-spacing:.2px
+}
+.start-btn:hover{background:var(--brand-dark)}
+.start-btn:active{transform:scale(.99)}
+.start-count{font-size:11px;color:var(--ink3);text-align:center;margin-top:6px}
+
+/* ═══ PROGRESS ══════════════════════════ */
+.prog-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r12);
+  box-shadow:var(--sh1);padding:14px 16px;margin:10px 16px 0
+}
+.prog-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.prog-lbl{font-size:11px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px}
+.prog-pct{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--brand)}
+.prog-track{background:var(--line2);border-radius:var(--r99);height:5px;overflow:hidden;margin-bottom:12px}
+.prog-fill{height:100%;border-radius:var(--r99);background:var(--brand);transition:width .4s ease}
+.prog-stats{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+.pv{font-family:'Sora',sans-serif;font-size:18px;font-weight:800;line-height:1}
+.pl{font-size:9px;color:var(--ink3);font-weight:500;margin-top:2px;text-transform:uppercase}
+
+/* ═══ STATUS PANEL ══════════════════════ */
+.status-panel{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r12);
+  box-shadow:var(--sh1);padding:11px 16px;margin:8px 16px 0;
+  display:flex;align-items:center;justify-content:space-between;gap:10px
+}
+.s-badge{border-radius:var(--r99);padding:3px 10px;font-size:11px;font-weight:600;white-space:nowrap}
+.s-ok{background:var(--ok-bg);color:var(--ok)}
+.s-warn{background:var(--warn-bg);color:var(--warn)}
+.s-err{background:var(--danger-bg);color:var(--danger)}
+.s-stats{display:flex;gap:16px}
+.sv{font-family:'Sora',sans-serif;font-size:16px;font-weight:800;line-height:1}
+.sl{font-size:9px;color:var(--ink3);text-transform:uppercase;margin-top:1px}
+
+/* ═══ SECTION ACCORDION ════════════════ */
+.section{margin:8px 16px 0;border-radius:var(--r12);overflow:hidden;border:1px solid var(--line);box-shadow:var(--sh1)}
+.sec-head{
+  padding:12px 16px;background:var(--surface);display:flex;align-items:center;
+  justify-content:space-between;cursor:pointer;user-select:none;transition:background .12s
+}
+.sec-head:hover{background:var(--surface2)}
+.sec-head.has-err{background:var(--danger-bg);border-left:3px solid var(--brand)}
+.sec-hl{display:flex;align-items:center;gap:9px}
+.sec-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.sec-name{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--ink)}
+.sec-meta{font-size:10px;color:var(--ink3);margin-top:1px}
+.sec-right{display:flex;align-items:center;gap:8px}
+.sec-badge{border-radius:var(--r99);padding:2px 9px;font-size:10px;font-weight:600}
+.sb-d{background:var(--line2);color:var(--ink2)}
+.sb-ok{background:var(--ok-bg);color:var(--ok)}
+.sb-err{background:var(--danger-bg);color:var(--danger)}
+.sec-chev{font-size:11px;color:var(--ink3);transition:transform .2s}
+.sec-chev.open{transform:rotate(180deg)}
+
+/* ═══ CHECKLIST ITEM ════════════════════ */
+.chk-item{padding:13px 16px;border-top:1px solid var(--line2);background:var(--surface)}
+.chk-item:first-child{border-top:none}
+.chk-item.lc{border-left:3px solid var(--brand)}
+.chk-item.li{border-left:3px solid var(--warn)}
+.chk-item.lr{border-left:3px solid var(--info-line)}
+/* Level badge */
+.lvl{display:inline-flex;align-items:center;font-size:9px;font-weight:700;border-radius:var(--r4);padding:2px 6px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px}
+.lv-c{background:var(--danger-bg);color:var(--danger)}
+.lv-i{background:var(--warn-bg);color:var(--warn)}
+.lv-r{background:var(--info-bg);color:var(--info)}
+/* Item content */
+.chk-title{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:3px}
+.chk-desc{font-size:12px;color:var(--ink2);line-height:1.5;margin-bottom:11px}
+/* Answer buttons — touch-friendly */
+.ans-row{display:flex;gap:6px}
+.ans-sim{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px 12px;border-radius:var(--r8);border:1.5px solid var(--line);
+  background:var(--surface2);font-size:13px;font-weight:600;color:var(--ink2);
+  transition:all .13s;cursor:pointer;min-height:42px
+}
+.ans-nao{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px 12px;border-radius:var(--r8);border:1.5px solid var(--line);
+  background:var(--surface2);font-size:13px;font-weight:600;color:var(--ink2);
+  transition:all .13s;cursor:pointer;min-height:42px
+}
+.ans-sim:hover{border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok)}
+.ans-nao:hover{border-color:var(--danger-line);background:var(--danger-bg);color:var(--danger)}
+.ans-sim.sel{border-color:var(--ok);background:var(--ok);color:#fff}
+.ans-nao.sel{border-color:var(--brand);background:var(--brand);color:#fff}
+.ans-icon{font-size:14px;line-height:1}
+.req-msg{font-size:11px;color:var(--danger);margin-top:5px;font-weight:500;display:flex;align-items:center;gap:4px}
+
+/* ═══ NEG FIELDS — chips ════════════════ */
+.neg-wrap{
+  background:#FFFBFB;border:1px solid var(--danger-line);border-radius:var(--r12);
+  padding:13px;margin-top:10px;display:flex;flex-direction:column;gap:11px
+}
+.neg-lbl{font-size:10px;font-weight:700;color:var(--danger);text-transform:uppercase;letter-spacing:.4px}
+.chip-row{display:flex;flex-wrap:wrap;gap:5px}
+.chip{
+  padding:5px 12px;border-radius:var(--r99);border:1.5px solid var(--line);
+  background:var(--surface);font-size:11px;font-weight:600;color:var(--ink2);
+  cursor:pointer;transition:all .12s;white-space:nowrap
+}
+.chip:hover{border-color:#9CA3AF;background:var(--surface2)}
+.chip.sc{border-color:var(--brand);background:var(--brand);color:#fff}
+.chip.sr{border-color:var(--info);background:var(--info);color:#fff}
+.chip.sih{border-color:var(--danger);background:var(--danger);color:#fff}
+.chip.sim{border-color:var(--warn);background:var(--warn);color:#fff}
+.chip.sil{border-color:var(--ok);background:var(--ok);color:#fff}
+.chip.sp{border-color:var(--warn);background:var(--warn);color:#fff}
+.neg-inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.neg-inline-lbl{font-size:10px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+.neg-obs{
+  width:100%;border:1.5px solid var(--line);border-radius:var(--r8);
+  padding:8px 10px;font-size:13px;color:var(--ink);background:var(--surface);
+  resize:none;min-height:40px;line-height:1.4;transition:border-color .15s
+}
+.neg-obs:focus{border-color:var(--brand);outline:none}
+
+/* ═══ HINT BANNER ══════════════════════ */
+.hint{
+  margin:6px 16px 0;padding:7px 12px;border-radius:var(--r8);
+  font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px;
+  border-width:1px;border-style:solid
+}
+
+/* ═══ FINAL FIELDS ══════════════════════ */
+.tog-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 0;border-bottom:1px solid var(--line2)
+}
+.tog-row:last-child{border-bottom:none}
+.tog-lbl{font-size:13px;font-weight:500;color:var(--ink)}
+.tog-btns{display:flex;gap:5px}
+.tog{
+  padding:5px 13px;border-radius:var(--r99);border:1.5px solid var(--line);
+  background:var(--surface);font-size:11px;font-weight:600;color:var(--ink2);transition:all .13s
+}
+.tog.yes{border-color:var(--brand);background:var(--brand);color:#fff}
+.tog.no{border-color:var(--ok);background:var(--ok);color:#fff}
+
+/* ═══ DECLARATION ══════════════════════ */
+.decl-box{
+  background:var(--ok-bg);border:1.5px solid var(--ok-line);border-radius:var(--r12);
+  padding:13px;display:flex;gap:10px;align-items:flex-start;cursor:pointer;transition:all .13s
+}
+.decl-box:hover{background:#E8FAF0}
+.decl-box.on{border-color:var(--ok);background:#DFFAEB}
+.decl-chk{
+  width:19px;height:19px;border-radius:4px;border:2px solid var(--ok);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  background:var(--surface);margin-top:1px;transition:all .13s
+}
+.decl-chk.on{background:var(--ok);border-color:var(--ok)}
+.decl-txt{font-size:12px;font-weight:500;color:var(--ok);line-height:1.5}
+
+/* ═══ VALIDATION ════════════════════════ */
+.val-wrap{
+  background:var(--danger-bg);border:1px solid var(--danger-line);
+  border-radius:var(--r12);padding:13px 16px;margin:8px 16px 0
+}
+.val-title{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--danger);margin-bottom:8px}
+.val-item{
+  font-size:11px;color:#B91C1C;padding:4px 0;border-bottom:1px solid var(--danger-line);
+  display:flex;gap:6px;align-items:flex-start;line-height:1.4
+}
+.val-item:last-child{border-bottom:none}
+.val-item::before{content:'·';font-size:16px;line-height:.8;color:var(--danger);flex-shrink:0}
+
+/* ═══ FAB ════════════════════════════ */
+.fab{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:var(--surface);border-top:1px solid var(--line);
+  padding:10px 16px;display:flex;gap:8px;box-shadow:0 -2px 10px rgba(0,0,0,.07)
+}
+.fab-inner{width:100%;max-width:720px;margin:0 auto;display:flex;gap:8px}
+.fab-save{
+  flex:0 0 auto;padding:10px 16px;border-radius:var(--r8);
+  background:var(--surface2);border:1.5px solid var(--line);
+  font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--ink2);
+  display:flex;align-items:center;gap:5px;transition:all .13s
+}
+.fab-save:hover{background:var(--line)}
+.fab-send{
+  flex:1;padding:11px;border-radius:var(--r8);background:var(--brand);color:#fff;
+  font-family:'Sora',sans-serif;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:background .13s;letter-spacing:.2px
+}
+.fab-send:hover{background:var(--brand-dark)}
+.fab-send:disabled{opacity:.4;cursor:not-allowed}
+.fab-del{
+  flex:0 0 auto;padding:10px 12px;border-radius:var(--r8);
+  background:var(--surface2);border:1.5px solid var(--line);
+  font-size:16px;transition:all .13s
+}
+.fab-del:hover{background:var(--danger-bg);border-color:var(--danger-line)}
+
+/* ═══ TOAST ══════════════════════════ */
+.toast{
+  position:fixed;top:64px;left:50%;transform:translateX(-50%);
+  background:#111;color:#fff;padding:8px 18px;border-radius:var(--r99);
+  font-size:12px;font-weight:500;z-index:9999;box-shadow:var(--sh3);
+  opacity:0;transition:opacity .22s;pointer-events:none;white-space:nowrap
+}
+.toast.on{opacity:1}
+
+/* ═══ SENDING OVERLAY ═══════════════ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:800;display:flex;align-items:center;justify-content:center;padding:20px}
+.overlay-card{background:var(--surface);border-radius:var(--r16);padding:26px 22px;width:100%;max-width:280px;text-align:center;box-shadow:var(--sh3)}
+.spin{width:34px;height:34px;border:3px solid var(--line2);border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 13px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ol-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px}
+.ol-sub{font-size:11px;color:var(--ink2);line-height:1.5}
+.ol-steps{display:flex;flex-direction:column;gap:4px;margin-top:13px;text-align:left}
+.ol-step{display:flex;align-items:center;gap:7px;font-size:11px;padding:5px 8px;border-radius:var(--r8);font-weight:500}
+.step-ok{background:var(--ok-bg);color:var(--ok)}
+.step-go{background:var(--warn-bg);color:var(--warn)}
+.step-wait{background:var(--line2);color:var(--ink3)}
+
+/* ═══ SUMMARY ════════════════════════ */
+.sum-wrap{position:fixed;inset:0;background:#111;z-index:500;display:flex;flex-direction:column;overflow:hidden}
+.sum-bar{
+  background:#0A0A0A;border-bottom:1px solid #1E1E1E;padding:0 16px;height:46px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0
+}
+.sum-bar-title{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px}
+.sum-hint{
+  background:#161616;border:1px solid #242424;border-radius:var(--r4);
+  padding:5px 10px;flex:1;max-width:480px;display:flex;align-items:center;gap:7px
+}
+.sum-hint-text{font-size:10px;color:#666;line-height:1.4}
+.sum-hint-text b{color:#F5C400}
+.kbd{display:inline-block;background:#222;border:1px solid #333;border-radius:3px;padding:0 5px;font-size:9px;font-weight:700;color:#aaa;margin:0 1px;font-family:monospace}
+.sum-actions{display:flex;gap:5px;flex-shrink:0}
+.sum-copy{background:#25D366;color:#fff;border-radius:var(--r4);padding:6px 13px;font-family:'Sora',sans-serif;font-size:11px;font-weight:700}
+.sum-back{background:transparent;border:1px solid #2A2A2A;color:#666;border-radius:var(--r4);padding:6px 11px;font-family:'Sora',sans-serif;font-size:11px;font-weight:600}
+.sum-viewport{flex:1;overflow-y:auto;padding:16px;display:flex;justify-content:center}
+.sum-card{background:var(--surface);width:100%;max-width:820px;border-radius:var(--r16);overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.04),0 24px 64px rgba(0,0,0,.5)}
+.sum-head{background:linear-gradient(135deg,#B5001A,var(--brand));color:#fff;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.sum-head-l{flex:1}
+.sum-eyebrow{font-size:9px;opacity:.6;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px}
+.sum-name{font-family:'Sora',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px}
+.sum-meta{font-size:11px;opacity:.7}
+.sum-status{display:inline-block;border-radius:var(--r99);padding:4px 12px;font-size:11px;font-weight:700;margin-top:8px}
+.score-ring{width:72px;height:72px;border-radius:50%;border:3px solid rgba(255,255,255,.25);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.score-n{font-family:'Sora',sans-serif;font-size:26px;font-weight:900;line-height:1}
+.score-l{font-size:8px;opacity:.7;font-weight:700;letter-spacing:.5px;margin-top:1px}
+.sum-kpis{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.sum-kpi{padding:11px 8px;text-align:center;border-right:1px solid var(--line)}
+.sum-kpi:last-child{border-right:none}
+.sum-kv{font-family:'Sora',sans-serif;font-size:22px;font-weight:900}
+.sum-kl{font-size:9px;color:var(--ink3);font-weight:600;text-transform:uppercase;margin-top:1px}
+.sum-body{display:grid;grid-template-columns:1fr 1fr}
+.sum-col{padding:14px 16px;border-right:1px solid var(--line)}
+.sum-col:last-child{border-right:none}
+.sum-col-title{font-size:9px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+.sum-occ{background:#FFF8F8;border-radius:var(--r8);padding:9px 11px;margin-bottom:6px;border-left:2px solid var(--brand)}
+.sum-occ.ok{background:var(--ok-bg);border-left-color:var(--ok)}
+.sum-occ-title{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;margin-bottom:2px}
+.sum-occ-detail{font-size:10px;color:var(--ink2);line-height:1.4;margin-bottom:2px}
+.sum-footer{background:#1A1A1A;color:#fff;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px}
+.sum-footer-decl{font-size:10px;opacity:.55;font-style:italic;flex:1}
+.sum-footer-sig{font-size:9px;opacity:.4}
+.copy-flash{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#25D366;color:#fff;padding:12px 24px;border-radius:var(--r12);font-family:'Sora',sans-serif;font-size:14px;font-weight:700;z-index:9999;pointer-events:none;opacity:0;transition:opacity .22s;box-shadow:var(--sh3)}
+.copy-flash.on{opacity:1}
+
+/* ═══ CEO DASHBOARD ══════════════════ */
+.ceo-hdr{background:linear-gradient(135deg,#1A1A1A 0%,#2A0008 55%,#B5001A 100%);color:#fff;padding:18px 16px 14px}
+.ceo-hdr-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.ceo-brand-lbl{font-size:9px;opacity:.5;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px}
+.ceo-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:900}
+.ceo-sub{font-size:10px;opacity:.55;margin-top:2px}
+.ceo-badge{display:inline-block;background:rgba(255,255,255,.1);border-radius:var(--r99);padding:3px 10px;font-size:9px;font-weight:700;margin-top:6px}
+.ceo-nav{display:flex;gap:5px;padding:10px 16px 0;overflow-x:auto}
+.ceo-nav::-webkit-scrollbar{display:none}
+.nav-tab{
+  padding:6px 13px;border-radius:var(--r99);font-family:'Sora',sans-serif;font-size:11px;
+  font-weight:700;white-space:nowrap;border:1.5px solid var(--line);
+  background:var(--surface);color:var(--ink2);flex-shrink:0;transition:all .13s
+}
+.nav-tab:hover{border-color:#9CA3AF}
+.nav-tab.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:10px 16px}
+.kpi-card{
+  background:var(--surface);border-radius:var(--r12);border:1px solid var(--line);
+  box-shadow:var(--sh1);padding:12px;position:relative;overflow:hidden
+}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kc-r::before{background:var(--brand)}.kc-g::before{background:var(--ok)}
+.kc-o::before{background:var(--warn)}.kc-b::before{background:var(--info)}
+.kc-p::before{background:#7C3AED}
+.kpi-lbl{font-size:9px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.kpi-val{font-family:'Sora',sans-serif;font-size:24px;font-weight:900;line-height:1}
+.kpi-sub{font-size:10px;color:var(--ink2);margin-top:2px}
+.kpi-ico{position:absolute;right:10px;top:10px;font-size:18px;opacity:.15}
+.tr{display:inline-flex;align-items:center;gap:2px;font-size:9px;font-weight:600;margin-top:4px;border-radius:var(--r99);padding:1px 7px}
+.tr-u{background:var(--ok-bg);color:var(--ok)}.tr-d{background:var(--danger-bg);color:var(--danger)}.tr-f{background:var(--line2);color:var(--ink3)}
+.chart-card{background:var(--surface);border-radius:var(--r12);border:1px solid var(--line);box-shadow:var(--sh1);padding:14px 16px;margin:0 16px 10px}
+.chart-t{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;color:var(--ink)}
+.bar-chart{display:flex;align-items:flex-end;gap:4px;height:80px;padding-top:6px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%}
+.bar-lbl{font-size:8px;font-weight:600;color:var(--ink3);text-align:center}
+.bar-val{font-size:8px;font-weight:600;color:var(--ink2)}
+.bar-fill{border-radius:3px 3px 0 0;min-height:2px;width:100%}
+.rank-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.rank-row:last-child{border-bottom:none}
+.rank-pos{font-family:'Sora',sans-serif;font-size:14px;font-weight:900;width:22px;text-align:center}
+.rank-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.rank-name{font-family:'Sora',sans-serif;font-size:13px;font-weight:700}
+.rank-sub{font-size:10px;color:var(--ink2);margin-top:1px}
+.rank-score{font-family:'Sora',sans-serif;font-size:16px;font-weight:900}
+.alert-row{display:flex;align-items:flex-start;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}
+.alert-row:last-child{border-bottom:none}
+.a-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.a-r{background:var(--brand)}.a-o{background:var(--warn)}.a-b{background:var(--info)}
+.a-title{font-family:'Sora',sans-serif;font-size:12px;font-weight:700}
+.a-sub{font-size:10px;color:var(--ink2);margin-top:1px}
+.a-badge{border-radius:var(--r99);padding:2px 8px;font-size:9px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.shift-table{width:100%;border-collapse:collapse;font-size:12px}
+.shift-table th{font-size:9px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.3px;padding:5px 8px;text-align:left;border-bottom:1.5px solid var(--line)}
+.shift-table td{padding:8px;border-bottom:1px solid var(--line)}
+.shift-table tr:last-child td{border-bottom:none}
+.pill{display:inline-block;border-radius:var(--r99);padding:2px 8px;font-size:9px;font-weight:600}
+.hm-grid{display:grid;grid-template-columns:auto repeat(7,1fr);gap:3px;min-width:260px}
+.hm-cell{aspect-ratio:1;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;color:#fff}
+
+/* ═══ SUPORTE / GERENTE HUB ══════════ */
+.hub-bg{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 50% 0%, #002040 0%, #001020 50%, #0D0D0D 100%)}
+.hub-card{background:var(--surface);border-radius:var(--r16);padding:28px 22px;width:100%;max-width:400px;box-shadow:0 32px 64px rgba(0,0,0,.45)}
+.hub-title{font-family:'Sora',sans-serif;font-size:19px;font-weight:900;margin-bottom:3px}
+.hub-sub{font-size:12px;color:var(--ink2);margin-bottom:20px}
+.hub-opt{
+  width:100%;padding:15px 16px;border-radius:var(--r12);border:1.5px solid var(--line);
+  background:var(--surface);text-align:left;display:flex;align-items:center;gap:13px;
+  transition:all .15s;cursor:pointer;margin-bottom:8px
+}
+.hub-opt:hover{border-color:#9CA3AF;box-shadow:var(--sh1);transform:translateY(-1px)}
+.hub-opt-icon{font-size:26px;flex-shrink:0}
+.hub-opt-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--ink)}
+.hub-opt-sub{font-size:11px;color:var(--ink2);margin-top:1px}
+.hub-logout{
+  width:100%;margin-top:12px;padding:9px;background:transparent;
+  border:1px solid var(--line);border-radius:var(--r8);
+  font-family:'Sora',sans-serif;font-size:12px;font-weight:600;color:var(--ink3);transition:all .13s
+}
+.hub-logout:hover{background:var(--line2)}
+
+/* ═══ USER MANAGER ══════════════════ */
+.um-hdr{
+  background:linear-gradient(135deg,#001a3a,#1B5FA3);color:#fff;
+  height:52px;padding:0 16px;display:flex;align-items:center;position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 8px rgba(27,95,163,.2)
+}
+.um-hdr-inner{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px}
+
+/* ═══ BANNER (dark) ════════════════ */
+.dark-banner{background:#1C1C1E;color:#fff;padding:10px 14px;margin:10px 16px 0;border-radius:var(--r12)}
+.dark-banner-title{font-size:10px;font-weight:700;color:#F5C400;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
+.dark-banner-item{font-size:11px;color:#9CA3AF;padding-left:10px;position:relative;margin-bottom:2px;line-height:1.5}
+.dark-banner-item::before{content:'·';position:absolute;left:2px;color:#555}
+
+/* ═══ RESPONSIVE ════════════════════ */
+@media(min-width:640px){
+  .kpi-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:640px){
+  .sum-body{grid-template-columns:1fr}
+  .sum-col{border-right:none;border-bottom:1px solid var(--line)}
+  .sum-col:last-child{border-bottom:none}
+  .sum-head{flex-direction:column;text-align:center}
+  .sum-hint{display:none}
+}
+@media print{
+  .fab,.hdr,.ceo-nav,.ceo-hdr,.sum-bar,.um-hdr{display:none!important}
+  .sum-wrap{position:static;background:#fff}
+  .sum-viewport{padding:0;overflow:visible}
+  .sum-card{box-shadow:none;border-radius:0;max-width:100%}
+  body{padding-bottom:0}
+}
+</style>
+
+
+
+
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useMemo,useRef,useCallback}=React;
+
+/* ═══════════════════════════
+   CONSTANTS
+═══════════════════════════ */
+const WEBHOOK='https://hook.us2.make.com/pz24jw68dgh7c3realu1locfwlq1ny67';
+const USERS_KEY='konclui_users';
+const SESSION_KEY='konclui_session';
+const CK_KEY='konclui_checklists';
+const CFG_KEY='konclui_config';
+const VERSION='2026.4';
+function getConfig(){try{return JSON.parse(localStorage.getItem(CFG_KEY))||{};}catch{return{};}}
+function saveConfig(c){localStorage.setItem(CFG_KEY,JSON.stringify(c));}
+// Auto-reset users if version changed
+(function(){
+  const sv=localStorage.getItem('konclui_version');
+  if(sv!==VERSION){
+    localStorage.removeItem(USERS_KEY);
+    localStorage.removeItem(SESSION_KEY);
+    localStorage.setItem('konclui_version',VERSION);
+  }
+})();
+
+const DEFAULT_USERS={
+  gabriela:{name:'Gabriela',login:'gabriela',role:'subgerente',pwd:'2026',first:false,color:'#E8001C'},
+  vitoria:{name:'Vitória',login:'vitoria',role:'subgerente',pwd:'2026',first:false,color:'#7C3AED'},
+  bruna:{name:'Bruna',login:'bruna',role:'suporte',pwd:'2026',first:false,color:'#2563EB'},
+  gerente:{name:'Gerente',login:'gerente',role:'gerente',pwd:'2026',first:false,color:'#00B37E'},
+  camila:{name:'Camila',login:'camila',role:'ceo',pwd:'2026',first:false,color:'#1A1A1A'},
+};
+
+function getUsers(){try{return JSON.parse(localStorage.getItem(USERS_KEY))||{...DEFAULT_USERS};}catch{return{...DEFAULT_USERS};}}
+function saveUsers(u){localStorage.setItem(USERS_KEY,JSON.stringify(u));}
+function getSession(){try{return JSON.parse(sessionStorage.getItem(SESSION_KEY));}catch{return null;}}
+function saveSession(s){sessionStorage.setItem(SESSION_KEY,JSON.stringify(s));}
+function clearSession(){sessionStorage.removeItem(SESSION_KEY);}
+function nowTime(){return new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+function todayFmt(){return new Date().toLocaleDateString('pt-BR');}
+function todayISO(){return new Date().toISOString().slice(0,10);}
+
+/* ═══════════════════════════
+   CHECKLIST DATA
+═══════════════════════════ */
+const ITEMS=[
+  // ── MANHÃ ────────────────────────────────────────────────────────────────────
+  // cond: null=sempre | 'delivery' | 'novato' | 'falta' | 'troco' | 'feriado' | 'equipamento' | 'promocao' | 'chuva'
+  // dias: [0-6] 0=dom | null=todos os dias
+
+  // ABASTECIMENTO
+  {id:'m1',t:'manha',s:'Abastecimento',e:'📦',n:'critico',
+    ti:'Verifiquei o estoque atual',
+    d:(ctx)=>'Conferir todos: recheios, massa, embalagens, insumos.'},
+  {id:'m2',t:'manha',s:'Abastecimento',e:'📦',n:'critico',
+    ti:'Antecipei falta para este e o próximo turno',
+    d:(ctx)=>'Débora→compras | Cíntia→recheio | Dorival→logística'},
+
+  // MASSA — meta dinâmica por dia
+  {id:'m3',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Conferi quantidade atual de massa',d:()=>'Garantir massa suficiente para o dia.'},
+  {id:'m4',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção: 60 massas',d:()=>'Terça-feira — produção mínima obrigatória.',dias:[2]},
+  {id:'m4b',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção: 70 massas + 90 rolos',d:()=>'Quarta-feira — produção dupla obrigatória.',dias:[3]},
+  {id:'m4c',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Garanti produção mínima do dia',d:()=>'Confirmar meta com a liderança.',dias:[0,1,4,5,6]},
+  {id:'m5',t:'manha',s:'Massa',e:'📊',n:'importante',ti:'Garanti produção do dia seguinte',d:()=>'Antecipar para não comprometer o próximo turno.'},
+
+  // DELIVERY — só aparece se delivery ativo
+  {id:'m6',t:'manha',s:'Delivery',e:'🛵',n:'critico',ti:'Acompanhando pedidos em tempo real',d:()=>'Monitorar pedidos ativos e tempo de entrega.',cond:'delivery'},
+  {id:'m7',t:'manha',s:'Delivery',e:'🛵',n:'critico',ti:'Intervim antes de qualquer pedido atrasar',d:()=>'Pedido parado→ajustar operação. Sistêmico→Bruna.',cond:'delivery'},
+
+  // EQUIPE
+  {id:'m8',t:'manha',s:'Equipe',e:'👥',n:'importante',ti:'Defini função de todos no turno',
+    d:(ctx)=>ctx.falta==='sim'?'Atenção: cobertura ativa — redistribuir funções do colaborador ausente.':'Cada colaborador sabe exatamente o que fazer.'},
+  {id:'m8b',t:'manha',s:'Equipe',e:'👥',n:'critico',ti:'Acionei Viviane (RH) para freelance urgente',
+    d:(ctx)=>'Falta confirmada → acionar Viviane (RH) imediatamente para cobertura freelance. Redistribuir tarefas até chegada.',cond:'falta'},
+  {id:'m9',t:'manha',s:'Equipe',e:'👥',n:'importante',ti:'Corrigi quem travou',d:()=>'Nenhum colaborador parado sem direcionamento.'},
+  {id:'m10',t:'manha',s:'Equipe',e:'👥',n:'critico',ti:'Não deixei novato sozinho',
+    d:()=>'Supervisão direta obrigatória. Não sai do campo de visão.',cond:'novato'},
+
+  // PROCESSOS
+  {id:'m11',t:'manha',s:'Processos',e:'🎯',n:'importante',ti:'Verifiquei execução real dos processos',d:()=>'Verificar se está sendo feito — não apenas orientar.'},
+  {id:'m12',t:'manha',s:'Processos',e:'🎯',n:'importante',ti:'Corrigi desvios de padrão',d:()=>'Qualquer desvio corrigido na hora e registrado.'},
+
+  // CHECKLIST
+  {id:'m13',t:'manha',s:'Checklist',e:'📋',n:'critico',ti:'Todos responderam o checklist',d:()=>'Checklist falso ou incompleto = corrigir na hora.'},
+  {id:'m14',t:'manha',s:'Checklist',e:'📋',n:'critico',ti:'Validei as respostas do checklist',d:()=>'Confirmar que a resposta bate com a realidade.'},
+
+  // CLIENTE
+  {id:'m15',t:'manha',s:'Cliente',e:'👤',n:'critico',ti:'Resolvi problema de cliente na hora',d:()=>'Nenhum problema sem resolução. Se necessário→Bruna.'},
+  {id:'m16',t:'manha',s:'Cliente',e:'👤',n:'importante',ti:'Evitei repetição do problema',d:()=>'Identificar causa raiz e corrigir.'},
+
+  // OCORRÊNCIAS
+  {id:'m17',t:'manha',s:'Ocorrências',e:'📘',n:'importante',ti:'Registrei tudo relevante',d:()=>'Ocorrências, desvios, incidentes — tudo registrado.'},
+  {id:'m18',t:'manha',s:'Ocorrências',e:'📘',n:'importante',ti:'Informei no grupo',d:()=>'Comunicação feita no grupo da equipe.'},
+
+  // ESTRUTURA
+  {id:'m19',t:'manha',s:'Estrutura',e:'🔧',n:'importante',ti:'Identifiquei problema estrutural',d:()=>'Equipamentos, instalações, limpeza — verificado.'},
+  {id:'m20',t:'manha',s:'Estrutura',e:'🔧',n:'importante',ti:'Acionei responsável',
+    d:(ctx)=>'Dorival→execução | Bruna→direcionamento'},
+
+  // CAIXA
+  {id:'m21',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Garanti R$300 de troco disponível',d:()=>'Verificar antes de abrir. Problema→Bruna.'},
+  {id:'m21b',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Troco insuficiente — acionar Bruna urgente',d:()=>'Troco abaixo do mínimo. Não abrir caixa sem resolver. Contatar Bruna agora.',cond:'troco'},
+  {id:'m22',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Registrei todas as movimentações',d:()=>'Sangrias, entradas e saídas registradas.'},
+
+  // ESCALA
+  {id:'m23',t:'manha',s:'Escala',e:'📅',n:'critico',ti:'Conferi equipe do turno',
+    d:(ctx)=>ctx.falta==='sim'?'Falta confirmada — acionar Viviane (RH) + comunicar Bruna e Camila.':'Todos presentes e nos postos corretos.'},
+  {id:'m24',t:'manha',s:'Escala',e:'📅',n:'critico',ti:'Antecipei escala do domingo',
+    d:()=>'Viviane (RH)→comunicar Bruna e Camila.',dias:[6]},
+
+  // DECISÕES
+  {id:'m25',t:'manha',s:'Decisões',e:'⚠️',n:'critico',ti:'Não decidi sozinho em assuntos relevantes',d:()=>'Tudo relevante→grupo. Camila/Bruna validam.'},
+
+  // FINAL DE SEMANA — produção sobe
+  {id:'m_fds1',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Reforçei produção para o final de semana',d:()=>'Sábado/domingo: volume maior. Produção mínima 20% acima do normal.',dias:[5,6]},
+  {id:'m_fds2',t:'manha',s:'Abastecimento',e:'📦',n:'critico',ti:'Abastecimento reforçado para o fim de semana',d:()=>'Garantir estoque para 2 dias sem reposição. Verificar todos os insumos.',dias:[5,6]},
+  {id:'t_fds1',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Produção de massa reforçada para o fim de semana',d:()=>'Sábado/domingo: volume maior. Garantir produção para os próximos 2 turnos.',dias:[5,6]},
+
+  // SITUAÇÕES ESPECIAIS DO DIA
+  {id:'m_fer1',t:'manha',s:'Dia Especial',e:'🎉',n:'critico',ti:'Reforçei estoque para volume maior',d:()=>'Feriado/data especial — pedir reposição extra com antecedência.',cond:'feriado'},
+  {id:'m_fer2',t:'manha',s:'Dia Especial',e:'🎉',n:'importante',ti:'Equipe alerta para pico de movimento',d:()=>'Comunicar equipe sobre volume esperado acima do normal.',cond:'feriado'},
+  {id:'m_eqp1',t:'manha',s:'Manutenção',e:'⚙️',n:'critico',ti:'Registrei e acionei responsável pelo equipamento',d:(ctx)=>'Dorival→execução | Bruna→direcionamento. Descrever problema.',cond:'equipamento'},
+  {id:'m_eqp2',t:'manha',s:'Manutenção',e:'⚙️',n:'critico',ti:'Avaliei impacto na operação e comuniquei',d:()=>'O equipamento comprometeu algum processo? Comunicar Bruna/Camila.',cond:'equipamento'},
+  {id:'m_pro1',t:'manha',s:'Promoção',e:'🏷️',n:'importante',ti:'Equipe ciente dos termos da promoção',d:()=>'Todos sabem o que oferecer, como comunicar e limite de estoque.',cond:'promocao'},
+  {id:'m_pro2',t:'manha',s:'Promoção',e:'🏷️',n:'importante',ti:'Estoque reforçado para demanda da promoção',d:()=>'Verificar se há insumos suficientes para o volume esperado.',cond:'promocao'},
+  {id:'m_chu1',t:'manha',s:'Clima',e:'🌧️',n:'importante',ti:'Delivery: possível queda — foco no presencial',d:()=>'Chuva reduz delivery. Equipe focada no atendimento presencial e produção.',cond:'chuva'},
+
+  // FECHAMENTO
+  {id:'m26',t:'manha',s:'Fechamento',e:'🔁',n:'critico',ti:'Loja organizada no final do turno',d:()=>'Tudo no lugar para o próximo turno começar bem.'},
+  {id:'m27',t:'manha',s:'Fechamento',e:'🔁',n:'critico',ti:'Próximo turno informado sobre pendências',d:()=>'Passagem de turno feita com clareza.'},
+
+  // ── TARDE/NOITE ──────────────────────────────────────────────────────────────
+
+  // ABASTECIMENTO
+  {id:'t1',t:'tarde',s:'Abastecimento',e:'📦',n:'critico',ti:'Verifiquei estoque do turno anterior',
+    d:(ctx)=>'Débora→compras | Cíntia→recheio | Dorival→logística'},
+  {id:'t2',t:'tarde',s:'Abastecimento',e:'📦',n:'critico',ti:'Antecipei falta para o próximo dia',d:()=>'Garantir que a abertura de amanhã não terá falta.'},
+
+  // MASSA
+  {id:'t3',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Conferi saldo de massa do turno da manhã',d:()=>'Saber o que sobrou e o que falta produzir.'},
+  {id:'t4',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção para amanhã: 60 massas',d:()=>'Terça — produção para Quarta.',dias:[2]},
+  {id:'t4b',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção para amanhã: 70 + 90 rolos',d:()=>'Quarta — produção para Quinta.',dias:[3]},
+  {id:'t4c',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Garanti produção necessária para amanhã',d:()=>'Confirmar meta com a liderança.',dias:[0,1,4,5,6]},
+
+  // DELIVERY
+  {id:'t5',t:'tarde',s:'Delivery',e:'🛵',n:'critico',ti:'Acompanhei pedidos no pico noturno',d:()=>'Pico da tarde/noite exige atenção máxima.',cond:'delivery'},
+  {id:'t6',t:'tarde',s:'Delivery',e:'🛵',n:'critico',ti:'Intervim antes de atrasar qualquer pedido',d:()=>'Se sistêmico→Bruna.',cond:'delivery'},
+
+  // EQUIPE
+  {id:'t7',t:'tarde',s:'Equipe',e:'👥',n:'importante',ti:'Defini função de todos no turno tarde/noite',
+    d:(ctx)=>ctx.falta==='sim'?'Falta ativa — redistribuir funções do ausente.':'Cada colaborador com função clara.'},
+  {id:'t7b',t:'tarde',s:'Equipe',e:'👥',n:'critico',ti:'Acionei Viviane (RH) para freelance urgente',
+    d:(ctx)=>'Falta confirmada → acionar Viviane (RH) imediatamente para cobertura freelance. Redistribuir tarefas até chegada.',cond:'falta'},
+  {id:'t8',t:'tarde',s:'Equipe',e:'👥',n:'importante',ti:'Recebi passagem do turno da manhã',d:()=>'Informações sobre o que ficou pendente.'},
+  {id:'t9',t:'tarde',s:'Equipe',e:'👥',n:'critico',ti:'Não deixei novato sem supervisão noturna',
+    d:()=>'Turno noturno exige atenção redobrada.',cond:'novato'},
+
+  // PROCESSOS
+  {id:'t10',t:'tarde',s:'Processos',e:'🎯',n:'importante',ti:'Verifiquei execução dos processos noturnos',d:()=>'Produção, limpeza, organização — verificado.'},
+  {id:'t11',t:'tarde',s:'Processos',e:'🎯',n:'importante',ti:'Corrigi desvios encontrados',d:()=>'Qualquer desvio corrigido imediatamente.'},
+
+  // CHECKLIST
+  {id:'t12',t:'tarde',s:'Checklist',e:'📋',n:'critico',ti:'Todos responderam o checklist do turno',d:()=>'Checklist falso = corrigir na hora.'},
+  {id:'t13',t:'tarde',s:'Checklist',e:'📋',n:'critico',ti:'Validei as respostas do checklist',d:()=>'Confirmar se as respostas batem com a realidade.'},
+
+  // CLIENTE
+  {id:'t14',t:'tarde',s:'Cliente',e:'👤',n:'critico',ti:'Resolvi problemas de cliente no turno',d:()=>'Nenhum problema sem resolução. Se necessário→Bruna.'},
+
+  // OCORRÊNCIAS
+  {id:'t15',t:'tarde',s:'Ocorrências',e:'📘',n:'importante',ti:'Registrei ocorrências relevantes',d:()=>'Tudo anotado e comunicado no grupo.'},
+
+  // ESTRUTURA
+  {id:'t16',t:'tarde',s:'Estrutura',e:'🔧',n:'importante',ti:'Verifiquei equipamentos antes de fechar',
+    d:(ctx)=>'Tudo funcionando para o dia seguinte.'},
+
+  // CAIXA
+  {id:'t17',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Fechei o caixa corretamente',d:()=>'Conferência final antes do fechamento.'},
+  {id:'t17b',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Troco insuficiente — registrar e avisar próximo turno',d:()=>'Troco abaixo do mínimo. Registrar e comunicar. Acionar Bruna se necessário.',cond:'troco'},
+  {id:'t18',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Registrei todas as movimentações do turno',d:()=>'Sangrias, entradas e saídas registradas.'},
+
+  // ESCALA
+  {id:'t19',t:'tarde',s:'Escala',e:'📅',n:'critico',ti:'Antecipei escala do domingo',
+    d:()=>'Falta?→Viviane (RH)→comunicar Bruna e Camila.',dias:[6]},
+  {id:'t19b',t:'tarde',s:'Escala',e:'📅',n:'critico',ti:'Conferi equipe do turno',
+    d:(ctx)=>ctx.falta==='sim'?'Falta confirmada — acionar Viviane (RH).':'Todos presentes e nos postos corretos.',dias:[0,1,2,3,4,5]},
+
+  // DECISÕES
+  {id:'t20',t:'tarde',s:'Decisões',e:'⚠️',n:'critico',ti:'Não decidi sozinho em assuntos relevantes',d:()=>'Camila/Bruna validam.'},
+
+  // SITUAÇÕES ESPECIAIS DO DIA
+  {id:'t_fer1',t:'tarde',s:'Dia Especial',e:'🎉',n:'critico',ti:'Estoque reforçado para amanhã (feriado)',d:()=>'Garantir insumos extras para o dia seguinte de alta demanda.',cond:'feriado'},
+  {id:'t_eqp1',t:'tarde',s:'Manutenção',e:'⚙️',n:'critico',ti:'Registrei problema do equipamento',d:(ctx)=>'Registrar, fotografar e acionar Dorival/Bruna.',cond:'equipamento'},
+  {id:'t_pro1',t:'tarde',s:'Promoção',e:'🏷️',n:'importante',ti:'Acompanhei resultado da promoção no turno',d:()=>'Registrar quantidades vendidas e feedback da equipe.',cond:'promocao'},
+  {id:'t_chu1',t:'tarde',s:'Clima',e:'🌧️',n:'importante',ti:'Delivery abaixo do esperado — ajustei produção',d:()=>'Chuva reduziu delivery. Ajustar produção e comunicar turno seguinte.',cond:'chuva'},
+
+  // FECHAMENTO
+  {id:'t21',t:'tarde',s:'Fechamento',e:'🔁',n:'critico',ti:'Loja 100% organizada para o próximo dia',d:()=>'Tudo no lugar, limpo e pronto para abertura.'},
+
+  // SEGURANÇA
+  {id:'t22',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Gás desligado',d:()=>'Verificar TODOS os pontos de gás antes de fechar.'},
+  {id:'t23',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Equipamentos desligados',d:()=>'Fritas, fritadeiras, elétricos — tudo desligado.'},
+  {id:'t24',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Loja travada com segurança',d:()=>'Portas, janelas, alarme — verificado e travado.'},
+];
+
+// ── MOTOR DE INTELIGÊNCIA ─────────────────────────────────────────────────────
+// Resolve descrição dinâmica baseada no contexto
+function resolveDesc(item, ctx){
+  if(typeof item.d === 'function') return item.d(ctx);
+  return item.d || '';
+}
+
+// Filtra itens por turno, dia da semana e contexto
+function filterItems(allItems, turno, ctx){
+  const dow = new Date().getDay(); // 0=dom 1=seg 2=ter 3=qua 4=qui 5=sex 6=sab
+  return allItems
+    .filter(item=>{
+      if(item.t !== turno) return false;
+      // filtro por dia da semana
+      if(item.dias && !item.dias.includes(dow)) return false;
+      // filtro por contexto
+      if(item.cond==='delivery' && ctx.delivery!=='sim') return false;
+      if(item.cond==='novato'   && ctx.novato!=='sim')   return false;
+      if(item.cond==='falta'    && ctx.falta!=='sim')    return false;
+      if(item.cond==='troco'      && ctx.troco!=='sim')      return false;
+      if(item.cond==='feriado'    && ctx.feriado!=='sim')    return false;
+      if(item.cond==='equipamento'&& ctx.equipamento!=='sim') return false;
+      if(item.cond==='promocao'   && ctx.promocao!=='sim')   return false;
+      if(item.cond==='chuva'      && ctx.chuva!=='sim')      return false;
+      return true;
+    })
+    // injeta descrição resolvida
+    .map(item=>({...item, d: resolveDesc(item, ctx)}));
+}
+
+const SEC_MANHA=[...new Set(ITEMS.filter(i=>i.t==='manha').map(i=>i.s))];
+const SEC_TARDE=[...new Set(ITEMS.filter(i=>i.t==='tarde').map(i=>i.s))];
+/* ═══════════════════════════
+   DEMO DATA (CEO)
+═══════════════════════════ */
+const DAYS=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+function genDemo(){
+  return DAYS.flatMap((day,di)=>['manha','tarde'].map(t=>{
+    const sc=Math.floor(68+Math.random()*32),fl=Math.floor(Math.random()*4),cr=Math.floor(Math.random()*2);
+    return{day,dayIdx:di,turno:t,name:t==='manha'?'Gabriela':'Vitória',score:sc,total:t==='manha'?27:24,falhas:fl,criticos:cr,pendencias:Math.floor(Math.random()*2),status:cr>0?'critico':fl>0?'ressalvas':'conforme',dataFmt:day,isDemo:true};
+  }));
+}
+const DEMO=genDemo();
+
+/* ═══════════════════════════
+   WEBHOOK
+═══════════════════════════ */
+async function sendWebhook(textPayload){
+  try{
+    const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({texto:textPayload,timestamp:new Date().toISOString(),sistema:'Koncluí – Pastel da Camila'})});
+    return r.ok;
+  }catch{return false;}
+}
+
+/* ═══════════════════════════
+   SHARED COMPONENTS
+═══════════════════════════ */
+function Toast({msg,show}){return <div className={`toast${show?' on':''}`}>{msg}</div>;}
+function useToast(){
+  const [t,sT]=useState({show:false,msg:''});const r=useRef();
+  function show(msg){sT({show:true,msg});clearTimeout(r.current);r.current=setTimeout(()=>sT({show:false,msg:''}),2500);}
+  return[t,show];
+}
+
+/* ═══════════════════════════
+   LOGIN
+═══════════════════════════ */
+function Login({onLogin}){
+  const [login,setLogin]=useState('');const [pwd,setPwd]=useState('');
+  const [err,setErr]=useState('');const [loading,setLoading]=useState(false);
+  function go(){
+    setErr('');if(!login.trim()||!pwd.trim()){setErr('Preencha todos os campos.');return;}
+    setLoading(true);
+    setTimeout(()=>{
+      const users=getUsers(),key=login.trim().toLowerCase(),user=users[key];
+      if(!user||user.pwd!==pwd){setErr('Login ou senha incorretos.');setLoading(false);return;}
+      onLogin(user,key);setLoading(false);
+    },500);
+  }
+  return(
+    <div className="login-bg">
+      <div className="login-card">
+        <div className="login-logo">
+          <span className="login-emoji">🥟</span>
+          <div className="login-name">Pastel da Camila</div>
+          <div className="login-sub">Sistema Operacional de Franquias</div>
+          <div className="login-powered">Powered by Koncluí · Checklists Inteligentes</div>
+        </div>
+        {err&&<div className="alert-box">⚠️ {err}</div>}
+        <div className="f-group"><label className="f-label">Login</label><input className="f-input" value={login} onChange={e=>setLogin(e.target.value)} placeholder="Seu login" onKeyDown={e=>e.key==='Enter'&&go()}/></div>
+        <div className="f-group"><label className="f-label">Senha</label><input className="f-input" type="password" value={pwd} onChange={e=>setPwd(e.target.value)} placeholder="••••••" onKeyDown={e=>e.key==='Enter'&&go()}/></div>
+        <button className="btn-brand" onClick={go} disabled={loading}>{loading?'Verificando...':'ENTRAR →'}</button>
+        <div style={{marginTop:16,textAlign:'center',fontSize:11,color:'var(--ink3)'}}>Acesso restrito · v3.0 · Koncluí 2025</div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════
+   CHANGE PASSWORD
+═══════════════════════════ */
+
+function NegFields({data,onChange,secao}){
+  const d=data||{},set=(k,v)=>onChange({...d,[k]:v});
+
+  // Causas pré-definidas por seção
+  const CAUSAS={
+    'Abastecimento':['Faltou produto','Fornecedor atrasou','Estoque mal contado','Não foi pedido'],
+    'Massa':['Produção insuficiente','Falta de ingrediente','Equipamento com problema','Falta de tempo'],
+    'Delivery':['Motoboy atrasado','Sistema fora','Pedido errado','Falta de embalagem'],
+    'Equipe':['Faltou colaborador','Treinamento insuficiente','Conflito interno','Atraso na chegada'],
+    'Caixa':['Troco insuficiente','Erro de lançamento','Sistema fora','Divergência de valores'],
+    'Segurança':['Esquecimento','Equipamento com defeito','Falta de chave','Outro colaborador responsável'],
+    '_default':['Falta de tempo','Falta de recurso','Problema técnico','Esquecimento','Outro'],
+  };
+  const RESPONSAVEIS=['Bruna','Camila','Dorival','Débora','Cíntia','Viviane','Eu mesmo'];
+  const causas=CAUSAS[secao]||CAUSAS['_default'];
+
+  return(
+    <div className="neg-wrap">
+      <div className="neg-lbl"><span>●</span> O que aconteceu?</div>
+
+      {/* CAUSA — chips de seleção rápida */}
+      <div className="chip-row">
+        {causas.map(c=>(
+          <button key={c} onClick={()=>set('causa',c)}
+            className={`chip${d.causa===c?' sc':''}`}>
+            {c}
+          </button>
+        ))}
+      </div>
+
+      {/* QUEM RESOLVE — chips */}
+      <div className="neg-lbl"><span>●</span> Quem resolve?</div>
+      <div className="chip-row">
+        {RESPONSAVEIS.map(r=>(
+          <button key={r} onClick={()=>set('resp',r)}
+            className={`chip${d.resp===r?' sr':''}`}>
+            {r}
+          </button>
+        ))}
+      </div>
+
+      {/* IMPACTO — inline */}
+      <div style={{display:'flex',alignItems:'center',gap:6,marginTop:4}}>
+        <span style={{fontSize:10,fontWeight:600,color:'#888',textTransform:'uppercase',letterSpacing:.3,flexShrink:0}}>Impacto</span>
+        {['baixo','médio','alto'].map(imp=>(
+          <button key={imp} onClick={()=>set('impacto',imp)}
+            style={{padding:'3px 9px',borderRadius:99,border:'1.5px solid',fontSize:10,fontWeight:600,cursor:'pointer',
+              borderColor:d.impacto===imp?(imp==='alto'?'var(--brand)':imp==='médio'?'var(--warn)':'var(--ok)'):'var(--line)',
+              background:d.impacto===imp?(imp==='alto'?'var(--brand)':imp==='médio'?'var(--warn)':'var(--ok)'):'var(--surface2)',
+              color:d.impacto===imp?'#fff':'var(--ink2)'}}>
+            {imp}
+          </button>
+        ))}
+        <div style={{flex:1}}/>
+        <span style={{fontSize:10,fontWeight:600,color:'#888',textTransform:'uppercase',letterSpacing:.3,flexShrink:0}}>Próx. turno?</span>
+        {['Sim','Não'].map(pt=>(
+          <button key={pt} onClick={()=>set('prox',pt.toLowerCase())}
+            style={{padding:'3px 9px',borderRadius:99,border:'1.5px solid',fontSize:10,fontWeight:600,cursor:'pointer',
+              borderColor:d.prox===pt.toLowerCase()?'var(--orange)':'#E0E0E0',
+              background:d.prox===pt.toLowerCase()?'var(--orange)':'#F9F9F9',
+              color:d.prox===pt.toLowerCase()?'#fff':'#888'}}>
+            {pt}
+          </button>
+        ))}
+      </div>
+
+      {/* OBS — opcional */}
+      <textarea value={d.just||''} onChange={e=>set('just',e.target.value)}
+        placeholder="Observação (opcional)..."
+        className="neg-obs" style={{marginTop:6}}/>
+    </div>
+  );
+}function ChkItem({item,resp,neg,onAns,onNeg,showErr}){
+  const lvlCls={critico:'lvc',importante:'lvi',rotina:'lvr'}[item.n]||'lvr';
+  const itemCls={critico:'lc',importante:'li',rotina:'lr'}[item.n]||'lr';
+  return(
+    <div className={`chk-item ${itemCls}`}>
+      <span className={`lvl ${lvlCls}`}>{item.n}</span>
+      <div className="chk-title">{item.ti}</div>
+      {item.d&&<div className="chk-desc">{item.d}</div>}
+      <div className="ans-row">
+        <button className={`ans-sim${resp==='sim'?' sel':''}`} onClick={()=>onAns(item.id,'sim')}>
+          <span className="ans-icon">{resp==='sim'?'✓':'○'}</span> Sim
+        </button>
+        <button className={`ans-nao${resp==='nao'?' sel':''}`} onClick={()=>onAns(item.id,'nao')}>
+          <span className="ans-icon">{resp==='nao'?'✕':'○'}</span> Não
+        </button>
+
+      </div>
+      {!resp&&showErr&&<div className="req-msg" style={{marginTop:5}}>⚠ Obrigatório</div>}
+      {resp==='nao'&&<NegFields data={neg} secao={item.s} onChange={d=>onNeg(item.id,d)}/>}
+    </div>
+  );
+}
+
+function SecAcc({secao,emoji,items,resps,negs,onAns,onNeg,showErr}){
+  const [open,setOpen]=useState(true);
+  const tot=items.length,resp=items.filter(i=>resps[i.id]).length,fl=items.filter(i=>resps[i.id]==='nao').length;
+  const allDone=resp===tot&&tot>0;
+  const hasErr=showErr&&items.some(i=>!resps[i.id]||(resps[i.id]==='nao'&&(!negs[i.id]?.just||!negs[i.id]?.acao)));
+  return(
+    <div className="section">
+      <div className={`sec-head${hasErr?' has-err':''}`} onClick={()=>setOpen(o=>!o)}>
+        <div className="sec-hl">
+          <span className="sec-icon">{emoji}</span>
+          <div>
+            <div className="sec-name">{secao}</div>
+            <div className="sec-meta">{resp}/{tot} respondidos{fl>0?` · ${fl} NÃO`:''}</div>
+          </div>
+        </div>
+        <div className="sec-right">
+          <span className={`sec-badge${allDone?' sb-ok':hasErr?' sb-err':' sb-d'}`}>{resp}/{tot}</span>
+          <span className={`sec-chev${open?' open':''}`}>▾</span>
+        </div>
+      </div>
+      {open&&<div style={{background:'#FAFAFA'}}>{items.map(item=><ChkItem key={item.id} item={item} resp={resps[item.id]} neg={negs[item.id]} onAns={onAns} onNeg={onNeg} showErr={showErr}/>)}</div>}
+    </div>
+  );
+}
+
+/* ═══════════════════════════
+   SENDING OVERLAY
+═══════════════════════════ */
+function SendingOverlay({steps}){
+  return(
+    <div className="overlay">
+      <div className="overlay-card">
+        <div className="spin"/>
+        <div className="ol-title">Enviando checklist...</div>
+        <div className="ol-sub">Aguarde enquanto processamos e registramos o fechamento do turno.</div>
+        <div className="ol-steps">
+          {steps.map((s,i)=><div key={i} className={`ol-step ${s.st==='ok'?'step-ok':s.st==='go'?'step-go':'step-wait'}`}><span>{s.st==='ok'?'✓':s.st==='go'?'⏳':'○'}</span><span>{s.label}</span></div>)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════
+   SUMMARY + SHARE SCREEN
+═══════════════════════════ */
+function SummaryScreen({ident,resps,negs,ff,decl,items,onBack,webhookOk}){
+  const [copyFlash,setCopyFlash]=useState(false);
+  const flashRef=useRef();
+
+  const total=items.length;
+  const falhas=items.filter(i=>resps[i.id]==='nao').length;
+  const criticos=items.filter(i=>i.n==='critico'&&resps[i.id]==='nao').length;
+  const pendencias=Object.values(negs).filter(d=>d?.prox==='sim').length;
+  const respondidos=items.filter(i=>resps[i.id]==='sim'||resps[i.id]==='nao').length;
+  const naItems=items.filter(i=>resps[i.id]==='na').length;
+  const score=Math.max(0,Math.round(100-(falhas/total*40)-(criticos*10)-(pendencias*5)));
+  const status=criticos>0?'CRÍTICO':falhas>0?'CONFORME COM RESSALVAS':pendencias>0?'COM PENDÊNCIAS':'CONFORME ✅';
+  const scoreColor=score>=80?'#00B37E':score>=60?'#F59E0B':'#E8001C';
+  const turnoLabel=ident.turno==='manha'?'🌅 Manhã':'🌙 Tarde / Noite';
+  const falhasItems=items.filter(i=>resps[i.id]==='nao');
+  const okItems=items.filter(i=>resps[i.id]==='sim');
+
+  function buildText(){
+    const sep='━━━━━━━━━━━━━━━━━━━━━━━━━━';
+    const lines=[
+      '🥟 *PASTEL DA CAMILA – FECHAMENTO DE TURNO*',
+      '📋 Sistema Koncluí',sep,
+      `👤 Responsável: *${ident.nome}*`,
+      `🕐 Turno: ${turnoLabel}`,
+      `📅 Data: ${ident.data}  ⏰ Início: ${ident.horaInicio}  Fechamento: ${decl.hora}`,sep,
+      `📊 Status: *${status}*`,
+      `🏆 Score do Turno: *${score}/100*`,sep,
+      `✅ Concluídos: ${respondidos}/${total}`,
+      `❌ Falhas: ${falhas}`,
+      `🔴 Críticos c/ problema: ${criticos}`,
+      `⏳ Pendências p/ próx. turno: ${pendencias}`,
+      `— N/A: ${naItems}`,
+    ];
+    if(falhasItems.length>0){
+      lines.push('',sep,'🔴 *FALHAS REGISTRADAS*',sep);
+      falhasItems.forEach((item,idx)=>{
+        const n=negs[item.id]||{};
+        lines.push(`${idx+1}. *[${item.n.toUpperCase()}] ${item.ti}*`);
+        lines.push(`   📂 Seção: ${item.s}`);
+        if(n.causa) lines.push(`   ❓ Causa: ${n.causa}`);if(n.just) lines.push(`   📝 Obs: ${n.just}`);
+        if(n.acao) lines.push(`   🛠 Ação: ${n.acao}`);
+        if(n.impacto) lines.push(`   📈 Impacto: ${n.impacto}`);
+        if(n.resp) lines.push(`   👤 Responsável: ${n.resp}`);
+        if(n.prazo) lines.push(`   ⏰ Prazo: ${n.prazo}`);
+        if(n.escalar==='sim') lines.push(`   🚨 ESCALADO para liderança`);
+        if(n.prox==='sim') lines.push(`   ⚠️ FICA PARA O PRÓXIMO TURNO: ${n.det||''}`);
+        lines.push('');
+      });
+    }
+    if(ff.pendProx){lines.push(sep,'⏳ *PENDÊNCIAS PRÓXIMO TURNO*',ff.pendProx);}
+    if(ff.obsGerais){lines.push(sep,'📝 *OBSERVAÇÕES GERAIS*',ff.obsGerais);}
+    if(ff.manut==='sim') lines.push(`🔧 MANUTENÇÃO: ${ff.manutDet}`);
+    if(ff.compra==='sim') lines.push(`🛒 COMPRA/REPOSIÇÃO: ${ff.compraDet}`);
+    if(ff.disc==='sim') lines.push(`⚠️ PROBLEMA DISCIPLINAR: ${ff.discDet}`);
+    if(ff.tec==='sim') lines.push(`💻 PROBLEMA TÉCNICO: ${ff.tecDet}`);
+    lines.push(sep,`✍️ Declarado por: ${decl.nome}`,`🕐 Horário: ${decl.hora}`,'_Sistema Koncluí – Gestão Operacional de Franquias_');
+    return lines.join('\n');
+  }
+
+  function handleCopy(){
+    const txt=buildText();
+    const fallback=()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);};
+    (navigator.clipboard?navigator.clipboard.writeText(txt).catch(fallback):Promise.resolve(fallback())).then(()=>{
+      setCopyFlash(true);clearTimeout(flashRef.current);flashRef.current=setTimeout(()=>setCopyFlash(false),2200);
+    });
+  }
+
+  return(
+    <div className="sum-wrap">
+      <div className={`copy-flash${copyFlash?' on':''}`}>✅ Texto copiado! Abra o WhatsApp e cole no grupo</div>
+
+      <div className="sum-bar">
+        <div className="sum-bar-title">
+          <span>📋</span> Resumo do Turno — {turnoLabel}
+          {webhookOk&&<span style={{fontSize:10,background:'#D1FAE5',color:'#065F46',borderRadius:99,padding:'2px 8px',fontWeight:700}}>✓ Email enviado</span>}
+        </div>
+        <div className="sum-hint">
+          <div className="sum-toolbar-hint-icon">📸</div>
+          <div className="sum-hint-text">
+            <b>Para mandar a foto no grupo:</b> pressione <span className="kbd">Win</span>+<span className="kbd">Shift</span>+<span className="kbd">S</span> → selecione o card branco → abra o WhatsApp → <span className="kbd">Ctrl</span>+<span className="kbd">V</span> no grupo de checklist. Depois clique em <b>Copiar Texto</b> e mande como mensagem.
+          </div>
+        </div>
+        <div className="sum-actions">
+          <button className="sum-copy" onClick={handleCopy}>📋 Copiar Texto WhatsApp</button>
+          <button className="sum-back" onClick={onBack}>← Voltar</button>
+        </div>
+      </div>
+
+      <div className="sum-viewport">
+        <div className="sum-card">
+          <div className="sum-head">
+            <div className="sum-head-l">
+              <div className="sum-eyebrow">🥟 PASTEL DA CAMILA · KONCLUÍ · FECHAMENTO DE TURNO</div>
+              <div className="sum-name">{ident.nome}</div>
+              <div className="sum-meta">{turnoLabel} · {ident.data} · Início: {ident.horaInicio} · Fechamento: {decl.hora}</div>
+              <div className="sum-status" style={{background:score>=80?'rgba(0,179,126,.2)':score>=60?'rgba(245,158,11,.2)':'rgba(232,0,28,.2)',color:score>=80?'#065F46':score>=60?'#92400E':'#991B1B'}}>{status}</div>
+            </div>
+            <div className="score-ring" style={{borderColor:scoreColor}}>
+              <div className="score-num" style={{color:scoreColor}}>{score}</div>
+              <div className="score-lbl">SCORE</div>
+            </div>
+          </div>
+
+          <div className="sum-kpis">
+            <div className="sum-kpi"><div className="sum-kv" style={{color:'var(--ok)'}}>{respondidos}</div><div className="sum-kl">✅ Concluídos</div></div>
+            <div className="sum-kpi"><div className="sum-kv" style={{color:falhas>0?'var(--brand)':'var(--ok)'}}>{falhas}</div><div className="sum-kl">❌ Falhas</div></div>
+            <div className="sum-kpi"><div className="sum-kv" style={{color:criticos>0?'var(--brand)':'var(--ok)'}}>{criticos}</div><div className="sum-kl">🔴 Críticos</div></div>
+            <div className="sum-kpi"><div className="sum-kv" style={{color:pendencias>0?'var(--orange)':'var(--ok)'}}>{pendencias}</div><div className="sum-kl">⏳ Pendências</div></div>
+          </div>
+
+          <div className="sum-body">
+            <div className="sum-col">
+              <div className="sum-col-title">🔴 Falhas e Justificativas ({falhasItems.length})</div>
+              {falhasItems.length===0&&(
+                <div className="sum-occ ok">
+                  <div className="sum-occ-title" style={{color:'var(--ok)'}}>✅ Nenhuma falha neste turno!</div>
+                  <div className="sum-occ-detail">Todos os itens foram cumpridos corretamente.</div>
+                </div>
+              )}
+              {falhasItems.map((item,i)=>{
+                const n=negs[item.id]||{};
+                return(
+                  <div key={i} className="sum-occ">
+                    <div className="sum-occ-title">
+                      <span className={`lvl ${item.n==='critico'?'lvc':item.n==='importante'?'lvi':'lvr'}`} style={{fontSize:8,marginRight:5}}>{item.n}</span>
+                      {item.e} {item.ti}
+                    </div>
+                    <div className="sum-occ-detail" style={{color:'var(--ink3)',marginBottom:4}}>📂 {item.s}</div>
+                    {(n.causa||n.just)&&<div className="sum-occ-detail"><b>Causa:</b> {n.causa||n.just}</div>}
+                    {n.acao&&<div className="sum-occ-detail"><b>🛠 Ação:</b> {n.acao}</div>}
+                    {n.impacto&&<div className="sum-occ-detail"><b>📈 Impacto:</b> {n.impacto}</div>}
+                    {n.resp&&<div className="sum-occ-detail"><b>👤 Resp:</b> {n.resp}{n.prazo&&<span style={{color:'var(--warn)'}}> · ⏰ {n.prazo}</span>}</div>}
+                    {n.escalar==='sim'&&<div className="sum-occ-detail" style={{color:'var(--brand)',fontWeight:700}}>🚨 Escalado para liderança</div>}
+                    {n.prox==='sim'&&<div className="sum-occ-detail" style={{color:'var(--warn)',fontWeight:700,marginTop:3}}>⚠️ PENDÊNCIA PRÓX. TURNO: {n.det||'(ver detalhes)'}</div>}
+                  </div>
+                );
+              })}
+              {(ff.pendProx||ff.manut==='sim'||ff.compra==='sim'||ff.disc==='sim'||ff.tec==='sim')&&(
+                <div style={{marginTop:10}}>
+                  <div className="sum-col-title" style={{marginTop:8}}>⚙️ Ações Necessárias</div>
+                  {ff.manut==='sim'&&<div className="sum-occ" style={{borderLeftColor:'var(--orange)'}}><div className="sum-occ-title">🔧 Manutenção</div><div className="sum-occ-detail">{ff.manutDet}</div></div>}
+                  {ff.compra==='sim'&&<div className="sum-occ" style={{borderLeftColor:'var(--blue)'}}><div className="sum-occ-title">🛒 Compra / Reposição</div><div className="sum-occ-detail">{ff.compraDet}</div></div>}
+                  {ff.disc==='sim'&&<div className="sum-occ" style={{borderLeftColor:'var(--brand)'}}><div className="sum-occ-title">⚠️ Problema Disciplinar</div><div className="sum-occ-detail">{ff.discDet}</div></div>}
+                  {ff.tec==='sim'&&<div className="sum-occ" style={{borderLeftColor:'var(--purple)'}}><div className="sum-occ-title">💻 Problema Técnico</div><div className="sum-occ-detail">{ff.tecDet}</div></div>}
+                  {ff.pendProx&&<div className="sum-occ" style={{borderLeftColor:'var(--orange)'}}><div className="sum-occ-title">⏳ Pendências Próximo Turno</div><div className="sum-occ-detail">{ff.pendProx}</div></div>}
+                </div>
+              )}
+            </div>
+            <div className="sum-col">
+              <div className="sum-col-title">✅ Itens Cumpridos ({okItems.length}/{total})</div>
+              {[...new Set(okItems.map(i=>i.s))].map(sec=>{
+                const si=okItems.filter(i=>i.s===sec);
+                return(
+                  <div key={sec} style={{marginBottom:9}}>
+                    <div style={{fontSize:10,fontWeight:700,color:'var(--ink3)',textTransform:'uppercase',letterSpacing:.4,marginBottom:3,display:'flex',alignItems:'center',gap:4}}>
+                      <span>{si[0]?.e}</span>{sec}
+                      <span style={{background:'#D1FAE5',color:'#065F46',borderRadius:99,padding:'1px 7px',fontSize:9,fontWeight:800}}>{si.length}</span>
+                    </div>
+                    {si.map((item,i)=>(
+                      <div key={i} style={{display:'flex',alignItems:'flex-start',gap:5,padding:'3px 0',borderBottom:'1px solid #F5F5F5'}}>
+                        <span style={{color:'var(--ok)',fontWeight:800,fontSize:11,marginTop:1,flexShrink:0}}>✓</span>
+                        <div style={{fontSize:11,color:'var(--ink2)',lineHeight:1.4}}>{item.ti}</div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+              {ff.obsGerais&&(
+                <div style={{marginTop:10,background:'#F8F8F8',borderRadius:6,padding:'10px 12px'}}>
+                  <div style={{fontFamily:"'Sora',sans-serif",fontSize:10,fontWeight:700,marginBottom:3,color:'var(--ink2)',textTransform:'uppercase',letterSpacing:.5}}>📝 Observações</div>
+                  <div style={{fontSize:11,color:'var(--ink2)',lineHeight:1.5}}>{ff.obsGerais}</div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="sum-footer">
+            <div className="sum-footer-decl">"Declaro que este checklist representa a situação real do turno."</div>
+            <div className="sum-footer-sig">{decl.nome} · {decl.hora} · Koncluí · {todayFmt()}</div>
+          </div>
+        </div>
+      </div>
+
+      <div style={{background:'#111',padding:'9px 16px',display:'flex',alignItems:'center',gap:10,flexShrink:0,borderTop:'1px solid #2a2a2a'}}>
+        <div style={{flex:1,fontSize:11,color:'#888'}}>
+          {webhookOk?'✅ Relatório enviado por email automaticamente.':'⚠️ Email não confirmado. Copie o texto e mande manualmente no grupo.'}
+        </div>
+        <button onClick={handleCopy} className="sum-copy" style={{fontSize:11,padding:'7px 14px',whiteSpace:'nowrap'}}>📋 Copiar Texto</button>
+        <button onClick={()=>window.print()} style={{background:'#2a2a2a',color:'#aaa',border:'1px solid #3a3a3a',borderRadius:'var(--rs)',padding:'7px 12px',fontFamily:"'Sora',sans-serif",fontSize:11,fontWeight:700}}>🖨️ Print</button>
+      </div>
+    </div>
+  );
+}
+
+
+/* ═══════════════════════════
+   CHECKLIST SCREEN
+═══════════════════════════ */
+function ChecklistScreen({user,onLogout,onBack}){
+  const CK_USER_KEY=`konclui_ck_${user.login}`;
+  const [screen,setScreen]=useState('entry');
+  const [ident,setIdent]=useState(null);
+  const [ctx,setCtx]=useState({delivery:'',novato:'',falta:'',troco:'',feriado:'',equipamento:'',promocao:'',chuva:''});
+  const [resps,setResps]=useState({});
+  const [negs,setNegs]=useState({});
+  const [ff,setFF]=useState({obsGerais:'',pendProx:'',manut:'',manutDet:'',compra:'',compraDet:'',disc:'',discDet:'',tec:'',tecDet:''});
+  const [decl,setDecl]=useState({checked:false,nome:user.name,hora:''});
+  const [showErr,setShowErr]=useState(false);
+  const [valErrs,setValErrs]=useState([]);
+  const [sending,setSending]=useState(false);
+  const [sendSteps,setSendSteps]=useState([]);
+  const [webhookOk,setWebhookOk]=useState(true);
+  const [toast,showToast]=useToast();
+
+  useEffect(()=>{
+    try{
+      const s=JSON.parse(localStorage.getItem(CK_USER_KEY));
+      if(s?.ident){setIdent(s.ident);setResps(s.resps||{});setNegs(s.negs||{});setFF(s.ff||ff);setScreen('checklist');}
+    }catch{}
+  },[]);
+
+  useEffect(()=>{
+    if(!ident)return;
+    localStorage.setItem(CK_USER_KEY,JSON.stringify({ident,resps,negs,ff}));
+  },[ident,resps,negs,ff]);
+
+  const items=useMemo(()=>ident?filterItems(ITEMS,ident.turno==='manha'?'manha':'tarde',ctx):[],[ident,ctx]);
+  const secs=useMemo(()=>ident?.turno==='manha'?SEC_MANHA:SEC_TARDE,[ident]);
+
+  const stats=useMemo(()=>{
+    const tot=items.length,resp=items.filter(i=>resps[i.id]).length;
+    const fl=items.filter(i=>resps[i.id]==='nao').length;
+    const cr=items.filter(i=>i.n==='critico'&&resps[i.id]==='nao').length;
+    return{tot,resp,fl,cr,pend:tot-resp,pct:tot>0?Math.round(resp/tot*100):0};
+  },[items,resps]);
+
+  const statusInfo=useMemo(()=>{
+    if(stats.cr>0)return{txt:'Crítico',cls:'sk'};
+    if(stats.fl>0)return{txt:'Com Ressalvas',cls:'sa'};
+    if(stats.pend>0)return{txt:'Em Andamento',cls:'sa'};
+    return{txt:'Conforme',cls:'sc'};
+  },[stats]);
+
+  function setF(k,v){setFF(f=>({...f,[k]:v}));}
+  function onAns(id,val){setResps(r=>({...r,[id]:val}));if(val!=='nao')setNegs(n=>{const c={...n};delete c[id];return c;});}
+  function onNeg(id,d){setNegs(n=>({...n,[id]:d}));}
+
+  function validate(){
+    const errs=[];
+    items.forEach(item=>{
+      if(!resps[item.id]){errs.push(`"${item.ti}" — sem resposta`);return;}
+      if(resps[item.id]==='nao'){
+        const d=negs[item.id]||{};
+        if(!d.causa&&!d.just) errs.push(`"${item.ti}" — selecione o que aconteceu`);
+        if(!d.acao) errs.push(`"${item.ti}" — ação tomada obrigatória`);
+        if(item.n==='critico'&&!d.resp) errs.push(`"${item.ti}" — responsável obrigatório (crítico)`);
+        if(item.n==='critico'&&!d.prazo) errs.push(`"${item.ti}" — prazo obrigatório (crítico)`);
+        if(d.prox==='sim'&&!d.det) errs.push(`"${item.ti}" — detalhe da pendência obrigatório`);
+      }
+    });
+    ['manut','compra','disc','tec'].forEach(k=>{if(ff[k]==='sim'&&!ff[k+'Det'])errs.push(`Detalhe obrigatório: ${k}`);});
+    if(!decl.checked) errs.push('Declaração final não marcada');
+    if(!decl.nome.trim()) errs.push('Nome na declaração obrigatório');
+    return errs;
+  }
+
+  async function handleEnviar(){
+    const errs=validate();setValErrs(errs);setShowErr(true);
+    if(errs.length>0){window.scrollTo({top:0,behavior:'smooth'});return;}
+    const hora=nowTime();setDecl(d=>({...d,hora}));
+
+    const falhasItems=items.filter(i=>resps[i.id]==='nao');
+    const total=items.length,falhas=falhasItems.length;
+    const criticos=falhasItems.filter(i=>i.n==='critico').length;
+    const pendencias=Object.values(negs).filter(d=>d?.prox==='sim').length;
+    const score=Math.max(0,Math.round(100-(falhas/total*40)-(criticos*10)-(pendencias*5)));
+    const status=criticos>0?'Crítico':falhas>0?'Com Ressalvas':'Conforme';
+
+    setSending(true);
+    setSendSteps([
+      {label:'Validando dados...',st:'go'},
+      {label:'Salvando registro local...',st:'wait'},
+      {label:'Enviando para central (Make)...',st:'wait'},
+      {label:'Gerando confirmação...',st:'wait'},
+    ]);
+
+    await new Promise(r=>setTimeout(r,600));
+    setSendSteps(s=>{const c=[...s];c[0]={...c[0],st:'ok'};c[1]={...c[1],st:'go'};return c;});
+
+    // Save locally
+    try{
+      const all=JSON.parse(localStorage.getItem(CK_KEY)||'[]');
+      all.push({id:Date.now(),user:user.name,login:user.login,turno:ident.turno,data:todayISO(),dataFmt:ident.data,hora,score,total,falhas,criticos,pendencias,status:status.toLowerCase().replace(/ /g,'_'),ff,negs,isDemo:false});
+      localStorage.setItem(CK_KEY,JSON.stringify(all.slice(-300)));
+    }catch{}
+
+    await new Promise(r=>setTimeout(r,400));
+    setSendSteps(s=>{const c=[...s];c[1]={...c[1],st:'ok'};c[2]={...c[2],st:'go'};return c;});
+
+    // Build text payload for webhook (formatted like WhatsApp)
+    const sep='━━━━━━━━━━━━━━━━━━━━━━━━━━';
+    const tLabel=ident.turno==='manha'?'Manhã':'Tarde/Noite';
+    const wppLines=[
+      '🥟 PASTEL DA CAMILA – FECHAMENTO DE TURNO',
+      '📋 Sistema Koncluí',sep,
+      `👤 Responsável: ${user.name}`,
+      `🕐 Turno: ${tLabel}`,
+      `📅 Data: ${ident.data}  ⏰ Início: ${ident.horaInicio}  Fechamento: ${hora}`,sep,
+      `📊 Status: ${status}`,
+      `🏆 Score do Turno: ${score}/100`,sep,
+      `✅ Concluídos: ${items.filter(i=>resps[i.id]).length}/${total}`,
+      `❌ Falhas: ${falhas}`,
+      `🔴 Críticos c/ problema: ${criticos}`,
+      `⏳ Pendências p/ próx. turno: ${pendencias}`,
+    ];
+    if(falhasItems.length>0){
+      wppLines.push('',sep,'🔴 FALHAS REGISTRADAS',sep);
+      falhasItems.forEach((item,idx)=>{
+        const n=negs[item.id]||{};
+        wppLines.push(`${idx+1}. [${item.n.toUpperCase()}] ${item.ti}`);
+        wppLines.push(`   Seção: ${item.s}`);
+        if(n.causa) wppLines.push(`   Causa: ${n.causa}`);if(n.just) wppLines.push(`   Obs: ${n.just}`);
+        if(n.acao) wppLines.push(`   Ação: ${n.acao}`);
+        if(n.resp) wppLines.push(`   Responsável: ${n.resp}${n.prazo?' | Prazo: '+n.prazo:''}`);
+        if(n.escalar==='sim') wppLines.push(`   ESCALADO para liderança`);
+        if(n.prox==='sim') wppLines.push(`   ⚠️ PENDÊNCIA PRÓXIMO TURNO: ${n.det||''}`);
+        wppLines.push('');
+      });
+    }
+    if(ff.pendProx) wppLines.push(sep,`⏳ PENDÊNCIAS: ${ff.pendProx}`);
+    if(ff.obsGerais) wppLines.push(sep,`📝 OBSERVAÇÕES: ${ff.obsGerais}`);
+    if(ff.manut==='sim') wppLines.push(`🔧 MANUTENÇÃO: ${ff.manutDet}`);
+    if(ff.compra==='sim') wppLines.push(`🛒 COMPRA: ${ff.compraDet}`);
+    if(ff.disc==='sim') wppLines.push(`⚠️ DISCIPLINA: ${ff.discDet}`);
+    if(ff.tec==='sim') wppLines.push(`💻 TÉCNICO: ${ff.tecDet}`);
+    wppLines.push(sep,`✍️ ${decl.nome} · ${hora} · Koncluí`);
+    const textoFinal=wppLines.join('\n');
+
+    const ok=await sendWebhook(textoFinal);
+    setWebhookOk(ok);
+    await new Promise(r=>setTimeout(r,400));
+    setSendSteps(s=>{const c=[...s];c[2]={...c[2],st:ok?'ok':'ok'};c[3]={...c[3],st:'go'};return c;});
+    await new Promise(r=>setTimeout(r,500));
+    setSendSteps(s=>{const c=[...s];c[3]={...c[3],st:'ok'};return c;});
+    await new Promise(r=>setTimeout(r,400));
+    setSending(false);
+    localStorage.removeItem(CK_USER_KEY);
+    setScreen('summary');
+  }
+
+  function handleLimpar(){
+    if(!window.confirm('Limpar checklist atual?'))return;
+    localStorage.removeItem(CK_USER_KEY);
+    setIdent(null);setResps({});setNegs({});
+    setFF({obsGerais:'',pendProx:'',manut:'',manutDet:'',compra:'',compraDet:'',disc:'',discDet:'',tec:'',tecDet:''});
+    setDecl({checked:false,nome:user.name,hora:''});setShowErr(false);setValErrs([]);setScreen('entry');
+  }
+
+  const tLabel=ident?.turno==='manha'?'🌅 Manhã':'🌙 Tarde/Noite';
+
+  // ENTRY
+  const DAYS_PT=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const todayDow=new Date().getDay();
+  const ctxReady=ctx.delivery!==''&&ctx.novato!==''&&ctx.falta!==''&&ctx.troco!=='';
+
+  if(screen==='entry')return(
+    <div>
+      <div className="hdr"><div className="hdr-inner"><div><div className="hdr-brand">Pastel da Camila · Koncluí</div><div className="hdr-title">Checklist</div></div><div className="hdr-right"><div className="hdr-chip">👤 {user.name}</div>{onBack&&<button className="hdr-btn" onClick={onBack}>← Hub</button>}<button className="hdr-btn" onClick={onLogout}>Sair</button></div></div></div>
+
+      <div className="day-badge">
+        <div className="day-dot"/>
+        {DAYS_PT[todayDow]}, {todayFmt()}
+      </div>
+
+      <div className="card">
+        <div className="card-title">🕐 Turno</div>
+        <div className="turno-grid">
+          <button className={`turno-btn${ident?.turno==='manha'?' active':''}`} onClick={()=>setIdent({nome:user.name,turno:'manha',data:todayFmt(),horaInicio:nowTime()})}>
+            <span className="turno-icon">🌅</span>
+            <div className="turno-label">Manhã</div>
+          </button>
+          <button className={`turno-btn${ident?.turno==='tarde'?' active':''}`} onClick={()=>setIdent({nome:user.name,turno:'tarde',data:todayFmt(),horaInicio:nowTime()})}>
+            <span className="turno-icon">🌙</span>
+            <div className="turno-label">Tarde / Noite</div>
+          </button>
+        </div>
+      </div>
+
+      {ident&&(
+        <div className="card">
+          <div className="card-title">
+            <div>
+              <div className="t-heavy">⚙️ Configuração do turno</div>
+              <div className="t-xs t-muted">Responda para personalizar seu checklist</div>
+            </div>
+          </div>
+          <div className="ctx-body">
+            {/* GRUPO 1 — Obrigatórias */}
+            <div style={{fontSize:9,fontWeight:700,color:'#aaa',textTransform:'uppercase',letterSpacing:.5,padding:'4px 0 6px',borderBottom:'1px solid #F0F0F0',marginBottom:4}}>Configuração obrigatória</div>
+            {[
+              {key:'delivery', q:'Delivery ativo hoje?',       hint:'Não → seção delivery some'},
+              {key:'troco',    q:'R$300 de troco no caixa?',   hint:'Não → alerta crítico'},
+              {key:'novato',   q:'Tem novato no turno?',        hint:'Sim → item supervisão'},
+              {key:'falta',    q:'Tem falta na equipe?',        hint:'Sim → acionar RH freelance'},
+            ].map(({key,q,hint})=>(
+              <div key={key} className="ctx-row">
+                <div style={{flex:1}}>
+                  <div className="ctx-q">{q}</div>
+                  <div style={{fontSize:9,color:'#ccc',marginTop:1}}>{hint}</div>
+                </div>
+                <div className="ctx-toggle">
+                  <button className={`ctx-btn${ctx[key]==='sim'?' yes':''}`} onClick={()=>setCtx(c=>({...c,[key]:'sim'}))}>Sim</button>
+                  <button className={`ctx-btn${ctx[key]==='nao'?' no':''}`} onClick={()=>setCtx(c=>({...c,[key]:'nao'}))}>Não</button>
+                </div>
+              </div>
+            ))}
+
+            {/* GRUPO 2 — Situacionais (opcionais, desbloqueiam seções extras) */}
+            <div style={{fontSize:9,fontWeight:700,color:'#aaa',textTransform:'uppercase',letterSpacing:.5,padding:'10px 0 6px',borderBottom:'1px solid #F0F0F0',marginBottom:4}}>Situações especiais <span style={{fontWeight:400,color:'#ccc'}}>(opcional)</span></div>
+            {[
+              {key:'feriado',     q:'Feriado ou data especial?',   hint:'Sim → itens de volume extra'},
+              {key:'equipamento', q:'Tem equipamento com problema?',hint:'Sim → seção manutenção'},
+              {key:'promocao',    q:'Tem promoção ativa hoje?',     hint:'Sim → itens de promoção'},
+              {key:'chuva',       q:'Está chovendo?',               hint:'Sim → alerta delivery/presencial'},
+            ].map(({key,q,hint})=>(
+              <div key={key} className="ctx-row">
+                <div style={{flex:1}}>
+                  <div className="ctx-q">{q}</div>
+                  <div style={{fontSize:9,color:'#ccc',marginTop:1}}>{hint}</div>
+                </div>
+                <div className="ctx-toggle">
+                  <button className={`ctx-btn${ctx[key]==='sim'?' yes':''}`} onClick={()=>setCtx(c=>({...c,[key]:'sim'}))}>Sim</button>
+                  <button className={`ctx-btn${ctx[key]==='nao'?' no':''}`} onClick={()=>setCtx(c=>({...c,[key]:'nao'}))}>Não</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {ident&&ctxReady&&(
+        <div style={{padding:'0 10px',marginTop:10}}>
+          <button onClick={()=>setScreen('checklist')} className="start-btn">
+            Iniciar Checklist →
+          </button>
+          <div style={{marginTop:8,fontSize:10,color:'#aaa',textAlign:'center'}}>
+            {filterItems(ITEMS,ident.turno==='manha'?'manha':'tarde',ctx).length} itens para hoje
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  if(screen==='summary')return <SummaryScreen ident={ident} resps={resps} negs={negs} ff={ff} decl={decl} items={items} onBack={()=>setScreen('checklist')} webhookOk={webhookOk}/>;
+
+  // CHECKLIST VIEW
+  return(
+    <div>
+      {sending&&<SendingOverlay steps={sendSteps}/>}
+      <Toast msg={toast.msg} show={toast.show}/>
+      <div className="hdr"><div className="hdr-inner"><div><div className="hdr-brand">Pastel da Camila · Koncluí</div><div className="hdr-title">{tLabel}</div></div><div className="hdr-right"><div className="hdr-chip">👤 {user.name}</div>{onBack&&<button className="hdr-btn" onClick={onBack}>← Hub</button>}<button className="hdr-btn" onClick={onLogout}>Sair</button></div></div></div>
+
+      <div className="status-panel">
+        <div style={{display:'flex',flexDirection:'column',gap:1}}>
+          <div style={{fontSize:10,color:'#aaa',fontWeight:600,textTransform:'uppercase',letterSpacing:.3}}>Status</div>
+          <span className={`s-badge ${statusInfo.cls}`}>{statusInfo.txt}</span>
+        </div>
+        <div className="s-stats">
+          <div className="sts-item"><div className="sv" style={{color:'var(--brand)'}}>{stats.fl}</div><div className="sl">Falhas</div></div>
+          <div className="sts-item"><div className="sv" style={{color:'var(--warn)'}}>{stats.cr}</div><div className="sl">Críticos</div></div>
+          <div className="sts-item"><div className="sv" style={{color:'#aaa'}}>{stats.pend}</div><div className="sl">Pendentes</div></div>
+        </div>
+      </div>
+
+      <div className="prog-card">
+        <div className="prog-top">
+          <div className="prog-lbl">Progresso</div>
+          <div className="prog-pct">{stats.pct}%</div>
+        </div>
+        <div className="prog-track"><div className="prog-fill" style={{width:`${stats.pct}%`}}/></div>
+        <div className="prog-stats">
+          <div><div className="pv" style={{color:'var(--ok)'}}>{stats.resp}</div><div className="pl">Resp.</div></div>
+          <div><div className="pv" style={{color:'var(--ink3)'}}>{stats.pend}</div><div className="pl">Pend.</div></div>
+          <div><div className="pv" style={{color:'var(--brand)'}}>{stats.fl}</div><div className="pl">Falhas</div></div>
+          <div><div className="pv" style={{color:'var(--warn)'}}>{stats.cr}</div><div className="pl">Críticos</div></div>
+        </div>
+        <div style={{marginTop:8,fontSize:11,color:'var(--ink2)',textAlign:'center',fontWeight:600}}>
+          {stats.pct===0?'Vamos começar!':stats.pct<50?'Continue com atenção.':stats.pct<90?'⚠️ Finalize os itens restantes.':stats.pct<100?'🔥 Quase lá!':'✅ Todos respondidos. Revise e envie.'}
+        </div>
+      </div>
+
+      {showErr&&valErrs.length>0&&(
+        <div className="val-wrap">
+          <div className="val-title">🚫 Corrija antes de enviar ({valErrs.length})</div>
+          {valErrs.slice(0,7).map((e,i)=><div key={i} className="val-item">{e}</div>)}
+          {valErrs.length>7&&<div style={{fontSize:11,color:'var(--brand)',fontWeight:600,marginTop:5}}>...e mais {valErrs.length-7} erros.</div>}
+        </div>
+      )}
+
+      {(()=>{const cfg=getConfig();return secs.map(s=>{
+        const its=items.filter(i=>i.s===s);
+        if(its.length===0) return null;
+        const hints=[];
+        if(s==='Delivery'&&ctx.delivery==='sim') hints.push({c:'var(--blue)',t:'Delivery ativo hoje'});
+        if(s==='Equipe'&&ctx.novato==='sim') hints.push({c:'var(--orange)',t:'Novato no turno — supervisão obrigatória'});
+        if(s==='Equipe'&&ctx.falta==='sim') hints.push({c:'var(--brand)',t:'Falta confirmada — acionar Viviane (RH) freelance'});
+        if(s==='Caixa'&&ctx.troco==='sim') hints.push({c:'var(--ok)',t:'Troco ok — R$300 confirmado'});
+        if(s==='Caixa'&&ctx.troco==='nao') hints.push({c:'var(--brand)',t:'Troco insuficiente — resolver antes de abrir'});
+        
+        
+        if(s==='Dia Especial') hints.push({c:'#6B3FA0',t:'Feriado / Data especial — volume acima do normal'});
+        if(s==='Manutenção') hints.push({c:'var(--orange)',t:'Equipamento com problema — resolver urgente'});
+        if(s==='Promoção') hints.push({c:'var(--blue)',t:'Promoção ativa — equipe alerta'});
+        if(s==='Clima') hints.push({c:'var(--blue)',t:'Chuva — delivery pode cair, foco no presencial'});
+        const dow2=new Date().getDay();
+        if((s==='Massa'||s==='Abastecimento')&&(dow2===5||dow2===6)) hints.push({c:'#6B3FA0',t:'Final de semana — produção e estoque reforçados'});
+        return(
+          <div key={s}>
+            {hints.map((h,i)=>(
+              <div key={i} style={{margin:'6px 10px 0',padding:'6px 11px',borderRadius:'var(--rs)',background:`${h.c}18`,border:`1px solid ${h.c}44`,fontSize:10,fontWeight:600,color:h.c,display:'flex',alignItems:'center',gap:5}}>
+                <span>⚡</span>{h.t}
+              </div>
+            ))}
+            <SecAcc secao={s} emoji={its[0]?.e||'📋'} items={its} resps={resps} negs={negs} onAns={onAns} onNeg={onNeg} showErr={showErr}/>
+          </div>
+        );
+      });})()}
+
+      <div className="card">
+        <div className="card-title">📝 Campos Finais</div>
+        <div className="f-group"><label className="f-label">Observações gerais</label><textarea value={ff.obsGerais} onChange={e=>setF('obsGerais',e.target.value)} placeholder="Ocorrências relevantes do turno..."/></div>
+        <div className="f-group"><label className="f-label">Pendências para o próximo turno</label><textarea value={ff.pendProx} onChange={e=>setF('pendProx',e.target.value)} placeholder="O que o próximo turno precisa resolver?"/></div>
+        {[{k:'manut',l:'⚙️ Manutenção necessária?',dk:'manutDet',ph:'Descreva...'},{k:'compra',l:'🛒 Compra/Reposição?',dk:'compraDet',ph:'O que precisa?'},{k:'disc',l:'⚠️ Problema disciplinar?',dk:'discDet',ph:'Descreva...'},{k:'tec',l:'💻 Problema técnico?',dk:'tecDet',ph:'Descreva...'}].map(({k,l,dk,ph})=>(
+          <div key={k}>
+            <div className="tog-row"><div className="tog-lbl">{l}</div><div className="tog-btns"><button className={`tog${ff[k]==='sim'?' yes':''}`} onClick={()=>setF(k,'sim')}>Sim</button><button className={`tog${ff[k]==='nao'?' no':''}`} onClick={()=>setF(k,'nao')}>Não</button></div></div>
+            {ff[k]==='sim'&&<div className="f-group" style={{marginTop:6}}><textarea value={ff[dk]} onChange={e=>setF(dk,e.target.value)} placeholder={ph} style={{minHeight:52}} className={showErr&&!ff[dk]?'ferr':''}/>{showErr&&!ff[dk]&&<div className="req-msg">Obrigatório</div>}</div>}
+          </div>
+        ))}
+      </div>
+
+      <div className="card">
+        <div className="card-title">✍️ Declaração Final</div>
+        <div className={`decl-box${decl.checked?' on':''}`} onClick={()=>setDecl(d=>({...d,checked:!d.checked}))}>
+          <div className={`decl-chk${decl.checked?' on':''}`}>{decl.checked&&<span style={{color:'#fff',fontWeight:800,fontSize:13}}>✓</span>}</div>
+          <div className="decl-txt">Declaro que este checklist representa a situação real do turno. Assumo a responsabilidade pelas informações registradas.</div>
+        </div>
+        {showErr&&!decl.checked&&<div className="req-msg" style={{marginTop:6}}>Declaração obrigatória</div>}
+        <div className="f-group" style={{marginTop:12}}><label className="f-label">Confirme seu nome *</label><input className={`f-input${showErr&&!decl.nome.trim()?' ferr':''}`} value={decl.nome} onChange={e=>setDecl(d=>({...d,nome:e.target.value}))}/>{showErr&&!decl.nome.trim()&&<div className="req-msg">Nome obrigatório</div>}</div>
+      </div>
+
+      <div className="fab">
+        <div className="fab-inner">
+        <button className="fab-save" onClick={()=>showToast('✅ Rascunho salvo!')}>💾 Salvar</button>
+        <button className="fab-send" onClick={handleEnviar} disabled={sending}>🚀 Finalizar Turno</button>
+        <button className="fab-del" onClick={handleLimpar}>🗑</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════
+   CEO DASHBOARD
+═══════════════════════════ */
+function CEODashboard({user,onLogout,onBack}){
+  const [tab,setTab]=useState('overview');
+  const realData=useMemo(()=>{try{return JSON.parse(localStorage.getItem(CK_KEY)||'[]');}catch{return[];}});
+  const merged=useMemo(()=>realData.length===0?DEMO:[...realData,...DEMO.slice(0,6).map(d=>({...d,isDemo:true}))]  ,[realData]);
+
+  const kpi=useMemo(()=>{
+    const r=merged,tot=r.length;
+    const avg=Math.round(r.reduce((a,b)=>a+b.score,0)/Math.max(tot,1));
+    const fl=r.reduce((a,b)=>a+b.falhas,0),cr=r.reduce((a,b)=>a+b.criticos,0),pend=r.reduce((a,b)=>a+(b.pendencias||0),0);
+    const conf=r.filter(d=>d.status==='conforme').length;
+    return{tot,avg,fl,cr,pend,conf,taxa:Math.round(conf/Math.max(tot,1)*100)};
+  },[merged]);
+
+  const scoreByDay=useMemo(()=>DAYS.map((day,di)=>{
+    const d=merged.filter(x=>x.dayIdx===di||x.day===day);
+    return{day,score:d.length?Math.round(d.reduce((a,b)=>a+b.score,0)/d.length):0,falhas:d.reduce((a,b)=>a+b.falhas,0)};
+  }),[merged]);
+
+  const ranking=useMemo(()=>{
+    const names=[...new Set(merged.map(d=>d.user||d.name))];
+    return names.map(name=>{
+      const d=merged.filter(x=>(x.user||x.name)===name);
+      return{name,avg:Math.round(d.reduce((a,b)=>a+b.score,0)/Math.max(d.length,1)),turnos:d.length,falhas:d.reduce((a,b)=>a+b.falhas,0)};
+    }).sort((a,b)=>b.avg-a.avg);
+  },[merged]);
+
+  const alertas=useMemo(()=>{
+    const a=[];
+    merged.filter(d=>d.criticos>0).slice(0,5).forEach(d=>a.push({tipo:'critico',msg:`${d.user||d.name} · ${d.turno==='manha'?'Manhã':'Tarde'} · ${d.dataFmt||d.day}`,sub:`${d.criticos} crítico(s) sem tratamento · Score ${d.score}`}));
+    merged.filter(d=>d.pendencias>0).slice(0,3).forEach(d=>a.push({tipo:'pend',msg:`Pendência aberta — ${d.user||d.name}`,sub:`${d.pendencias} item(s) p/ próximo turno · Score ${d.score}`}));
+    return a.slice(0,8);
+  },[merged]);
+
+  const aColors=['#E8001C','#7C3AED','#2563EB','#F97316'];
+
+  return(
+    <div>
+      <div className="ceo-hdr">
+        <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}>
+          <div>
+            <div style={{fontSize:10,opacity:.6,fontWeight:700,letterSpacing:1.5,textTransform:'uppercase',marginBottom:3}}>🥟 Pastel da Camila</div>
+            <div className="ceo-title">Visão CEO</div>
+            <div className="ceo-sub">Gestão Operacional de Franquias · Koncluí</div>
+            <div className="ceo-badge">👑 {user.name} · Acesso Total</div>
+          </div>
+          <button className="hdr-btn" style={{background:'rgba(255,255,255,.12)',border:'1.5px solid rgba(255,255,255,.25)',color:'#fff',borderRadius:99,padding:'6px 12px',fontSize:10,fontWeight:700}} onClick={onLogout}>Sair</button>
+          {onBack&&<button style={{background:'rgba(255,255,255,.12)',border:'1.5px solid rgba(255,255,255,.25)',color:'#fff',borderRadius:99,padding:'6px 12px',fontSize:10,fontWeight:700,marginLeft:4}} onClick={onBack}>← Hub</button>}
+        </div>
+        <div style={{marginTop:10,fontSize:10,opacity:.55}}>{todayFmt()} · {realData.length>0?`${realData.length} turnos reais registrados`:'Modo demo — aguardando checklists'}</div>
+      </div>
+
+      <div className="ceo-nav">
+        {[['overview','📊 Geral'],['ranking','🏆 Ranking'],['alertas','🚨 Alertas'],['turnos','📋 Turnos'],['tendencia','📈 Tendência']].map(([k,l])=>(
+          <button key={k} className={`nav-tab${tab===k?' active':''}`} onClick={()=>setTab(k)}>{l}</button>
+        ))}
+      </div>
+
+      {tab==='overview'&&(<>
+        <div className="kpi-grid">
+          <div className="kpi-card kc-r"><div className="kpi-ico">📊</div><div className="kpi-lbl">Score Médio</div><div className="kpi-val">{kpi.avg}</div><div className="kpi-sub">de 100 possíveis</div><span className={`trend ${kpi.avg>=80?'tu':kpi.avg>=60?'tf':'td'}`}>{kpi.avg>=80?'▲ Ótimo':kpi.avg>=60?'→ Regular':'▼ Atenção'}</span></div>
+          <div className="kpi-card kc-g"><div className="kpi-ico">✅</div><div className="kpi-lbl">Conformidade</div><div className="kpi-val">{kpi.taxa}%</div><div className="kpi-sub">{kpi.conf}/{kpi.tot} turnos ok</div><span className={`trend ${kpi.taxa>=80?'tu':'td'}`}>{kpi.taxa>=80?'▲ Boa':'▼ Atenção'}</span></div>
+          <div className="kpi-card kc-r"><div className="kpi-ico">❌</div><div className="kpi-lbl">Total Falhas</div><div className="kpi-val">{kpi.fl}</div><div className="kpi-sub">em {kpi.tot} turnos</div></div>
+          <div className="kpi-card kc-o"><div className="kpi-ico">🔴</div><div className="kpi-lbl">Críticos</div><div className="kpi-val">{kpi.cr}</div><div className="kpi-sub">sem tratamento</div></div>
+          <div className="kpi-card kc-b"><div className="kpi-ico">⏳</div><div className="kpi-lbl">Pendências</div><div className="kpi-val">{kpi.pend}</div><div className="kpi-sub">entre turnos</div></div>
+          <div className="kpi-card kc-p"><div className="kpi-ico">📋</div><div className="kpi-lbl">Turnos</div><div className="kpi-val">{kpi.tot}</div><div className="kpi-sub">total avaliados</div></div>
+        </div>
+        <div className="chart-card">
+          <div className="chart-t"><span>📊 Score por Dia</span><span style={{fontSize:10,color:'var(--ink3)',fontWeight:600}}>média semanal</span></div>
+          <div className="bar-chart">
+            {scoreByDay.map((d,i)=>{
+              const h=d.score>0?Math.max((d.score/100)*90,4):2;
+              const c=d.score>=80?'var(--ok)':d.score>=60?'var(--yellow)':'var(--brand)';
+              return <div key={i} className="bar-col"><div className="bar-val">{d.score||'–'}</div><div style={{flex:1,display:'flex',alignItems:'flex-end',width:'100%'}}><div className="bar-fill" style={{height:`${h}%`,background:c}}/></div><div className="bar-lbl">{d.day}</div></div>;
+            })}
+          </div>
+        </div>
+        <div className="chart-card">
+          <div className="chart-t">🎯 Status dos Turnos</div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,textAlign:'center'}}>
+            {[['Conforme',merged.filter(d=>d.status==='conforme').length,'var(--ok)'],['Ressalvas',merged.filter(d=>d.status==='ressalvas'||d.status==='com_ressalvas').length,'var(--yellow)'],['Crítico',merged.filter(d=>d.status==='critico').length,'var(--brand)']].map(([l,v,c])=>(
+              <div key={l} style={{background:'#FAFAFA',borderRadius:'var(--rs)',padding:'14px 6px',borderTop:`3px solid ${c}`}}>
+                <div style={{fontFamily:"'Sora',sans-serif",fontSize:22,fontWeight:900,color:c}}>{v}</div>
+                <div style={{fontSize:10,color:'var(--ink2)',fontWeight:700,marginTop:2}}>{l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="chart-card">
+          <div className="chart-t">🗓 Mapa de Conformidade</div>
+          <div style={{display:'flex',gap:8,fontSize:10,color:'var(--ink3)',marginBottom:8,flexWrap:'wrap'}}>
+            <span>🟢 ≥80 Ótimo</span><span>🟡 60–79 Regular</span><span>🔴 &lt;60 Crítico</span>
+          </div>
+          <div style={{overflowX:'auto'}}>
+            <div className="hm-grid">
+              <div/>
+              {DAYS.map(d=><div key={d} style={{fontSize:8,fontWeight:700,color:'var(--ink3)',textAlign:'center'}}>{d}</div>)}
+              {['Manhã','Tarde'].map(turno=>(
+                <React.Fragment key={turno}>
+                  <div style={{fontSize:8,fontWeight:700,color:'var(--ink3)',display:'flex',alignItems:'center',paddingRight:3,whiteSpace:'nowrap'}}>{turno}</div>
+                  {DAYS.map((day,di)=>{
+                    const t=turno==='Manhã'?'manha':'tarde';
+                    const d=merged.find(x=>(x.dayIdx===di||x.day===day)&&x.turno===t);
+                    const sc=d?.score||0;
+                    const bg=sc>=80?'var(--ok)':sc>=60?'var(--yellow)':sc>0?'var(--brand)':'#E5E5E5';
+                    return <div key={day} className="hm-cell" style={{background:bg,opacity:sc>0?1:.3}}>{sc>0?sc:''}</div>;
+                  })}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>)}
+
+      {tab==='ranking'&&(
+        <div className="chart-card" style={{margin:'12px 12px 0'}}>
+          <div className="chart-t">🏆 Ranking de Subgerentes</div>
+          {ranking.map((u,i)=>(
+            <div key={u.name} className="rank-row">
+              <div className="rank-pos" style={{color:i===0?'#F59E0B':i===1?'#9CA3AF':'#B45309'}}>{i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+              <div className="rank-avatar" style={{background:aColors[i%aColors.length]}}>{u.name.charAt(0)}</div>
+              <div style={{flex:1}}>
+                <div className="rank-name">{u.name}</div>
+                <div className="rank-sub">{u.turnos} turnos · {u.falhas} falhas</div>
+                <div style={{marginTop:5,background:'#F0F0F0',borderRadius:99,height:5,overflow:'hidden'}}>
+                  <div style={{height:'100%',borderRadius:99,background:u.avg>=80?'var(--ok)':u.avg>=60?'var(--yellow)':'var(--brand)',width:`${u.avg}%`,transition:'width .5s'}}/>
+                </div>
+              </div>
+              <div className="rank-score" style={{color:u.avg>=80?'var(--ok)':u.avg>=60?'var(--yellow)':'var(--brand)'}}>{u.avg}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {tab==='alertas'&&(
+        <div className="chart-card" style={{margin:'12px 12px 0'}}>
+          <div className="chart-t">🚨 Alertas Operacionais</div>
+          {alertas.length===0&&<div style={{textAlign:'center',padding:'24px 0',color:'var(--ok)',fontFamily:"'Sora',sans-serif",fontWeight:700}}>✅ Nenhum alerta ativo!</div>}
+          {alertas.map((a,i)=>(
+            <div key={i} className="alert-row">
+              <div className={`adot ${a.tipo==='critico'?'adr':'ado'}`}/>
+              <div style={{flex:1}}><div className="a-title">{a.msg}</div><div className="a-sub">{a.sub}</div></div>
+              <div className="a-badge" style={{background:a.tipo==='critico'?'#FEE2E2':'#FED7AA',color:a.tipo==='critico'?'#991B1B':'#9A3412'}}>{a.tipo==='critico'?'🔴 Crítico':'⏳ Pendência'}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {tab==='turnos'&&(
+        <div className="chart-card" style={{margin:'12px 12px 0'}}>
+          <div className="chart-t">📋 Histórico de Turnos</div>
+          <div style={{overflowX:'auto'}}>
+            <table className="shift-table">
+              <thead><tr><th>Responsável</th><th>Turno</th><th>Data</th><th>Score</th><th>Status</th><th>Falhas</th></tr></thead>
+              <tbody>
+                {merged.slice(0,25).map((d,i)=>{
+                  const sc=d.score,c=sc>=80?'var(--ok)':sc>=60?'var(--yellow)':'var(--brand)';
+                  const st=d.status==='conforme'?'Conforme':d.status==='critico'?'Crítico':'Ressalvas';
+                  return(
+                    <tr key={i} style={{opacity:d.isDemo?.75:1}}>
+                      <td><div style={{fontFamily:"'Sora',sans-serif",fontWeight:700,fontSize:12}}>{d.user||d.name}{d.isDemo&&<span style={{fontSize:9,color:'var(--ink3)',marginLeft:4}}>(demo)</span>}</div></td>
+                      <td><span className="pill" style={{background:d.turno==='manha'?'#FEF3C7':'#EDE9FE',color:d.turno==='manha'?'#92400E':'#5B21B6'}}>{d.turno==='manha'?'🌅':'🌙'}</span></td>
+                      <td style={{fontSize:11,color:'var(--ink2)'}}>{d.dataFmt||d.day}</td>
+                      <td><span style={{fontFamily:"'Sora',sans-serif",fontWeight:800,color:c}}>{sc}</span></td>
+                      <td><span className="pill" style={{background:st==='Conforme'?'#D1FAE5':st==='Crítico'?'#FEE2E2':'#FEF3C7',color:st==='Conforme'?'#065F46':st==='Crítico'?'#991B1B':'#92400E'}}>{st}</span></td>
+                      <td style={{fontFamily:"'Sora',sans-serif",fontWeight:700,color:d.falhas>0?'var(--brand)':'var(--ok)'}}>{d.falhas}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {tab==='tendencia'&&(<>
+        <div className="chart-card" style={{margin:'12px 12px 0'}}>
+          <div className="chart-t">📈 Evolução Score – 7 dias</div>
+          <div className="bar-chart" style={{height:130}}>
+            {scoreByDay.map((d,i)=>{
+              const h=d.score>0?Math.max((d.score/100)*90,4):2;
+              const c=d.score>=80?'var(--ok)':d.score>=60?'var(--yellow)':'var(--brand)';
+              return <div key={i} className="bar-col"><div className="bar-val" style={{fontSize:9}}>{d.score||'–'}</div><div style={{flex:1,display:'flex',alignItems:'flex-end',width:'100%',position:'relative'}}><div style={{position:'absolute',bottom:'80%',left:0,right:0,borderTop:'1px dashed #ddd'}}/><div className="bar-fill" style={{height:`${h}%`,background:c}}/></div><div className="bar-lbl">{d.day}</div></div>;
+            })}
+          </div>
+          <div style={{marginTop:6,fontSize:10,color:'var(--ink3)',textAlign:'center'}}>Linha tracejada = meta 80 pts</div>
+        </div>
+        <div className="chart-card">
+          <div className="chart-t">📉 Falhas por Dia</div>
+          <div className="bar-chart" style={{height:100}}>
+            {scoreByDay.map((d,i)=>{
+              const mx=Math.max(...scoreByDay.map(x=>x.falhas),1);
+              const h=d.falhas>0?Math.max((d.falhas/mx)*90,4):2;
+              return <div key={i} className="bar-col"><div className="bar-val" style={{fontSize:9,color:'var(--brand)'}}>{d.falhas||0}</div><div style={{flex:1,display:'flex',alignItems:'flex-end',width:'100%'}}><div className="bar-fill" style={{height:`${h}%`,background:d.falhas>0?'var(--brand)':'#E5E5E5'}}/></div><div className="bar-lbl">{d.day}</div></div>;
+            })}
+          </div>
+        </div>
+        <div className="chart-card">
+          <div className="chart-t">🎯 Métricas de Qualidade</div>
+          {[['Conformidade',`${kpi.taxa}%`,kpi.taxa,'var(--ok)'],['Score Médio',`${kpi.avg}/100`,kpi.avg,'var(--blue)'],['Falhas/Turno',`${(kpi.fl/Math.max(kpi.tot,1)).toFixed(1)}`,Math.max(0,100-kpi.fl/Math.max(kpi.tot,1)*15),'var(--orange)']].map(([l,v,p,c])=>(
+            <div key={l} style={{marginBottom:12}}>
+              <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}><div style={{fontSize:12,fontWeight:600}}>{l}</div><div style={{fontFamily:"'Sora',sans-serif",fontSize:13,fontWeight:800,color:c}}>{v}</div></div>
+              <div style={{background:'#F0F0F0',borderRadius:99,height:7,overflow:'hidden'}}><div style={{height:'100%',borderRadius:99,background:c,width:`${Math.min(p,100)}%`,transition:'width .5s'}}/></div>
+            </div>
+          ))}
+        </div>
+        <div className="chart-card">
+          <div style={{fontFamily:"'Sora',sans-serif",fontSize:12,fontWeight:700,marginBottom:11}}>🔮 Roadmap Koncluí</div>
+          {[['✅','Checklist digital com travas anti-maquiagem','Entregue'],['✅','Login por usuário com roles (CEO / Subgerente)','Entregue'],['✅','Painel CEO com KPIs e gráficos operacionais','Entregue'],['✅','Webhook Make + envio automático por email','Entregue'],['✅','Geração de imagem para grupo WhatsApp','Entregue'],['🔄','Banco de dados (Supabase) – dados persistentes','Próximo'],['🔄','Notificações automáticas WhatsApp via Evolution API','Próximo'],['🔄','Multi-unidade (gestão de rede de franquias)','Futuro'],['🔄','App nativo iOS/Android','Futuro'],['🔄','IA para detecção de padrões de falha','Futuro']].map(([icon,label,status],i)=>(
+            <div key={i} style={{display:'flex',alignItems:'center',gap:9,padding:'7px 0',borderBottom:'1px solid var(--border)'}}>
+              <span style={{fontSize:14}}>{icon}</span>
+              <div style={{flex:1,fontSize:12}}>{label}</div>
+              <span style={{fontSize:9,fontWeight:700,padding:'2px 7px',borderRadius:99,background:status==='Entregue'?'#D1FAE5':status==='Próximo'?'#FEF3C7':'#F3F4F6',color:status==='Entregue'?'#065F46':status==='Próximo'?'#92400E':'var(--text3)'}}>{status}</span>
+            </div>
+          ))}
+        </div>
+      </>)}
+      <div style={{height:20}}/>
+    </div>
+  );
+}
+
+/* ═══════════════════════════
+   ROOT
+═══════════════════════════ */
+/* ═══════════════════════════
+   SUPORTE HUB (Bruna)
+═══════════════════════════ */
+function GerenteHub({user,onLogout}){
+  const [mode,setMode]=useState(null);
+  if(mode==='checklist') return <ChecklistScreen user={user} onLogout={onLogout} onBack={()=>setMode(null)}/>;
+  if(mode==='painel') return <CEODashboard user={user} onLogout={onLogout} onBack={()=>setMode(null)}/>;
+  return(
+    <div style={{minHeight:'100vh',background:'linear-gradient(145deg,#0d0d0d,#001a0d,#003320)',display:'flex',alignItems:'center',justifyContent:'center',padding:24}}>
+      <div style={{background:'#fff',borderRadius:22,padding:'32px 24px',width:'100%',maxWidth:400,boxShadow:'0 30px 80px rgba(0,0,0,.45)'}}>
+        <div style={{textAlign:'center',marginBottom:24}}>
+          <div style={{fontSize:46,marginBottom:8}}>🗂️</div>
+          <div style={{fontFamily:"'Sora',sans-serif",fontSize:21,fontWeight:900}}>Olá, {user.name}!</div>
+          <div style={{fontSize:13,color:'var(--ink3)',marginTop:4}}>Acesso Gerente · O que deseja fazer?</div>
+        </div>
+        <div style={{display:'flex',flexDirection:'column',gap:10}}>
+          <button onClick={()=>setMode('checklist')} className="hub-opt">
+            <span className="hub-opt-icon">📋</span>
+            <div><div className="hub-opt-title">Preencher Checklist</div><div className="hub-opt-sub">Registrar execução do turno</div></div>
+          </button>
+          <button onClick={()=>setMode('painel')} className="hub-opt">
+            <span style={{fontSize:28}}>📊</span>
+            <div><div className="hub-opt-title">Ver Painel Operacional</div><div className="hub-opt-sub">Scores, falhas e histórico</div></div>
+          </button>
+        </div>
+        <button onClick={onLogout} style={{width:'100%',marginTop:14,padding:'10px',background:'transparent',color:'var(--ink3)',border:'1.5px solid var(--border)',borderRadius:'var(--rs)',fontFamily:"'Sora',sans-serif",fontSize:12,fontWeight:700}}>Sair</button>
+      </div>
+    </div>
+  );
+}
+
+function SuporteHub({user,onLogout}){
+  const [mode,setMode]=useState(null); // null | 'ceo' | 'checklist' | 'usuarios'
+
+  if(mode==='ceo') return <CEODashboard user={user} onLogout={onLogout} onBack={()=>setMode(null)}/>;
+  if(mode==='checklist') return <ChecklistScreen user={user} onLogout={onLogout} onBack={()=>setMode(null)}/>;
+  if(mode==='usuarios') return <UserManager user={user} onBack={()=>setMode(null)} onLogout={onLogout}/>;
+
+  return(
+    <div className="hub-bg">
+      <div className="hub-card">
+        <div className="login-logo" style={{textAlign:'center',marginBottom:20}}>
+          <span style={{fontSize:40,display:'block',marginBottom:8}}>🛡️</span>
+          <div className="hub-title">Olá, {user.name}!</div>
+          <div className="hub-sub">Suporte Técnico · Acesso Total</div>
+        </div>
+        <div style={{display:'flex',flexDirection:'column',gap:10}}>
+          <button onClick={()=>setMode('usuarios')} style={{padding:'16px',borderRadius:'var(--r)',background:'linear-gradient(135deg,#001a3a,#2563EB)',color:'#fff',textAlign:'left',display:'flex',alignItems:'center',gap:12,border:'none',cursor:'pointer'}}>
+            <span className="hub-opt-icon">👥</span>
+            <div>
+              <div className="hub-opt-title">Gestão de Usuários</div><div className="hub-opt-sub">Criar, editar, resetar senha, ativar/desativar</div>
+            </div>
+          </button>
+          <button onClick={()=>setMode('ceo')} className="hub-opt">
+            <span className="hub-opt-icon">👁️</span>
+            <div>
+              <div className="hub-opt-title">Painel Gerencial</div><div className="hub-opt-sub">KPIs, ranking, alertas, histórico</div>
+            </div>
+          </button>
+          <button onClick={()=>setMode('checklist')} className="hub-opt">
+            <span className="hub-opt-icon">📋</span>
+            <div>
+              <div className="hub-opt-title">Preencher Checklist</div><div className="hub-opt-sub">Suporte ou cobertura de turno</div>
+            </div>
+          </button>
+        </div>
+        <button onClick={onLogout} className="hub-logout">Sair do sistema</button>
+      </div>
+    </div>
+  );
+}
+
+function UserManager({user,onBack,onLogout}){
+  const [users,setUsers]=useState(()=>getUsers());
+  const [editKey,setEditKey]=useState(null);
+  const [showNew,setShowNew]=useState(false);
+  const [toast,setToast]=useState('');
+  const [newUser,setNewUser]=useState({name:'',login:'',role:'subgerente',pwd:'2026'});
+  const toastRef=React.useRef();
+
+  const ROLES={subgerente:'Subgerente',gerente:'Gerente',suporte:'Suporte',ceo:'CEO'};
+  const ROLE_COLORS={subgerente:'var(--brand)',gerente:'var(--ok)',suporte:'var(--blue)',ceo:'#1A1A1A'};
+
+  function showMsg(msg){setToast(msg);clearTimeout(toastRef.current);toastRef.current=setTimeout(()=>setToast(''),2500);}
+
+  function saveAndRefresh(updated){
+    saveUsers(updated);
+    setUsers({...updated});
+    showMsg('✅ Salvo com sucesso!');
+  }
+
+  function toggleActive(key){
+    const u={...users};
+    u[key]={...u[key],active:u[key].active===false?true:false};
+    saveAndRefresh(u);
+  }
+
+  function resetPwd(key){
+    if(!window.confirm('Resetar senha deste usuário para 2026?')) return;
+    const u={...users};
+    u[key]={...u[key],pwd:'2026',first:false};
+    saveAndRefresh(u);
+    showMsg('🔑 Senha resetada para 2026.');
+  }
+
+  function saveEdit(key,fields){
+    const u={...users};
+    u[key]={...u[key],...fields};
+    saveAndRefresh(u);
+    setEditKey(null);
+  }
+
+  function deleteUser(key){
+    if(!window.confirm('Tem certeza que deseja remover este usuário?')) return;
+    const u={...users};
+    delete u[key];
+    saveAndRefresh(u);
+    showMsg('🗑️ Usuário removido.');
+  }
+
+  function createUser(){
+    if(!newUser.name.trim()||!newUser.login.trim()){showMsg('❌ Nome e login obrigatórios.');return;}
+    const key=newUser.login.trim().toLowerCase().replace(/\s/g,'');
+    if(users[key]){showMsg('❌ Login já existe.');return;}
+    const u={...users};
+    u[key]={name:newUser.name.trim(),login:key,role:newUser.role,pwd:newUser.pwd||'2026',first:false,color:ROLE_COLORS[newUser.role]||'#555',active:true};
+    saveAndRefresh(u);
+    setNewUser({name:'',login:'',role:'subgerente',pwd:'2026'});
+    setShowNew(false);
+    showMsg('✅ Usuário criado! Senha: '+(newUser.pwd||'2026'));
+  }
+
+  const userList=Object.entries(users);
+
+  return(
+    <div style={{minHeight:'100vh',background:'var(--bg)',paddingBottom:80}}>
+      {/* header */}
+      <div className="um-hdr">
+        <div className="um-hdr-inner">
+          <div>
+            <div style={{fontSize:10,opacity:.7,fontWeight:700,letterSpacing:2,textTransform:'uppercase'}}>Koncluí · Suporte</div>
+            <div style={{fontFamily:"'Sora',sans-serif",fontSize:17,fontWeight:800}}>👥 Gestão de Usuários</div>
+          </div>
+          <div style={{display:'flex',gap:6}}>
+            <button onClick={onBack} className="hdr-btn">← Hub</button>
+            <button onClick={onLogout} className="hdr-btn">Sair</button>
+          </div>
+        </div>
+      </div>
+
+      {toast&&<div style={{position:'fixed',top:70,left:'50%',transform:'translateX(-50%)',background:'#1A1A1A',color:'#fff',padding:'9px 20px',borderRadius:99,fontSize:13,fontWeight:600,zIndex:9999,whiteSpace:'nowrap',boxShadow:'0 8px 24px rgba(0,0,0,.3)'}}>{toast}</div>}
+
+      
+
+      {/* stats */}
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,padding:'14px 14px 0'}}>
+        {[['Total',userList.length,'var(--blue)'],['Ativos',userList.filter(([,u])=>u.active!==false).length,'var(--ok)'],['Inativos',userList.filter(([,u])=>u.active===false).length,'var(--text3)']].map(([l,v,c])=>(
+          <div key={l} style={{background:'#fff',borderRadius:'var(--r)',padding:'12px 8px',textAlign:'center',boxShadow:'var(--sh)'}}>
+            <div style={{fontFamily:"'Sora',sans-serif",fontSize:22,fontWeight:900,color:c}}>{v}</div>
+            <div style={{fontSize:10,color:'var(--ink3)',fontWeight:700,textTransform:'uppercase',marginTop:2}}>{l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* user list */}
+      <div style={{margin:'14px 14px 0',background:'#fff',borderRadius:'var(--r)',boxShadow:'var(--sh)',overflow:'hidden'}}>
+        <div style={{padding:'14px 16px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+          <div style={{fontFamily:"'Sora',sans-serif",fontSize:14,fontWeight:700}}>Usuários do Sistema</div>
+          <button onClick={()=>setShowNew(s=>!s)} style={{background:'var(--blue)',color:'#fff',borderRadius:'var(--rs)',padding:'7px 14px',fontFamily:"'Sora',sans-serif",fontSize:12,fontWeight:700}}>
+            {showNew?'✕ Cancelar':'+ Novo Usuário'}
+          </button>
+        </div>
+
+        {/* new user form */}
+        {showNew&&(
+          <div style={{padding:'16px',background:'#F0F4FF',borderBottom:'1px solid var(--border)'}}>
+            <div style={{fontFamily:"'Sora',sans-serif",fontSize:12,fontWeight:800,color:'var(--blue)',marginBottom:12,textTransform:'uppercase',letterSpacing:.5}}>+ Criar Novo Usuário</div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:10}}>
+              <div className="f-group"><label className="f-label">Nome *</label><input className="f-input" value={newUser.name} onChange={e=>setNewUser(n=>({...n,name:e.target.value}))} placeholder="Nome completo"/></div>
+              <div className="f-group"><label className="f-label">Login *</label><input className="f-input" value={newUser.login} onChange={e=>setNewUser(n=>({...n,login:e.target.value.toLowerCase()}))} placeholder="login (sem espaço)"/></div>
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:12}}>
+              <div className="f-group"><label className="f-label">Role</label>
+                <select className="f-input" value={newUser.role} onChange={e=>setNewUser(n=>({...n,role:e.target.value}))}>
+                  {Object.entries(ROLES).map(([k,v])=><option key={k} value={k}>{v}</option>)}
+                </select>
+              </div>
+              <div className="f-group"><label className="f-label">Senha inicial</label><input className="f-input" value={newUser.pwd} onChange={e=>setNewUser(n=>({...n,pwd:e.target.value}))} placeholder="2026"/></div>
+            </div>
+            <button onClick={createUser} style={{width:'100%',padding:'12px',background:'var(--blue)',color:'#fff',borderRadius:'var(--rs)',fontFamily:"'Sora',sans-serif",fontSize:13,fontWeight:800}}>
+              CRIAR USUÁRIO
+            </button>
+          </div>
+        )}
+
+        {/* list */}
+        {userList.map(([key,u])=>{
+          const isEdit=editKey===key;
+          const inactive=u.active===false;
+          return(
+            <div key={key} style={{padding:'14px 16px',borderBottom:'1px solid var(--border)',opacity:inactive?.5:1}}>
+              {!isEdit?(
+                <div>
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
+                    <div style={{display:'flex',alignItems:'center',gap:10}}>
+                      <div style={{width:36,height:36,borderRadius:'50%',background:u.color||'#555',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontFamily:"'Sora',sans-serif",fontWeight:800,fontSize:14,flexShrink:0}}>{u.name.charAt(0)}</div>
+                      <div>
+                        <div style={{fontFamily:"'Sora',sans-serif",fontSize:14,fontWeight:700}}>{u.name} {inactive&&<span style={{fontSize:10,color:'var(--ink3)'}}>(inativo)</span>}</div>
+                        <div style={{fontSize:11,color:'var(--ink3)',marginTop:1}}>@{u.login} · <span style={{background:ROLE_COLORS[u.role]+'22',color:ROLE_COLORS[u.role],borderRadius:99,padding:'1px 7px',fontSize:10,fontWeight:700}}>{ROLES[u.role]||u.role}</span></div>
+                      </div>
+                    </div>
+                    <div style={{display:'flex',gap:5,flexWrap:'wrap',justifyContent:'flex-end'}}>
+                      <button onClick={()=>setEditKey(key)} style={{background:'#F0F0F0',color:'var(--ink)',borderRadius:'var(--rs)',padding:'5px 10px',fontSize:11,fontWeight:700}}>✏️ Editar</button>
+                      <button onClick={()=>resetPwd(key)} style={{background:'#FEF3C7',color:'#92400E',borderRadius:'var(--rs)',padding:'5px 10px',fontSize:11,fontWeight:700}}>🔑 Senha</button>
+                      <button onClick={()=>toggleActive(key)} style={{background:inactive?'#D1FAE5':'#FEE2E2',color:inactive?'#065F46':'#991B1B',borderRadius:'var(--rs)',padding:'5px 10px',fontSize:11,fontWeight:700}}>{inactive?'✅ Ativar':'⛔ Desativar'}</button>
+                      {key!=='camila'&&key!=='bruna'&&<button onClick={()=>deleteUser(key)} style={{background:'#FEE2E2',color:'#991B1B',borderRadius:'var(--rs)',padding:'5px 10px',fontSize:11,fontWeight:700}}>🗑</button>}
+                    </div>
+                  </div>
+                  <div style={{fontSize:11,color:'var(--ink3)',display:'flex',gap:12}}>
+                    <span>{u.first?'⚠️ Troca de senha pendente':'✅ Senha configurada'}</span>
+                  </div>
+                </div>
+              ):(
+                <EditUserForm u={u} uKey={key} roles={ROLES} onSave={(fields)=>saveEdit(key,fields)} onCancel={()=>setEditKey(null)}/>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{margin:'12px 14px',padding:'12px 14px',background:'#F0F4FF',borderRadius:'var(--r)',border:'1.5px solid #BFDBFE',fontSize:12,color:'var(--ink2)',lineHeight:1.6}}>
+        <b style={{color:'var(--blue)'}}>🛡️ Segurança:</b> Senhas são armazenadas localmente. Ao integrar com banco de dados (Supabase), as senhas serão criptografadas com bcrypt.
+      </div>
+    </div>
+  );
+}
+
+function EditUserForm({u,uKey,roles,onSave,onCancel}){
+  const [name,setName]=useState(u.name);
+  const [role,setRole]=useState(u.role);
+  const [color,setColor]=useState(u.color||'#555555');
+  return(
+    <div style={{background:'#F8F8F8',borderRadius:'var(--rs)',padding:'12px'}}>
+      <div style={{fontFamily:"'Sora',sans-serif",fontSize:11,fontWeight:800,color:'var(--blue)',marginBottom:10,textTransform:'uppercase'}}>Editando: @{uKey}</div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:10}}>
+        <div className="f-group" style={{marginBottom:0}}><label className="f-label">Nome</label><input className="f-input" value={name} onChange={e=>setName(e.target.value)}/></div>
+        <div className="f-group" style={{marginBottom:0}}><label className="f-label">Role</label>
+          <select className="f-input" value={role} onChange={e=>setRole(e.target.value)}>
+            {Object.entries(roles).map(([k,v])=><option key={k} value={k}>{v}</option>)}
+          </select>
+        </div>
+      </div>
+      <div className="f-group" style={{marginBottom:10}}><label className="f-label">Cor do avatar</label><input className="f-input" type="color" value={color} onChange={e=>setColor(e.target.value)} style={{height:40,padding:'4px'}}/></div>
+      <div style={{display:'flex',gap:8}}>
+        <button onClick={()=>onSave({name,role,color})} style={{flex:1,padding:'10px',background:'var(--blue)',color:'#fff',borderRadius:'var(--rs)',fontFamily:"'Sora',sans-serif",fontSize:13,fontWeight:700}}>💾 Salvar</button>
+        <button onClick={onCancel} style={{flex:1,padding:'10px',background:'#F0F0F0',color:'var(--ink)',borderRadius:'var(--rs)',fontFamily:"'Sora',sans-serif",fontSize:13,fontWeight:700}}>Cancelar</button>
+      </div>
+    </div>
+  );
+}
+
+
+function App(){
+  const [phase,setPhase]=useState('loading');
+  const [user,setUser]=useState(null);
+  const [userKey,setUserKey]=useState(null);
+
+  useEffect(()=>{
+    const s=getSession();
+    if(s){const users=getUsers(),u=users[s.key];if(u&&!u.first){setUser(u);setUserKey(s.key);setPhase('app');}else setPhase('login');}
+    else setPhase('login');
+  },[]);
+
+  function onLogin(u,key){setUser(u);setUserKey(key);saveSession({key});setPhase('app');}
+  function onLogout(){clearSession();setUser(null);setUserKey(null);setPhase('login');}
+
+  if(phase==='loading')return <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'#1A1A1A'}}><div style={{color:'#fff',fontFamily:"'Sora',sans-serif",fontSize:15}}>🥟 Carregando...</div></div>;
+  if(phase==='login')return <Login onLogin={onLogin}/>;
+
+  if(phase==='app'){
+    if(user.role==='ceo') return <CEODashboard user={user} onLogout={onLogout}/>;
+    if(user.role==='suporte') return <SuporteHub user={user} onLogout={onLogout}/>;
+    if(user.role==='gerente') return <GerenteHub user={user} onLogout={onLogout}/>;
+    return <ChecklistScreen user={user} onLogout={onLogout}/>;
+  }
+  return null;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
