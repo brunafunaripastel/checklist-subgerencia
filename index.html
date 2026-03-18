@@ -544,6 +544,20 @@ textarea{font-family:inherit}
   .sum-card{box-shadow:none;border-radius:0;max-width:100%}
   body{padding-bottom:0}
 }
+
+/* ── VIBRAÇÃO NO NÃO ── */
+.nao-sel{background:#FFFBFB}
+.nao-flash{animation:naoFlash .4s ease-out}
+@keyframes naoFlash{
+  0%{background:#fff}
+  25%{background:#FEE2E2;transform:translateX(-3px)}
+  50%{background:#FEE2E2;transform:translateX(3px)}
+  75%{background:#FFF5F5;transform:translateX(-1px)}
+  100%{background:#FFFBFB;transform:translateX(0)}
+}
+
+.sum-wa{background:#25D366;color:#fff;border-radius:var(--r4);padding:6px 13px;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;}
+.sum-wa:hover{opacity:.88}
 </style>
 
 
@@ -577,11 +591,11 @@ function saveConfig(c){localStorage.setItem(CFG_KEY,JSON.stringify(c));}
 })();
 
 const DEFAULT_USERS={
-  gabriela:{name:'Gabriela',login:'gabriela',role:'subgerente',pwd:'2026',first:false,color:'#E8001C'},
-  vitoria:{name:'Vitória',login:'vitoria',role:'subgerente',pwd:'2026',first:false,color:'#7C3AED'},
-  bruna:{name:'Bruna',login:'bruna',role:'suporte',pwd:'2026',first:false,color:'#2563EB'},
-  gerente:{name:'Gerente',login:'gerente',role:'gerente',pwd:'2026',first:false,color:'#00B37E'},
-  camila:{name:'Camila',login:'camila',role:'ceo',pwd:'2026',first:false,color:'#1A1A1A'},
+  gabriela:{name:'Gabriela',login:'gabriela',role:'subgerente',pwd:'158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab',first:false,color:'#E8001C'},
+  vitoria:{name:'Vitória',login:'vitoria',role:'subgerente',pwd:'158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab',first:false,color:'#7C3AED'},
+  bruna:{name:'Bruna',login:'bruna',role:'suporte',pwd:'158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab',first:false,color:'#2563EB'},
+  gerente:{name:'Gerente',login:'gerente',role:'gerente',pwd:'158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab',first:false,color:'#00B37E'},
+  camila:{name:'Camila',login:'camila',role:'ceo',pwd:'158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab',first:false,color:'#1A1A1A'},
 };
 
 function getUsers(){try{return JSON.parse(localStorage.getItem(USERS_KEY))||{...DEFAULT_USERS};}catch{return{...DEFAULT_USERS};}}
@@ -597,166 +611,142 @@ function todayISO(){return new Date().toISOString().slice(0,10);}
    CHECKLIST DATA
 ═══════════════════════════ */
 const ITEMS=[
-  // ── MANHÃ ────────────────────────────────────────────────────────────────────
-  // cond: null=sempre | 'delivery' | 'novato' | 'falta' | 'troco' | 'feriado' | 'equipamento' | 'promocao' | 'chuva'
-  // dias: [0-6] 0=dom | null=todos os dias
+  // ══════════════════════════════════════════════════════════════════════
+  // KONCLUÍ · Pastel da Camila · Sistema Operacional por Turno
+  // ──────────────────────────────────────────────────────────────────────
+  // Referências aplicadas:
+  //  McDonald's  → Equipamento→Temp→Produto→Pessoa→Caixa (pré-shift checklist)
+  //  Burger King → Inventário diário, cash control, REV Standards, velocidade KPI
+  //  Pastelão do Maluf → Padrão 32cm: tamanho + recheio + temperatura na saída
+  // ══════════════════════════════════════════════════════════════════════
 
-  // ABASTECIMENTO
-  {id:'m1',t:'manha',s:'Abastecimento',e:'📦',n:'critico',
-    ti:'Verifiquei o estoque atual',
-    d:(ctx)=>'Conferir todos: recheios, massa, embalagens, insumos.'},
-  {id:'m2',t:'manha',s:'Abastecimento',e:'📦',n:'critico',
-    ti:'Antecipei falta para este e o próximo turno',
-    d:(ctx)=>'Débora→compras | Cíntia→recheio | Dorival→logística'},
+  // ── MANHÃ ──────────────────────────────────────────────────────────────
 
-  // MASSA — meta dinâmica por dia
-  {id:'m3',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Conferi quantidade atual de massa',d:()=>'Garantir massa suficiente para o dia.'},
-  {id:'m4',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção: 60 massas',d:()=>'Terça-feira — produção mínima obrigatória.',dias:[2]},
-  {id:'m4b',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção: 70 massas + 90 rolos',d:()=>'Quarta-feira — produção dupla obrigatória.',dias:[3]},
-  {id:'m4c',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Garanti produção mínima do dia',d:()=>'Confirmar meta com a liderança.',dias:[0,1,4,5,6]},
-  {id:'m5',t:'manha',s:'Massa',e:'📊',n:'importante',ti:'Garanti produção do dia seguinte',d:()=>'Antecipar para não comprometer o próximo turno.'},
+  // [Google Business: horário de funcionamento]
+  {id:'m0',t:'manha',s:'Equipamentos',e:'🕐',n:'critico',
+    ti:'Loja aberta dentro do horário registrado no Google',
+    d:()=>'Horário do Google é o contrato com o cliente. Abrir atrasado = avaliação negativa automática.'},
 
-  // DELIVERY — só aparece se delivery ativo
-  {id:'m6',t:'manha',s:'Delivery',e:'🛵',n:'critico',ti:'Acompanhando pedidos em tempo real',d:()=>'Monitorar pedidos ativos e tempo de entrega.',cond:'delivery'},
-  {id:'m7',t:'manha',s:'Delivery',e:'🛵',n:'critico',ti:'Intervim antes de qualquer pedido atrasar',d:()=>'Pedido parado→ajustar operação. Sistêmico→Bruna.',cond:'delivery'},
+  // [BK: REV Standards / MC: Equipment Check]
+  {id:'m1',t:'manha',s:'Equipamentos',e:'🔌',n:'critico',
+    ti:'Fritadeira ligada — temperatura entre 175°C e 185°C, óleo ok',
+    d:()=>'Óleo limpo, sem espuma ou cheiro forte, nível correto. Pastel frito em óleo ruim perde sabor e textura — é o produto que vai para o cliente.'},
+  {id:'m2',t:'manha',s:'Equipamentos',e:'❄️',n:'critico',
+    ti:'Geladeira ≤4°C e freezer ≤-18°C — verificado no display',
+    d:()=>'Geladeira acima de 4°C = recheio em risco. Freezer acima de -18°C = massa comprometida. Verificar antes de abrir produção — erro aqui desperdiça tudo.'},
 
-  // EQUIPE
-  {id:'m8',t:'manha',s:'Equipe',e:'👥',n:'importante',ti:'Defini função de todos no turno',
-    d:(ctx)=>ctx.falta==='sim'?'Atenção: cobertura ativa — redistribuir funções do colaborador ausente.':'Cada colaborador sabe exatamente o que fazer.'},
-  {id:'m8b',t:'manha',s:'Equipe',e:'👥',n:'critico',ti:'Acionei Viviane (RH) para freelance urgente',
-    d:(ctx)=>'Falta confirmada → acionar Viviane (RH) imediatamente para cobertura freelance. Redistribuir tarefas até chegada.',cond:'falta'},
-  {id:'m9',t:'manha',s:'Equipe',e:'👥',n:'importante',ti:'Corrigi quem travou',d:()=>'Nenhum colaborador parado sem direcionamento.'},
-  {id:'m10',t:'manha',s:'Equipe',e:'👥',n:'critico',ti:'Não deixei novato sozinho',
-    d:()=>'Supervisão direta obrigatória. Não sai do campo de visão.',cond:'novato'},
+  // [Maluf: recheio generoso e ingrediente selecionado / MC: stocking]
+  {id:'m3',t:'manha',s:'Produto',e:'🥩',n:'critico',
+    ti:'Recheios conferidos: mínimo 2kg cada, validade ok, temperatura ≤4°C',
+    d:()=>'Frango, palmito, carne: mínimo 2kg cada, validade ok, temperatura ≤4°C. Recheio é a alma do pastel — generoso e fresco é o que faz o cliente voltar.'},
+  {id:'m4',t:'manha',s:'Produto',e:'🥟',n:'critico',
+    ti:'Massa: mínimo 60 unidades prontas antes do pico, espessura uniforme',
+    d:()=>'Mínimo 60 unidades, espessura uniforme. Massa fina e crocante é o padrão da casa — conferir textura antes de fritar a primeira leva do turno.'},
+  {id:'m4b',t:'manha',s:'Produto',e:'📈',n:'critico',
+    ti:'Fim de semana: produção reforçada — 70 massas + 90 rolos',
+    d:()=>'Fim de semana o movimento dobra. Produção antecipada antes das 9h garante que o pico não pega a loja despreparada.',dias:[5,6]},
+  {id:'m5',t:'manha',s:'Produto',e:'📦',n:'critico',
+    ti:'Embalagens suficientes para o turno — caixas, saquinhos, guardanapos',
+    d:()=>'Sem embalagem não tem venda. Parece simples, mas é o erro que trava a operação na hora errada — conferir antes de abrir.'},
 
-  // PROCESSOS
-  {id:'m11',t:'manha',s:'Processos',e:'🎯',n:'importante',ti:'Verifiquei execução real dos processos',d:()=>'Verificar se está sendo feito — não apenas orientar.'},
-  {id:'m12',t:'manha',s:'Processos',e:'🎯',n:'importante',ti:'Corrigi desvios de padrão',d:()=>'Qualquer desvio corrigido na hora e registrado.'},
+  // [BK: cash control com denominação / MC: cash drawer]
+  {id:'m6',t:'manha',s:'Caixa',e:'💰',n:'critico',
+    ti:'Caixa com R$300 de troco separado por denominação e conferido',
+    d:(ctx)=>ctx.troco==='sim'?'✅ Troco ok — registrar valor real disponível.':'⚠️ TROCO INSUFICIENTE — acionar Bruna antes de abrir.'},
 
-  // CHECKLIST
-  {id:'m13',t:'manha',s:'Checklist',e:'📋',n:'critico',ti:'Todos responderam o checklist',d:()=>'Checklist falso ou incompleto = corrigir na hora.'},
-  {id:'m14',t:'manha',s:'Checklist',e:'📋',n:'critico',ti:'Validei as respostas do checklist',d:()=>'Confirmar que a resposta bate com a realidade.'},
+  // [MC: crew at stations / BK: shift plan executado]
+  {id:'m7',t:'manha',s:'Equipe',e:'👥',n:'critico',
+    ti:'Equipe completa, uniformizada e nos postos antes da abertura',
+    d:(ctx)=>ctx.falta==='sim'?'FALTA — acionar Viviane (RH) + freelance urgente. BK: posição descoberta = serviço prejudicado.':'Todos nos postos. Cada um sabe sua função. Padrão BK: shift plan executado.'},
+  {id:'m8',t:'manha',s:'Equipe',e:'👶',n:'critico',
+    ti:'Novato: mentor designado, supervisionado e corrigido na hora',
+    d:()=>'Novato sem supervisão erra e não sabe que errou. Checar a cada 30min protege o padrão e ensina certo — sem expor na frente dos outros.',cond:'novato'},
 
-  // CLIENTE
-  {id:'m15',t:'manha',s:'Cliente',e:'👤',n:'critico',ti:'Resolvi problema de cliente na hora',d:()=>'Nenhum problema sem resolução. Se necessário→Bruna.'},
-  {id:'m16',t:'manha',s:'Cliente',e:'👤',n:'importante',ti:'Evitei repetição do problema',d:()=>'Identificar causa raiz e corrigir.'},
+  // [MC: speed of service / BK: velocidade como KPI]
+  {id:'m9',t:'manha',s:'Operação',e:'⏱',n:'critico',
+    ti:'Tempo de pedido ao balcão: máximo 5 minutos',
+    d:()=>'Cliente espera mais de 5min começa a ficar insatisfeito. Monitorar nos primeiros 30min do turno — gargalo identificado = reposicionar equipe na hora.'},
+  {id:'m10',t:'manha',s:'Operação',e:'🛵',n:'critico',
+    ti:'Delivery: app monitorado a cada 15min — nenhum pedido em atraso',
+    d:()=>'Pedido atrasado que o cliente descobre sozinho vira 1 estrela. Contatar antes da reclamação transforma problema em cuidado.',cond:'delivery'},
+  {id:'m10b',t:'manha',s:'Operação',e:'📦',n:'critico',
+    ti:'Cada pedido conferido antes de sair: número, itens, qtd, obs, bebida e lacre',
+    d:()=>'Protocolo 7.1: 1.Nº pedido 2.Itens 3.Quantidades 4.Obs do cliente 5.Bebida 6.Lacre intacto. Carimbar comanda + avisar cliente via chat que a bebida foi entregue.',cond:'delivery'},
+  {id:'m11',t:'manha',s:'Operação',e:'😊',n:'importante',
+    ti:'Nenhuma reclamação de cliente em aberto no turno',
+    d:()=>'Reclamação resolvida na hora vira elogio. Ignorada vira avaliação negativa. Resolver e registrar — a gestão precisa saber o que aconteceu.'},
 
-  // OCORRÊNCIAS
-  {id:'m17',t:'manha',s:'Ocorrências',e:'📘',n:'importante',ti:'Registrei tudo relevante',d:()=>'Ocorrências, desvios, incidentes — tudo registrado.'},
-  {id:'m18',t:'manha',s:'Ocorrências',e:'📘',n:'importante',ti:'Informei no grupo',d:()=>'Comunicação feita no grupo da equipe.'},
+  // [BK: inventário diário / MC: closing stocking]
+  {id:'m12',t:'manha',s:'Passagem',e:'📋',n:'critico',
+    ti:'Tarde informada: saldo real de estoque, pendências e ocorrências',
+    d:()=>'A tarde só consegue planejar bem o que sabe que tem. Saldo real de estoque e qualquer problema de equipamento precisam ser comunicados — sem suposição.'},
+  {id:'m13',t:'manha',s:'Passagem',e:'📊',n:'critico',
+    ti:'Movimentações de caixa registradas antes da passagem',
+    d:()=>'Caixa sem registro é porta aberta para erro e desconfiança. Cada movimentação anotada protege você e a operação.'},
 
-  // ESTRUTURA
-  {id:'m19',t:'manha',s:'Estrutura',e:'🔧',n:'importante',ti:'Identifiquei problema estrutural',d:()=>'Equipamentos, instalações, limpeza — verificado.'},
-  {id:'m20',t:'manha',s:'Estrutura',e:'🔧',n:'importante',ti:'Acionei responsável',
-    d:(ctx)=>'Dorival→execução | Bruna→direcionamento'},
+  // ── TARDE ───────────────────────────────────────────────────────────────
 
-  // CAIXA
-  {id:'m21',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Garanti R$300 de troco disponível',d:()=>'Verificar antes de abrir. Problema→Bruna.'},
-  {id:'m21b',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Troco insuficiente — acionar Bruna urgente',d:()=>'Troco abaixo do mínimo. Não abrir caixa sem resolver. Contatar Bruna agora.',cond:'troco'},
-  {id:'m22',t:'manha',s:'Caixa',e:'💰',n:'critico',ti:'Registrei todas as movimentações',d:()=>'Sangrias, entradas e saídas registradas.'},
+  // [BK: receive shift handover]
+  {id:'t1',t:'tarde',s:'Recebimento',e:'🤝',n:'critico',
+    ti:'Passagem recebida — saldo de estoque confirmado fisicamente',
+    d:()=>'Assumir turno sem conferir é assinar embaixo de um problema que não é seu. Verificar fisicamente o que foi passado — saldo real, não estimado.'},
 
-  // ESCALA
-  {id:'m23',t:'manha',s:'Escala',e:'📅',n:'critico',ti:'Conferi equipe do turno',
-    d:(ctx)=>ctx.falta==='sim'?'Falta confirmada — acionar Viviane (RH) + comunicar Bruna e Camila.':'Todos presentes e nos postos corretos.'},
-  {id:'m24',t:'manha',s:'Escala',e:'📅',n:'critico',ti:'Antecipei escala do domingo',
-    d:()=>'Viviane (RH)→comunicar Bruna e Camila.',dias:[6]},
+  // [MC/BK: equipment check no início do turno]
+  {id:'t2',t:'tarde',s:'Equipamentos',e:'🔌',n:'critico',
+    ti:'Fritadeira: óleo avaliado ou trocado antes das 17h30',
+    d:()=>'Pico começa às 18h e não para. Óleo ruim no rush = pastel encharcado = cliente insatisfeito. Avaliar ou trocar antes das 17h30 — sem correria.'},
+  {id:'t3',t:'tarde',s:'Equipamentos',e:'❄️',n:'critico',
+    ti:'Geladeira ≤4°C e freezer ≤-18°C confirmados',
+    d:()=>'Temperatura fora do padrão no início do turno = produto comprometido que ainda vai ser servido. Verificar antes de tocar em qualquer recheio.'},
 
-  // DECISÕES
-  {id:'m25',t:'manha',s:'Decisões',e:'⚠️',n:'critico',ti:'Não decidi sozinho em assuntos relevantes',d:()=>'Tudo relevante→grupo. Camila/Bruna validam.'},
+  // [Maluf: padrão do produto / MC: stocking antes do pico]
+  {id:'t4',t:'tarde',s:'Produto',e:'🥟',n:'critico',
+    ti:'Mínimo 60 unidades de massa prontas antes das 18h',
+    d:()=>'O pico da tarde começa às 18h e não dá tempo de produzir na hora. Estoque pronto antes = atendimento rápido, produto no padrão, cliente satisfeito.'},
+  {id:'t5',t:'tarde',s:'Produto',e:'🥩',n:'critico',
+    ti:'Recheios produzidos para amanhã: mínimo 2kg cada, resfriando',
+    d:()=>'A manhã abre com o que a tarde deixou pronto. Recheio produzido antes das 21h tem tempo de resfriar corretamente — segurança alimentar e padrão garantidos.'},
+  {id:'t5b',t:'tarde',s:'Produto',e:'📈',n:'critico',
+    ti:'Fim de semana: 70 massas + 90 rolos produzidos e estocados',
+    d:()=>'Fim de semana o movimento dobra e não avisa. Produção antecipada é a diferença entre atender bem e ficar sem produto no pico.',dias:[5,6]},
 
-  // FINAL DE SEMANA — produção sobe
-  {id:'m_fds1',t:'manha',s:'Massa',e:'📊',n:'critico',ti:'Reforçei produção para o final de semana',d:()=>'Sábado/domingo: volume maior. Produção mínima 20% acima do normal.',dias:[5,6]},
-  {id:'m_fds2',t:'manha',s:'Abastecimento',e:'📦',n:'critico',ti:'Abastecimento reforçado para o fim de semana',d:()=>'Garantir estoque para 2 dias sem reposição. Verificar todos os insumos.',dias:[5,6]},
-  {id:'t_fds1',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Produção de massa reforçada para o fim de semana',d:()=>'Sábado/domingo: volume maior. Garantir produção para os próximos 2 turnos.',dias:[5,6]},
+  // [BK: shift plan / MC: crew deployment no pico]
+  {id:'t6',t:'tarde',s:'Equipe',e:'👥',n:'critico',
+    ti:'Equipe nos postos e orientada para o pico 18h–20h',
+    d:(ctx)=>ctx.falta==='sim'?'FALTA — acionar Viviane (RH) urgente. Realocar equipe antes do pico.':'Papéis claros. BK: ninguém muda de posto durante o rush sem autorização.'},
+  {id:'t7',t:'tarde',s:'Equipe',e:'👶',n:'critico',
+    ti:'Novato: nunca sozinho no pico — mentor presente',
+    d:()=>'O pico é o pior momento para o novato errar e o melhor para aprender certo. Checar a cada 30min durante o rush — corrigir sem parar o serviço.',cond:'novato'},
 
-  // SITUAÇÕES ESPECIAIS DO DIA
-  {id:'m_fer1',t:'manha',s:'Dia Especial',e:'🎉',n:'critico',ti:'Reforçei estoque para volume maior',d:()=>'Feriado/data especial — pedir reposição extra com antecedência.',cond:'feriado'},
-  {id:'m_fer2',t:'manha',s:'Dia Especial',e:'🎉',n:'importante',ti:'Equipe alerta para pico de movimento',d:()=>'Comunicar equipe sobre volume esperado acima do normal.',cond:'feriado'},
-  {id:'m_eqp1',t:'manha',s:'Manutenção',e:'⚙️',n:'critico',ti:'Registrei e acionei responsável pelo equipamento',d:(ctx)=>'Dorival→execução | Bruna→direcionamento. Descrever problema.',cond:'equipamento'},
-  {id:'m_eqp2',t:'manha',s:'Manutenção',e:'⚙️',n:'critico',ti:'Avaliei impacto na operação e comuniquei',d:()=>'O equipamento comprometeu algum processo? Comunicar Bruna/Camila.',cond:'equipamento'},
-  {id:'m_pro1',t:'manha',s:'Promoção',e:'🏷️',n:'importante',ti:'Equipe ciente dos termos da promoção',d:()=>'Todos sabem o que oferecer, como comunicar e limite de estoque.',cond:'promocao'},
-  {id:'m_pro2',t:'manha',s:'Promoção',e:'🏷️',n:'importante',ti:'Estoque reforçado para demanda da promoção',d:()=>'Verificar se há insumos suficientes para o volume esperado.',cond:'promocao'},
-  {id:'m_chu1',t:'manha',s:'Clima',e:'🌧️',n:'importante',ti:'Delivery: possível queda — foco no presencial',d:()=>'Chuva reduz delivery. Equipe focada no atendimento presencial e produção.',cond:'chuva'},
+  // [MC/BK: speed + quality durante pico]
+  {id:'t8',t:'tarde',s:'Operação',e:'⚡',n:'critico',
+    ti:'Pico 18h–20h: tempo de serviço e qualidade do produto mantidos',
+    d:()=>'No pico, velocidade e qualidade andam juntos — um não pode matar o outro. Pastel fora do padrão não sai. Tempo acima de 7min = acionar reforço imediatamente.'},
+  {id:'t9',t:'tarde',s:'Operação',e:'🛵',n:'importante',
+    ti:'Delivery: pedidos do pico monitorados a cada 15min',
+    d:()=>'O cliente do delivery não vê a cozinha — só sente o tempo. Atraso iminente = ligar antes da reclamação. Quem avisa cuida.',cond:'delivery'},
+  {id:'t9b',t:'tarde',s:'Operação',e:'📦',n:'critico',
+    ti:'Cada pedido conferido antes de sair: número, itens, qtd, obs, bebida e lacre',
+    d:()=>'Protocolo 7.1: 1.Nº pedido 2.Itens 3.Quantidades 4.Obs do cliente 5.Bebida 6.Lacre intacto. Carimbar comanda + avisar cliente via chat que a bebida foi entregue.',cond:'delivery'},
+  {id:'t10',t:'tarde',s:'Operação',e:'😊',n:'importante',
+    ti:'Nenhuma reclamação de cliente em aberto no turno',
+    d:()=>'Problema de cliente não resolvido vira avaliação negativa que fica para sempre. Resolver na hora e registrar — o próximo turno precisa saber.'},
 
-  // FECHAMENTO
-  {id:'m26',t:'manha',s:'Fechamento',e:'🔁',n:'critico',ti:'Loja organizada no final do turno',d:()=>'Tudo no lugar para o próximo turno começar bem.'},
-  {id:'m27',t:'manha',s:'Fechamento',e:'🔁',n:'critico',ti:'Próximo turno informado sobre pendências',d:()=>'Passagem de turno feita com clareza.'},
-
-  // ── TARDE/NOITE ──────────────────────────────────────────────────────────────
-
-  // ABASTECIMENTO
-  {id:'t1',t:'tarde',s:'Abastecimento',e:'📦',n:'critico',ti:'Verifiquei estoque do turno anterior',
-    d:(ctx)=>'Débora→compras | Cíntia→recheio | Dorival→logística'},
-  {id:'t2',t:'tarde',s:'Abastecimento',e:'📦',n:'critico',ti:'Antecipei falta para o próximo dia',d:()=>'Garantir que a abertura de amanhã não terá falta.'},
-
-  // MASSA
-  {id:'t3',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Conferi saldo de massa do turno da manhã',d:()=>'Saber o que sobrou e o que falta produzir.'},
-  {id:'t4',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção para amanhã: 60 massas',d:()=>'Terça — produção para Quarta.',dias:[2]},
-  {id:'t4b',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Meta de produção para amanhã: 70 + 90 rolos',d:()=>'Quarta — produção para Quinta.',dias:[3]},
-  {id:'t4c',t:'tarde',s:'Massa',e:'📊',n:'critico',ti:'Garanti produção necessária para amanhã',d:()=>'Confirmar meta com a liderança.',dias:[0,1,4,5,6]},
-
-  // DELIVERY
-  {id:'t5',t:'tarde',s:'Delivery',e:'🛵',n:'critico',ti:'Acompanhei pedidos no pico noturno',d:()=>'Pico da tarde/noite exige atenção máxima.',cond:'delivery'},
-  {id:'t6',t:'tarde',s:'Delivery',e:'🛵',n:'critico',ti:'Intervim antes de atrasar qualquer pedido',d:()=>'Se sistêmico→Bruna.',cond:'delivery'},
-
-  // EQUIPE
-  {id:'t7',t:'tarde',s:'Equipe',e:'👥',n:'importante',ti:'Defini função de todos no turno tarde/noite',
-    d:(ctx)=>ctx.falta==='sim'?'Falta ativa — redistribuir funções do ausente.':'Cada colaborador com função clara.'},
-  {id:'t7b',t:'tarde',s:'Equipe',e:'👥',n:'critico',ti:'Acionei Viviane (RH) para freelance urgente',
-    d:(ctx)=>'Falta confirmada → acionar Viviane (RH) imediatamente para cobertura freelance. Redistribuir tarefas até chegada.',cond:'falta'},
-  {id:'t8',t:'tarde',s:'Equipe',e:'👥',n:'importante',ti:'Recebi passagem do turno da manhã',d:()=>'Informações sobre o que ficou pendente.'},
-  {id:'t9',t:'tarde',s:'Equipe',e:'👥',n:'critico',ti:'Não deixei novato sem supervisão noturna',
-    d:()=>'Turno noturno exige atenção redobrada.',cond:'novato'},
-
-  // PROCESSOS
-  {id:'t10',t:'tarde',s:'Processos',e:'🎯',n:'importante',ti:'Verifiquei execução dos processos noturnos',d:()=>'Produção, limpeza, organização — verificado.'},
-  {id:'t11',t:'tarde',s:'Processos',e:'🎯',n:'importante',ti:'Corrigi desvios encontrados',d:()=>'Qualquer desvio corrigido imediatamente.'},
-
-  // CHECKLIST
-  {id:'t12',t:'tarde',s:'Checklist',e:'📋',n:'critico',ti:'Todos responderam o checklist do turno',d:()=>'Checklist falso = corrigir na hora.'},
-  {id:'t13',t:'tarde',s:'Checklist',e:'📋',n:'critico',ti:'Validei as respostas do checklist',d:()=>'Confirmar se as respostas batem com a realidade.'},
-
-  // CLIENTE
-  {id:'t14',t:'tarde',s:'Cliente',e:'👤',n:'critico',ti:'Resolvi problemas de cliente no turno',d:()=>'Nenhum problema sem resolução. Se necessário→Bruna.'},
-
-  // OCORRÊNCIAS
-  {id:'t15',t:'tarde',s:'Ocorrências',e:'📘',n:'importante',ti:'Registrei ocorrências relevantes',d:()=>'Tudo anotado e comunicado no grupo.'},
-
-  // ESTRUTURA
-  {id:'t16',t:'tarde',s:'Estrutura',e:'🔧',n:'importante',ti:'Verifiquei equipamentos antes de fechar',
-    d:(ctx)=>'Tudo funcionando para o dia seguinte.'},
-
-  // CAIXA
-  {id:'t17',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Fechei o caixa corretamente',d:()=>'Conferência final antes do fechamento.'},
-  {id:'t17b',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Troco insuficiente — registrar e avisar próximo turno',d:()=>'Troco abaixo do mínimo. Registrar e comunicar. Acionar Bruna se necessário.',cond:'troco'},
-  {id:'t18',t:'tarde',s:'Caixa',e:'💰',n:'critico',ti:'Registrei todas as movimentações do turno',d:()=>'Sangrias, entradas e saídas registradas.'},
-
-  // ESCALA
-  {id:'t19',t:'tarde',s:'Escala',e:'📅',n:'critico',ti:'Antecipei escala do domingo',
-    d:()=>'Falta?→Viviane (RH)→comunicar Bruna e Camila.',dias:[6]},
-  {id:'t19b',t:'tarde',s:'Escala',e:'📅',n:'critico',ti:'Conferi equipe do turno',
-    d:(ctx)=>ctx.falta==='sim'?'Falta confirmada — acionar Viviane (RH).':'Todos presentes e nos postos corretos.',dias:[0,1,2,3,4,5]},
-
-  // DECISÕES
-  {id:'t20',t:'tarde',s:'Decisões',e:'⚠️',n:'critico',ti:'Não decidi sozinho em assuntos relevantes',d:()=>'Camila/Bruna validam.'},
-
-  // SITUAÇÕES ESPECIAIS DO DIA
-  {id:'t_fer1',t:'tarde',s:'Dia Especial',e:'🎉',n:'critico',ti:'Estoque reforçado para amanhã (feriado)',d:()=>'Garantir insumos extras para o dia seguinte de alta demanda.',cond:'feriado'},
-  {id:'t_eqp1',t:'tarde',s:'Manutenção',e:'⚙️',n:'critico',ti:'Registrei problema do equipamento',d:(ctx)=>'Registrar, fotografar e acionar Dorival/Bruna.',cond:'equipamento'},
-  {id:'t_pro1',t:'tarde',s:'Promoção',e:'🏷️',n:'importante',ti:'Acompanhei resultado da promoção no turno',d:()=>'Registrar quantidades vendidas e feedback da equipe.',cond:'promocao'},
-  {id:'t_chu1',t:'tarde',s:'Clima',e:'🌧️',n:'importante',ti:'Delivery abaixo do esperado — ajustei produção',d:()=>'Chuva reduziu delivery. Ajustar produção e comunicar turno seguinte.',cond:'chuva'},
-
-  // FECHAMENTO
-  {id:'t21',t:'tarde',s:'Fechamento',e:'🔁',n:'critico',ti:'Loja 100% organizada para o próximo dia',d:()=>'Tudo no lugar, limpo e pronto para abertura.'},
-
-  // SEGURANÇA
-  {id:'t22',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Gás desligado',d:()=>'Verificar TODOS os pontos de gás antes de fechar.'},
-  {id:'t23',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Equipamentos desligados',d:()=>'Fritas, fritadeiras, elétricos — tudo desligado.'},
-  {id:'t24',t:'tarde',s:'Segurança',e:'🔴',n:'critico',ti:'Loja travada com segurança',d:()=>'Portas, janelas, alarme — verificado e travado.'},
+  // [BK: REV Standards closing / MC: closing procedures]
+  {id:'t11',t:'tarde',s:'Fechamento',e:'🧹',n:'critico',
+    ti:'Cozinha, bancadas e área de atendimento limpas — padrão de abertura',
+    d:()=>'Limpeza não é estética — é segurança alimentar e respeito com quem abre amanhã. Padrão: quem chega na manhã encontra tudo pronto para operar sem retrabalho.'},
+  {id:'t12',t:'tarde',s:'Fechamento',e:'💰',n:'critico',
+    ti:'Caixa fechado, contado e sem divergência — registrar qualquer diferença',
+    d:()=>'Divergência no caixa descoberta horas depois é impossível de rastrear. Registrar na hora e comunicar gestão antes de sair — transparência protege todo mundo.'},
+  {id:'t13',t:'tarde',s:'Fechamento',e:'🔒',n:'critico',
+    ti:'Segurança completa: gás fechado, fritadeiras desligadas, alarme ativado',
+    d:()=>'Gás aberto, fritadeira ligada ou porta destrancada não têm segunda chance. Verificar cada ponto antes de sair — é o fechamento que protege a loja, a equipe e o negócio.'},
+  {id:'t14',t:'tarde',s:'Fechamento',e:'📋',n:'critico',
+    ti:'Relato de turno feito: estoque real, ocorrências e o que a manhã precisa saber',
+    d:()=>'O relato de turno é o contrato entre a tarde e a manhã. Estoque real, ocorrências e pendências registrados — ninguém assume o turno de surpresa.'},
 ];
 
-// ── MOTOR DE INTELIGÊNCIA ─────────────────────────────────────────────────────
-// Resolve descrição dinâmica baseada no contexto
 function resolveDesc(item, ctx){
   if(typeof item.d === 'function') return item.d(ctx);
   return item.d || '';
@@ -785,8 +775,8 @@ function filterItems(allItems, turno, ctx){
     .map(item=>({...item, d: resolveDesc(item, ctx)}));
 }
 
-const SEC_MANHA=[...new Set(ITEMS.filter(i=>i.t==='manha').map(i=>i.s))];
-const SEC_TARDE=[...new Set(ITEMS.filter(i=>i.t==='tarde').map(i=>i.s))];
+const SEC_MANHA=['Equipamentos','Produto','Caixa','Equipe','Operação','Passagem'];
+const SEC_TARDE=['Recebimento','Equipamentos','Produto','Equipe','Operação','Fechamento'];
 /* ═══════════════════════════
    DEMO DATA (CEO)
 ═══════════════════════════ */
@@ -802,9 +792,18 @@ const DEMO=genDemo();
 /* ═══════════════════════════
    WEBHOOK
 ═══════════════════════════ */
-async function sendWebhook(textPayload){
+async function sendWebhook(textPayload,emailPayload){
   try{
-    const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({texto:textPayload,timestamp:new Date().toISOString(),sistema:'Koncluí – Pastel da Camila'})});
+    const body={
+      texto:textPayload,
+      timestamp:new Date().toISOString(),
+      sistema:'Koncluí – Pastel da Camila',
+      email_destino:'pasteldacamilasuporte@gmail.com',
+      email_assunto:emailPayload?.assunto||'Koncluí – Relatório de Turno',
+      email_html:emailPayload?.html||textPayload.replace(/\n/g,'<br>'),
+      email_texto:textPayload,
+    };
+    const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     return r.ok;
   }catch{return false;}
 }
@@ -825,14 +824,14 @@ function useToast(){
 function Login({onLogin}){
   const [login,setLogin]=useState('');const [pwd,setPwd]=useState('');
   const [err,setErr]=useState('');const [loading,setLoading]=useState(false);
-  function go(){
+  async function go(){
     setErr('');if(!login.trim()||!pwd.trim()){setErr('Preencha todos os campos.');return;}
     setLoading(true);
-    setTimeout(()=>{
-      const users=getUsers(),key=login.trim().toLowerCase(),user=users[key];
-      if(!user||user.pwd!==pwd){setErr('Login ou senha incorretos.');setLoading(false);return;}
-      onLogin(user,key);setLoading(false);
-    },500);
+    const hashPw=async(s)=>{try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}catch{return s;}};
+    const hashed=await hashPw(pwd.trim());
+    const users=getUsers(),key=login.trim().toLowerCase(),user=users[key];
+    if(!user||(user.pwd!==hashed&&user.pwd!==pwd.trim())){setErr('Login ou senha incorretos.');setLoading(false);return;}
+    onLogin(user,key);setLoading(false);
   }
   return(
     <div className="login-bg">
@@ -870,7 +869,7 @@ function NegFields({data,onChange,secao}){
     'Segurança':['Esquecimento','Equipamento com defeito','Falta de chave','Outro colaborador responsável'],
     '_default':['Falta de tempo','Falta de recurso','Problema técnico','Esquecimento','Outro'],
   };
-  const RESPONSAVEIS=['Bruna','Camila','Dorival','Débora','Cíntia','Viviane','Eu mesmo'];
+  const RESPONSAVEIS=['Bruna','Camila','Vinicius','Débora','Cíntia','Viviane','Eu mesmo'];
   const causas=CAUSAS[secao]||CAUSAS['_default'];
 
   return(
@@ -929,11 +928,20 @@ function NegFields({data,onChange,secao}){
         className="neg-obs" style={{marginTop:6}}/>
     </div>
   );
-}function ChkItem({item,resp,neg,onAns,onNeg,showErr}){
+}function ChkItem({item,resp,onAns,showErr}){
   const lvlCls={critico:'lvc',importante:'lvi',rotina:'lvr'}[item.n]||'lvr';
   const itemCls={critico:'lc',importante:'li',rotina:'lr'}[item.n]||'lr';
+  const [flash,setFlash]=React.useState(false);
+  function handleNao(){
+    if(resp!=='nao'){
+      setFlash(true);
+      setTimeout(()=>setFlash(false),500);
+      if(navigator.vibrate) navigator.vibrate([60,30,60]);
+    }
+    onAns(item.id,'nao');
+  }
   return(
-    <div className={`chk-item ${itemCls}`}>
+    <div className={`chk-item ${itemCls}${resp==='nao'?' nao-sel':''}${flash?' nao-flash':''}`}>
       <span className={`lvl ${lvlCls}`}>{item.n}</span>
       <div className="chk-title">{item.ti}</div>
       {item.d&&<div className="chk-desc">{item.d}</div>}
@@ -941,13 +949,11 @@ function NegFields({data,onChange,secao}){
         <button className={`ans-sim${resp==='sim'?' sel':''}`} onClick={()=>onAns(item.id,'sim')}>
           <span className="ans-icon">{resp==='sim'?'✓':'○'}</span> Sim
         </button>
-        <button className={`ans-nao${resp==='nao'?' sel':''}`} onClick={()=>onAns(item.id,'nao')}>
+        <button className={`ans-nao${resp==='nao'?' sel':''}`} onClick={handleNao}>
           <span className="ans-icon">{resp==='nao'?'✕':'○'}</span> Não
         </button>
-
       </div>
       {!resp&&showErr&&<div className="req-msg" style={{marginTop:5}}>⚠ Obrigatório</div>}
-      {resp==='nao'&&<NegFields data={neg} secao={item.s} onChange={d=>onNeg(item.id,d)}/>}
     </div>
   );
 }
@@ -972,7 +978,7 @@ function SecAcc({secao,emoji,items,resps,negs,onAns,onNeg,showErr}){
           <span className={`sec-chev${open?' open':''}`}>▾</span>
         </div>
       </div>
-      {open&&<div style={{background:'#FAFAFA'}}>{items.map(item=><ChkItem key={item.id} item={item} resp={resps[item.id]} neg={negs[item.id]} onAns={onAns} onNeg={onNeg} showErr={showErr}/>)}</div>}
+      {open&&<div style={{background:'#FAFAFA'}}>{items.map(item=><ChkItem key={item.id} item={item} resp={resps[item.id]} onAns={onAns} showErr={showErr}/>)}</div>}
     </div>
   );
 }
@@ -998,207 +1004,63 @@ function SendingOverlay({steps}){
 /* ═══════════════════════════
    SUMMARY + SHARE SCREEN
 ═══════════════════════════ */
-function SummaryScreen({ident,resps,negs,ff,decl,items,onBack,webhookOk}){
-  const [copyFlash,setCopyFlash]=useState(false);
-  const flashRef=useRef();
-
-  const total=items.length;
-  const falhas=items.filter(i=>resps[i.id]==='nao').length;
-  const criticos=items.filter(i=>i.n==='critico'&&resps[i.id]==='nao').length;
-  const pendencias=Object.values(negs).filter(d=>d?.prox==='sim').length;
-  const respondidos=items.filter(i=>resps[i.id]==='sim'||resps[i.id]==='nao').length;
-  const naItems=items.filter(i=>resps[i.id]==='na').length;
-  const score=Math.max(0,Math.round(100-(falhas/total*40)-(criticos*10)-(pendencias*5)));
-  const status=criticos>0?'CRÍTICO':falhas>0?'CONFORME COM RESSALVAS':pendencias>0?'COM PENDÊNCIAS':'CONFORME ✅';
-  const scoreColor=score>=80?'#00B37E':score>=60?'#F59E0B':'#E8001C';
-  const turnoLabel=ident.turno==='manha'?'🌅 Manhã':'🌙 Tarde / Noite';
-  const falhasItems=items.filter(i=>resps[i.id]==='nao');
-  const okItems=items.filter(i=>resps[i.id]==='sim');
-
-  function buildText(){
-    const sep='━━━━━━━━━━━━━━━━━━━━━━━━━━';
-    const lines=[
-      '🥟 *PASTEL DA CAMILA – FECHAMENTO DE TURNO*',
-      '📋 Sistema Koncluí',sep,
-      `👤 Responsável: *${ident.nome}*`,
-      `🕐 Turno: ${turnoLabel}`,
-      `📅 Data: ${ident.data}  ⏰ Início: ${ident.horaInicio}  Fechamento: ${decl.hora}`,sep,
-      `📊 Status: *${status}*`,
-      `🏆 Score do Turno: *${score}/100*`,sep,
-      `✅ Concluídos: ${respondidos}/${total}`,
-      `❌ Falhas: ${falhas}`,
-      `🔴 Críticos c/ problema: ${criticos}`,
-      `⏳ Pendências p/ próx. turno: ${pendencias}`,
-      `— N/A: ${naItems}`,
-    ];
-    if(falhasItems.length>0){
-      lines.push('',sep,'🔴 *FALHAS REGISTRADAS*',sep);
-      falhasItems.forEach((item,idx)=>{
-        const n=negs[item.id]||{};
-        lines.push(`${idx+1}. *[${item.n.toUpperCase()}] ${item.ti}*`);
-        lines.push(`   📂 Seção: ${item.s}`);
-        if(n.causa) lines.push(`   ❓ Causa: ${n.causa}`);if(n.just) lines.push(`   📝 Obs: ${n.just}`);
-        if(n.acao) lines.push(`   🛠 Ação: ${n.acao}`);
-        if(n.impacto) lines.push(`   📈 Impacto: ${n.impacto}`);
-        if(n.resp) lines.push(`   👤 Responsável: ${n.resp}`);
-        if(n.prazo) lines.push(`   ⏰ Prazo: ${n.prazo}`);
-        if(n.escalar==='sim') lines.push(`   🚨 ESCALADO para liderança`);
-        if(n.prox==='sim') lines.push(`   ⚠️ FICA PARA O PRÓXIMO TURNO: ${n.det||''}`);
-        lines.push('');
-      });
-    }
-    if(ff.pendProx){lines.push(sep,'⏳ *PENDÊNCIAS PRÓXIMO TURNO*',ff.pendProx);}
-    if(ff.obsGerais){lines.push(sep,'📝 *OBSERVAÇÕES GERAIS*',ff.obsGerais);}
-    if(ff.manut==='sim') lines.push(`🔧 MANUTENÇÃO: ${ff.manutDet}`);
-    if(ff.compra==='sim') lines.push(`🛒 COMPRA/REPOSIÇÃO: ${ff.compraDet}`);
-    if(ff.disc==='sim') lines.push(`⚠️ PROBLEMA DISCIPLINAR: ${ff.discDet}`);
-    if(ff.tec==='sim') lines.push(`💻 PROBLEMA TÉCNICO: ${ff.tecDet}`);
-    lines.push(sep,`✍️ Declarado por: ${decl.nome}`,`🕐 Horário: ${decl.hora}`,'_Sistema Koncluí – Gestão Operacional de Franquias_');
-    return lines.join('\n');
-  }
-
-  function handleCopy(){
-    const txt=buildText();
-    const fallback=()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);};
-    (navigator.clipboard?navigator.clipboard.writeText(txt).catch(fallback):Promise.resolve(fallback())).then(()=>{
-      setCopyFlash(true);clearTimeout(flashRef.current);flashRef.current=setTimeout(()=>setCopyFlash(false),2200);
+function OcorrenciasScreen({items,resps,negs,onNegsChange,onConfirm,onBack,user}){
+  const [relato,setRelato]=React.useState('');
+  const falhas=items.filter(i=>resps[i.id]==='nao');
+  const nome=user?.name||'Subgerente';
+  function handleConfirm(){
+    falhas.forEach(item=>{
+      const d=negs[item.id]||{};
+      onNegsChange(item.id,{...d,just:relato,causa:relato||'Não realizado',resp:nome});
     });
+    onConfirm(nome);
   }
-
   return(
-    <div className="sum-wrap">
-      <div className={`copy-flash${copyFlash?' on':''}`}>✅ Texto copiado! Abra o WhatsApp e cole no grupo</div>
-
-      <div className="sum-bar">
-        <div className="sum-bar-title">
-          <span>📋</span> Resumo do Turno — {turnoLabel}
-          {webhookOk&&<span style={{fontSize:10,background:'#D1FAE5',color:'#065F46',borderRadius:99,padding:'2px 8px',fontWeight:700}}>✓ Email enviado</span>}
-        </div>
-        <div className="sum-hint">
-          <div className="sum-toolbar-hint-icon">📸</div>
-          <div className="sum-hint-text">
-            <b>Para mandar a foto no grupo:</b> pressione <span className="kbd">Win</span>+<span className="kbd">Shift</span>+<span className="kbd">S</span> → selecione o card branco → abra o WhatsApp → <span className="kbd">Ctrl</span>+<span className="kbd">V</span> no grupo de checklist. Depois clique em <b>Copiar Texto</b> e mande como mensagem.
-          </div>
-        </div>
-        <div className="sum-actions">
-          <button className="sum-copy" onClick={handleCopy}>📋 Copiar Texto WhatsApp</button>
-          <button className="sum-back" onClick={onBack}>← Voltar</button>
-        </div>
+    <div style={{minHeight:'100vh',background:'#F4F4F6',paddingBottom:24}}>
+      <div style={{background:'linear-gradient(135deg,#7C0010,#EA1D2C)',color:'#fff',padding:'13px 16px',display:'flex',alignItems:'center',gap:10}}>
+        <button onClick={onBack} style={{background:'rgba(255,255,255,.15)',border:'1px solid rgba(255,255,255,.3)',color:'#fff',borderRadius:99,padding:'5px 12px',fontSize:11,fontWeight:600,cursor:'pointer',flexShrink:0}}>← Voltar</button>
+        <div style={{fontFamily:"'Sora',sans-serif",fontSize:15,fontWeight:800,flex:1,textAlign:'center'}}>{falhas.length===0?'Tudo certo 🙌':'Quase lá ✍️'}</div>
       </div>
-
-      <div className="sum-viewport">
-        <div className="sum-card">
-          <div className="sum-head">
-            <div className="sum-head-l">
-              <div className="sum-eyebrow">🥟 PASTEL DA CAMILA · KONCLUÍ · FECHAMENTO DE TURNO</div>
-              <div className="sum-name">{ident.nome}</div>
-              <div className="sum-meta">{turnoLabel} · {ident.data} · Início: {ident.horaInicio} · Fechamento: {decl.hora}</div>
-              <div className="sum-status" style={{background:score>=80?'rgba(0,179,126,.2)':score>=60?'rgba(245,158,11,.2)':'rgba(232,0,28,.2)',color:score>=80?'#065F46':score>=60?'#92400E':'#991B1B'}}>{status}</div>
-            </div>
-            <div className="score-ring" style={{borderColor:scoreColor}}>
-              <div className="score-num" style={{color:scoreColor}}>{score}</div>
-              <div className="score-lbl">SCORE</div>
-            </div>
+      <div style={{maxWidth:720,margin:'0 auto',padding:'16px'}}>
+        {falhas.length===0&&(
+          <div style={{background:'#F0FDF4',borderRadius:12,padding:'28px 20px',marginBottom:12,textAlign:'center',border:'1px solid #BBF7D0'}}>
+            <div style={{fontSize:36,marginBottom:8}}>🎉</div>
+            <div style={{fontFamily:"'Sora',sans-serif",fontSize:16,fontWeight:800,color:'#16A34A',marginBottom:4}}>Turno impecável!</div>
+            <div style={{fontSize:13,color:'#4B5563'}}>Todos os itens foram feitos.</div>
           </div>
-
-          <div className="sum-kpis">
-            <div className="sum-kpi"><div className="sum-kv" style={{color:'var(--ok)'}}>{respondidos}</div><div className="sum-kl">✅ Concluídos</div></div>
-            <div className="sum-kpi"><div className="sum-kv" style={{color:falhas>0?'var(--brand)':'var(--ok)'}}>{falhas}</div><div className="sum-kl">❌ Falhas</div></div>
-            <div className="sum-kpi"><div className="sum-kv" style={{color:criticos>0?'var(--brand)':'var(--ok)'}}>{criticos}</div><div className="sum-kl">🔴 Críticos</div></div>
-            <div className="sum-kpi"><div className="sum-kv" style={{color:pendencias>0?'var(--orange)':'var(--ok)'}}>{pendencias}</div><div className="sum-kl">⏳ Pendências</div></div>
+        )}
+        {falhas.length>0&&(
+          <div style={{background:'#fff',borderRadius:12,border:'1px solid #FECACA',padding:'14px 16px',marginBottom:12}}>
+            <div style={{fontSize:12,fontWeight:700,color:'#DC2626',marginBottom:10}}>🔴 {falhas.length} {falhas.length===1?'item não foi feito':'itens não foram feitos'} neste turno:</div>
+            {falhas.map((item,i)=>(
+              <div key={item.id} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 0',borderBottom:i<falhas.length-1?'1px solid #FEF2F2':'none'}}>
+                <span style={{fontSize:13,flexShrink:0}}>{item.n==='critico'?'🔴':'🟡'}</span>
+                <span style={{fontSize:13,color:'#111'}}>{item.ti}</span>
+              </div>
+            ))}
           </div>
-
-          <div className="sum-body">
-            <div className="sum-col">
-              <div className="sum-col-title">🔴 Falhas e Justificativas ({falhasItems.length})</div>
-              {falhasItems.length===0&&(
-                <div className="sum-occ ok">
-                  <div className="sum-occ-title" style={{color:'var(--ok)'}}>✅ Nenhuma falha neste turno!</div>
-                  <div className="sum-occ-detail">Todos os itens foram cumpridos corretamente.</div>
-                </div>
-              )}
-              {falhasItems.map((item,i)=>{
-                const n=negs[item.id]||{};
-                return(
-                  <div key={i} className="sum-occ">
-                    <div className="sum-occ-title">
-                      <span className={`lvl ${item.n==='critico'?'lvc':item.n==='importante'?'lvi':'lvr'}`} style={{fontSize:8,marginRight:5}}>{item.n}</span>
-                      {item.e} {item.ti}
-                    </div>
-                    <div className="sum-occ-detail" style={{color:'var(--ink3)',marginBottom:4}}>📂 {item.s}</div>
-                    {(n.causa||n.just)&&<div className="sum-occ-detail"><b>Causa:</b> {n.causa||n.just}</div>}
-                    {n.acao&&<div className="sum-occ-detail"><b>🛠 Ação:</b> {n.acao}</div>}
-                    {n.impacto&&<div className="sum-occ-detail"><b>📈 Impacto:</b> {n.impacto}</div>}
-                    {n.resp&&<div className="sum-occ-detail"><b>👤 Resp:</b> {n.resp}{n.prazo&&<span style={{color:'var(--warn)'}}> · ⏰ {n.prazo}</span>}</div>}
-                    {n.escalar==='sim'&&<div className="sum-occ-detail" style={{color:'var(--brand)',fontWeight:700}}>🚨 Escalado para liderança</div>}
-                    {n.prox==='sim'&&<div className="sum-occ-detail" style={{color:'var(--warn)',fontWeight:700,marginTop:3}}>⚠️ PENDÊNCIA PRÓX. TURNO: {n.det||'(ver detalhes)'}</div>}
-                  </div>
-                );
-              })}
-              {(ff.pendProx||ff.manut==='sim'||ff.compra==='sim'||ff.disc==='sim'||ff.tec==='sim')&&(
-                <div style={{marginTop:10}}>
-                  <div className="sum-col-title" style={{marginTop:8}}>⚙️ Ações Necessárias</div>
-                  {ff.manut==='sim'&&<div className="sum-occ" style={{borderLeftColor:'var(--orange)'}}><div className="sum-occ-title">🔧 Manutenção</div><div className="sum-occ-detail">{ff.manutDet}</div></div>}
-                  {ff.compra==='sim'&&<div className="sum-occ" style={{borderLeftColor:'var(--blue)'}}><div className="sum-occ-title">🛒 Compra / Reposição</div><div className="sum-occ-detail">{ff.compraDet}</div></div>}
-                  {ff.disc==='sim'&&<div className="sum-occ" style={{borderLeftColor:'var(--brand)'}}><div className="sum-occ-title">⚠️ Problema Disciplinar</div><div className="sum-occ-detail">{ff.discDet}</div></div>}
-                  {ff.tec==='sim'&&<div className="sum-occ" style={{borderLeftColor:'var(--purple)'}}><div className="sum-occ-title">💻 Problema Técnico</div><div className="sum-occ-detail">{ff.tecDet}</div></div>}
-                  {ff.pendProx&&<div className="sum-occ" style={{borderLeftColor:'var(--orange)'}}><div className="sum-occ-title">⏳ Pendências Próximo Turno</div><div className="sum-occ-detail">{ff.pendProx}</div></div>}
-                </div>
-              )}
-            </div>
-            <div className="sum-col">
-              <div className="sum-col-title">✅ Itens Cumpridos ({okItems.length}/{total})</div>
-              {[...new Set(okItems.map(i=>i.s))].map(sec=>{
-                const si=okItems.filter(i=>i.s===sec);
-                return(
-                  <div key={sec} style={{marginBottom:9}}>
-                    <div style={{fontSize:10,fontWeight:700,color:'var(--ink3)',textTransform:'uppercase',letterSpacing:.4,marginBottom:3,display:'flex',alignItems:'center',gap:4}}>
-                      <span>{si[0]?.e}</span>{sec}
-                      <span style={{background:'#D1FAE5',color:'#065F46',borderRadius:99,padding:'1px 7px',fontSize:9,fontWeight:800}}>{si.length}</span>
-                    </div>
-                    {si.map((item,i)=>(
-                      <div key={i} style={{display:'flex',alignItems:'flex-start',gap:5,padding:'3px 0',borderBottom:'1px solid #F5F5F5'}}>
-                        <span style={{color:'var(--ok)',fontWeight:800,fontSize:11,marginTop:1,flexShrink:0}}>✓</span>
-                        <div style={{fontSize:11,color:'var(--ink2)',lineHeight:1.4}}>{item.ti}</div>
-                      </div>
-                    ))}
-                  </div>
-                );
-              })}
-              {ff.obsGerais&&(
-                <div style={{marginTop:10,background:'#F8F8F8',borderRadius:6,padding:'10px 12px'}}>
-                  <div style={{fontFamily:"'Sora',sans-serif",fontSize:10,fontWeight:700,marginBottom:3,color:'var(--ink2)',textTransform:'uppercase',letterSpacing:.5}}>📝 Observações</div>
-                  <div style={{fontSize:11,color:'var(--ink2)',lineHeight:1.5}}>{ff.obsGerais}</div>
-                </div>
-              )}
-            </div>
+        )}
+        {falhas.length>0&&(
+          <div style={{marginBottom:10}}>
+            <label style={{display:'block',fontSize:13,fontWeight:600,color:'#111',marginBottom:6}}>Conta o que aconteceu 👇 <span style={{fontSize:11,fontWeight:400,color:'#9CA3AF'}}>pode deixar em branco</span></label>
+            <textarea value={relato} onChange={e=>setRelato(e.target.value)}
+              placeholder="Ex: faltou produto, pedido atrasou, funcionário saiu mais cedo..."
+              style={{width:'100%',border:'1.5px solid #E5E7EB',borderRadius:10,padding:'11px 13px',fontSize:13,color:'#111',background:'#fff',resize:'none',minHeight:88,fontFamily:'inherit',lineHeight:1.6}}/>
           </div>
-
-          <div className="sum-footer">
-            <div className="sum-footer-decl">"Declaro que este checklist representa a situação real do turno."</div>
-            <div className="sum-footer-sig">{decl.nome} · {decl.hora} · Koncluí · {todayFmt()}</div>
-          </div>
-        </div>
-      </div>
-
-      <div style={{background:'#111',padding:'9px 16px',display:'flex',alignItems:'center',gap:10,flexShrink:0,borderTop:'1px solid #2a2a2a'}}>
-        <div style={{flex:1,fontSize:11,color:'#888'}}>
-          {webhookOk?'✅ Relatório enviado por email automaticamente.':'⚠️ Email não confirmado. Copie o texto e mande manualmente no grupo.'}
-        </div>
-        <button onClick={handleCopy} className="sum-copy" style={{fontSize:11,padding:'7px 14px',whiteSpace:'nowrap'}}>📋 Copiar Texto</button>
-        <button onClick={()=>window.print()} style={{background:'#2a2a2a',color:'#aaa',border:'1px solid #3a3a3a',borderRadius:'var(--rs)',padding:'7px 12px',fontFamily:"'Sora',sans-serif",fontSize:11,fontWeight:700}}>🖨️ Print</button>
+        )}
+        <button onClick={handleConfirm}
+          style={{width:'100%',padding:15,background:'#EA1D2C',color:'#fff',borderRadius:12,fontFamily:"'Sora',sans-serif",fontSize:15,fontWeight:700,cursor:'pointer',border:'none'}}>
+          🚀 Enviar relatório do turno
+        </button>
+        <div style={{textAlign:'center',fontSize:11,color:'#9CA3AF',marginTop:8}}>Enviando como <b>{nome}</b> · e-mail e WhatsApp da gestão</div>
       </div>
     </div>
   );
 }
 
-
-/* ═══════════════════════════
-   CHECKLIST SCREEN
-═══════════════════════════ */
 function ChecklistScreen({user,onLogout,onBack}){
   const CK_USER_KEY=`konclui_ck_${user.login}`;
-  const [screen,setScreen]=useState('entry');
+  const [screen,setScreen]=useState('entry'); // entry | checklist | ocorrencias | summary
   const [ident,setIdent]=useState(null);
   const [ctx,setCtx]=useState({delivery:'',novato:'',falta:'',troco:'',feriado:'',equipamento:'',promocao:'',chuva:''});
   const [resps,setResps]=useState({});
@@ -1241,6 +1103,12 @@ function ChecklistScreen({user,onLogout,onBack}){
     return{txt:'Conforme',cls:'sc'};
   },[stats]);
 
+  function handleWhatsApp(){
+    const txt=buildText();
+    const encoded=encodeURIComponent(txt);
+    window.open('https://wa.me/5511940366586?text='+encoded,'_blank');
+  }
+
   function setF(k,v){setFF(f=>({...f,[k]:v}));}
   function onAns(id,val){setResps(r=>({...r,[id]:val}));if(val!=='nao')setNegs(n=>{const c={...n};delete c[id];return c;});}
   function onNeg(id,d){setNegs(n=>({...n,[id]:d}));}
@@ -1248,25 +1116,15 @@ function ChecklistScreen({user,onLogout,onBack}){
   function validate(){
     const errs=[];
     items.forEach(item=>{
-      if(!resps[item.id]){errs.push(`"${item.ti}" — sem resposta`);return;}
-      if(resps[item.id]==='nao'){
-        const d=negs[item.id]||{};
-        if(!d.causa&&!d.just) errs.push(`"${item.ti}" — selecione o que aconteceu`);
-        if(!d.acao) errs.push(`"${item.ti}" — ação tomada obrigatória`);
-        if(item.n==='critico'&&!d.resp) errs.push(`"${item.ti}" — responsável obrigatório (crítico)`);
-        if(item.n==='critico'&&!d.prazo) errs.push(`"${item.ti}" — prazo obrigatório (crítico)`);
-        if(d.prox==='sim'&&!d.det) errs.push(`"${item.ti}" — detalhe da pendência obrigatório`);
-      }
+      if(!resps[item.id]) errs.push(`"${item.ti}" — sem resposta`);
     });
-    ['manut','compra','disc','tec'].forEach(k=>{if(ff[k]==='sim'&&!ff[k+'Det'])errs.push(`Detalhe obrigatório: ${k}`);});
-    if(!decl.checked) errs.push('Declaração final não marcada');
-    if(!decl.nome.trim()) errs.push('Nome na declaração obrigatório');
     return errs;
   }
 
-  async function handleEnviar(){
-    const errs=validate();setValErrs(errs);setShowErr(true);
-    if(errs.length>0){window.scrollTo({top:0,behavior:'smooth'});return;}
+  async function handleEnviar(nomeFromOcc){
+    if(nomeFromOcc) setDecl(d=>({...d,nome:nomeFromOcc,checked:true}));
+    const errs=validate();setValErrs(errs);
+    if(errs.length>0){setScreen('checklist');setShowErr(true);window.scrollTo({top:0,behavior:'smooth'});return;}
     const hora=nowTime();setDecl(d=>({...d,hora}));
 
     const falhasItems=items.filter(i=>resps[i.id]==='nao');
@@ -1327,16 +1185,50 @@ function ChecklistScreen({user,onLogout,onBack}){
         wppLines.push('');
       });
     }
-    if(ff.pendProx) wppLines.push(sep,`⏳ PENDÊNCIAS: ${ff.pendProx}`);
-    if(ff.obsGerais) wppLines.push(sep,`📝 OBSERVAÇÕES: ${ff.obsGerais}`);
-    if(ff.manut==='sim') wppLines.push(`🔧 MANUTENÇÃO: ${ff.manutDet}`);
-    if(ff.compra==='sim') wppLines.push(`🛒 COMPRA: ${ff.compraDet}`);
-    if(ff.disc==='sim') wppLines.push(`⚠️ DISCIPLINA: ${ff.discDet}`);
-    if(ff.tec==='sim') wppLines.push(`💻 TÉCNICO: ${ff.tecDet}`);
+    if(ff.obsGerais) wppLines.push(sep,`📝 OCORRÊNCIAS DO TURNO: ${ff.obsGerais}`);
     wppLines.push(sep,`✍️ ${decl.nome} · ${hora} · Koncluí`);
     const textoFinal=wppLines.join('\n');
 
-    const ok=await sendWebhook(textoFinal);
+    // Build email HTML
+    const tLbl=ident.turno==='manha'?'Manhã':'Tarde/Noite';
+    const corSt=criticos>0?'#DC2626':falhas>0?'#D97706':'#16A34A';
+    let eHtml=`<div style="font-family:Inter,Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #E5E7EB">
+  <div style="background:linear-gradient(135deg,#B5001A,#EA1D2C);color:#fff;padding:20px 24px">
+    <div style="font-size:11px;opacity:.6;letter-spacing:1.5px;text-transform:uppercase">Pastel da Camila · Koncluí</div>
+    <div style="font-size:20px;font-weight:900;margin:4px 0 2px">🥟 Relatório de Turno</div>
+    <div style="font-size:12px;opacity:.75">${user.name} · ${tLbl} · ${ident.data}</div>
+    <div style="display:inline-block;background:rgba(255,255,255,.15);border-radius:99px;padding:4px 14px;font-size:11px;font-weight:700;margin-top:8px">${status} · Score: ${score}/100</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #E5E7EB">
+    <div style="padding:12px 8px;text-align:center;border-right:1px solid #E5E7EB"><div style="font-size:22px;font-weight:900;color:#EA1D2C">${score}</div><div style="font-size:9px;color:#9CA3AF;text-transform:uppercase">Score</div></div>
+    <div style="padding:12px 8px;text-align:center;border-right:1px solid #E5E7EB"><div style="font-size:22px;font-weight:900;color:#16A34A">${items.filter(i=>resps[i.id]==='sim').length}</div><div style="font-size:9px;color:#9CA3AF;text-transform:uppercase">Sim</div></div>
+    <div style="padding:12px 8px;text-align:center;border-right:1px solid #E5E7EB"><div style="font-size:22px;font-weight:900;color:#DC2626">${falhas}</div><div style="font-size:9px;color:#9CA3AF;text-transform:uppercase">Falhas</div></div>
+    <div style="padding:12px 8px;text-align:center"><div style="font-size:22px;font-weight:900;color:#D97706">${criticos}</div><div style="font-size:9px;color:#9CA3AF;text-transform:uppercase">Críticos</div></div>
+  </div>`;
+    if(falhasItems.length>0){
+      eHtml+=`<div style="padding:16px 20px"><div style="font-size:12px;font-weight:700;color:#DC2626;margin-bottom:10px">🔴 FALHAS (${falhasItems.length})</div>`;
+      falhasItems.forEach(item=>{
+        const n=negs[item.id]||{};
+        eHtml+=`<div style="background:#FFF8F8;border-radius:8px;padding:10px 12px;margin-bottom:8px;border-left:3px solid #EA1D2C"><div style="font-size:12px;font-weight:700;margin-bottom:3px">[${item.n.toUpperCase()}] ${item.ti}</div><div style="font-size:11px;color:#4B5563">Seção: ${item.s}`;
+        if(n.causa) eHtml+=` · Causa: <b>${n.causa}</b>`;
+        if(n.resp)  eHtml+=` · Responsável: <b>${n.resp}</b>`;
+        if(n.resolvido) eHtml+=` · Resolvido: ${n.resolvido}`;
+        if(n.prox) eHtml+=` · Próx.turno: ${n.prox}`;
+        if(n.just) eHtml+=`<br>${n.just}`;
+        eHtml+='</div></div>';
+      });
+      eHtml+='</div>';
+    } else {
+      eHtml+=`<div style="padding:16px 20px;background:#F0FDF4;text-align:center;color:#16A34A;font-weight:600">✅ Nenhuma falha neste turno</div>`;
+    }
+    if(ff.obsGerais) eHtml+=`<div style="padding:14px 20px;border-top:1px solid #E5E7EB;font-size:12px;color:#374151"><b>📝 Ocorrências do turno:</b><br>${ff.obsGerais}</div>`;
+    eHtml+=`<div style="background:#1A1A1A;padding:10px 20px;display:flex;justify-content:space-between"><span style="font-size:10px;color:#666">${user.name} · ${hora}</span><span style="font-size:9px;color:#444">Koncluí · Pastel da Camila</span></div></div>`;
+
+    const emailPayload={
+      assunto:`[Koncluí] ${status} – ${user.name} · ${tLbl} · ${ident.data}`,
+      html:eHtml,
+    };
+    const ok=await sendWebhook(textoFinal,emailPayload);
     setWebhookOk(ok);
     await new Promise(r=>setTimeout(r,400));
     setSendSteps(s=>{const c=[...s];c[2]={...c[2],st:ok?'ok':'ok'};c[3]={...c[3],st:'go'};return c;});
@@ -1451,6 +1343,17 @@ function ChecklistScreen({user,onLogout,onBack}){
     </div>
   );
 
+  if(screen==='ocorrencias')return(
+    <OcorrenciasScreen
+      items={items}
+      resps={resps}
+      negs={negs}
+      user={user}
+      onNegsChange={(id,d)=>setNegs(n=>({...n,[id]:d}))}
+      onConfirm={handleEnviar}
+      onBack={()=>setScreen('checklist')}
+    />
+  );
   if(screen==='summary')return <SummaryScreen ident={ident} resps={resps} negs={negs} ff={ff} decl={decl} items={items} onBack={()=>setScreen('checklist')} webhookOk={webhookOk}/>;
 
   // CHECKLIST VIEW
@@ -1526,46 +1429,155 @@ function ChecklistScreen({user,onLogout,onBack}){
         );
       });})()}
 
-      <div className="card">
-        <div className="card-title">📝 Campos Finais</div>
-        <div className="f-group"><label className="f-label">Observações gerais</label><textarea value={ff.obsGerais} onChange={e=>setF('obsGerais',e.target.value)} placeholder="Ocorrências relevantes do turno..."/></div>
-        <div className="f-group"><label className="f-label">Pendências para o próximo turno</label><textarea value={ff.pendProx} onChange={e=>setF('pendProx',e.target.value)} placeholder="O que o próximo turno precisa resolver?"/></div>
-        {[{k:'manut',l:'⚙️ Manutenção necessária?',dk:'manutDet',ph:'Descreva...'},{k:'compra',l:'🛒 Compra/Reposição?',dk:'compraDet',ph:'O que precisa?'},{k:'disc',l:'⚠️ Problema disciplinar?',dk:'discDet',ph:'Descreva...'},{k:'tec',l:'💻 Problema técnico?',dk:'tecDet',ph:'Descreva...'}].map(({k,l,dk,ph})=>(
-          <div key={k}>
-            <div className="tog-row"><div className="tog-lbl">{l}</div><div className="tog-btns"><button className={`tog${ff[k]==='sim'?' yes':''}`} onClick={()=>setF(k,'sim')}>Sim</button><button className={`tog${ff[k]==='nao'?' no':''}`} onClick={()=>setF(k,'nao')}>Não</button></div></div>
-            {ff[k]==='sim'&&<div className="f-group" style={{marginTop:6}}><textarea value={ff[dk]} onChange={e=>setF(dk,e.target.value)} placeholder={ph} style={{minHeight:52}} className={showErr&&!ff[dk]?'ferr':''}/>{showErr&&!ff[dk]&&<div className="req-msg">Obrigatório</div>}</div>}
-          </div>
-        ))}
+      <div style={{margin:'10px 16px 0',background:'#fff',borderRadius:12,border:'1px solid #E5E7EB',padding:'13px'}}>
+        <div style={{fontFamily:"'Sora',sans-serif",fontSize:12,fontWeight:700,marginBottom:10,display:'flex',alignItems:'center',gap:6}}>📝 Ocorrências do turno</div>
+        <textarea value={ff.obsGerais||''} onChange={e=>setF('obsGerais',e.target.value)}
+          placeholder="Descreva o que aconteceu de relevante neste turno... (opcional)"
+          style={{width:'100%',border:'1.5px solid #E5E7EB',borderRadius:8,padding:'9px 11px',fontSize:13,color:'#111',background:'#FAFAFA',resize:'none',minHeight:72,lineHeight:1.5,fontFamily:'inherit'}}/>
       </div>
-
-      <div className="card">
-        <div className="card-title">✍️ Declaração Final</div>
-        <div className={`decl-box${decl.checked?' on':''}`} onClick={()=>setDecl(d=>({...d,checked:!d.checked}))}>
-          <div className={`decl-chk${decl.checked?' on':''}`}>{decl.checked&&<span style={{color:'#fff',fontWeight:800,fontSize:13}}>✓</span>}</div>
-          <div className="decl-txt">Declaro que este checklist representa a situação real do turno. Assumo a responsabilidade pelas informações registradas.</div>
-        </div>
-        {showErr&&!decl.checked&&<div className="req-msg" style={{marginTop:6}}>Declaração obrigatória</div>}
-        <div className="f-group" style={{marginTop:12}}><label className="f-label">Confirme seu nome *</label><input className={`f-input${showErr&&!decl.nome.trim()?' ferr':''}`} value={decl.nome} onChange={e=>setDecl(d=>({...d,nome:e.target.value}))}/>{showErr&&!decl.nome.trim()&&<div className="req-msg">Nome obrigatório</div>}</div>
-      </div>
-
-      <div className="fab">
+      
+      {screen==='checklist'&&<div className="fab">
         <div className="fab-inner">
         <button className="fab-save" onClick={()=>showToast('✅ Rascunho salvo!')}>💾 Salvar</button>
-        <button className="fab-send" onClick={handleEnviar} disabled={sending}>🚀 Finalizar Turno</button>
+        <button className="fab-send" onClick={()=>{
+          const errs=items.filter(i=>!resps[i.id]);
+          if(errs.length>0){setShowErr(true);window.scrollTo({top:0,behavior:'smooth'});showToast('⚠ Responda todos os itens primeiro');return;}
+          setScreen('ocorrencias');
+        }} disabled={sending}>🚀 Finalizar Turno</button>
         <button className="fab-del" onClick={handleLimpar}>🗑</button>
         </div>
+      </div>}
+    </div>
+  );
+}
+
+function SummaryScreen({ident,resps,negs,ff,decl,items,onBack,webhookOk}){
+  const total=items.length;
+  const falhas=items.filter(i=>resps[i.id]==='nao').length;
+  const criticos=items.filter(i=>i.n==='critico'&&resps[i.id]==='nao').length;
+  const score=Math.max(0,Math.round(100-(falhas/total*40)-(criticos*10)));
+  const turnoLabel=ident.turno==='manha'?'🌅 Manhã':'🌙 Tarde/Noite';
+  const falhasItems=items.filter(i=>resps[i.id]==='nao');
+  const nome=decl.nome||ident.nome||'Subgerente';
+  const hora=decl.hora||'--:--';
+
+  const feedback=
+    score===100?{emoji:'🏆',titulo:'Perfeito! Zero falhas.',sub:'Você garantiu que a Camila funciona no nível mais alto hoje.',cor:'#16A34A',bg:'#F0FDF4',border:'#BBF7D0'}:
+    score>=90? {emoji:'🔥',titulo:'Mandou muito bem!',sub:'Quase zero falhas. O turno ficou em ótimas mãos.',cor:'#16A34A',bg:'#F0FDF4',border:'#BBF7D0'}:
+    score>=75? {emoji:'💪',titulo:'Bom turno!',sub:`${falhas} item${falhas>1?'s':''} ficou pra trás, mas o essencial foi feito.`,cor:'#D97706',bg:'#FFFBEB',border:'#FDE68A'}:
+    score>=60? {emoji:'🛠',titulo:'Dá pra melhorar.',sub:'Alguns pontos críticos em aberto. Próximo turno precisa de atenção.',cor:'#EA580C',bg:'#FFF7ED',border:'#FED7AA'}:
+               {emoji:'⚠️',titulo:'Turno com problemas.',sub:'Vários itens críticos em aberto. Gestão precisa saber.',cor:'#DC2626',bg:'#FEF2F2',border:'#FECACA'};
+
+  function buildText(){
+    const sep='━━━━━━━━━━━━━━━━━━';
+    const lines=['🥟 *PASTEL DA CAMILA — KONCLUÍ*',sep,
+      `${feedback.emoji} Score: *${score}/100*`,
+      `👤 ${nome} · ${turnoLabel} · ${ident.data}`,
+      `⏰ ${ident.horaInicio} → ${hora}`,sep,
+      `✅ Feitos: ${items.filter(i=>resps[i.id]==='sim').length}/${total}`,
+      `❌ Não feitos: ${falhas}`,
+    ];
+    if(falhasItems.length>0){
+      lines.push('',sep,'🔴 *O QUE NÃO FOI FEITO*');
+      falhasItems.forEach((item,i)=>{
+        const n=negs[item.id]||{};
+        lines.push(`${i+1}. [${item.n}] ${item.ti}`);
+        if(n.just) lines.push(`   → ${n.just}`);
+      });
+    }
+    if(ff.obsGerais) lines.push(sep,`📝 ${ff.obsGerais}`);
+    lines.push(sep,`_Koncluí · Pastel da Camila_`);
+    return lines.join('\n');
+  }
+
+  function handleCopy(){
+    const txt=buildText();
+    navigator.clipboard?.writeText(txt).catch(()=>{
+      const ta=document.createElement('textarea');ta.value=txt;
+      document.body.appendChild(ta);ta.select();document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+  }
+
+  function handleWhatsApp(){
+    window.open('https://wa.me/5511940366586?text='+encodeURIComponent(buildText()),'_blank');
+  }
+
+  return(
+    <div style={{minHeight:'100vh',background:'#F4F4F6',paddingBottom:32}}>
+      <div style={{background:'linear-gradient(135deg,#1A0005,#EA1D2C)',color:'#fff',padding:'14px 16px'}}>
+        <div style={{fontSize:11,fontWeight:700,opacity:.6,textTransform:'uppercase',letterSpacing:1.5,marginBottom:4}}>Koncluí · Pastel da Camila</div>
+        <div style={{fontFamily:"'Sora',sans-serif",fontSize:18,fontWeight:900}}>Turno finalizado ✓</div>
+        <div style={{fontSize:12,opacity:.7,marginTop:2}}>{nome} · {turnoLabel} · {ident.data}</div>
+        {webhookOk&&<div style={{display:'inline-block',background:'rgba(255,255,255,.15)',borderRadius:99,padding:'3px 10px',fontSize:10,fontWeight:700,marginTop:6}}>✓ Relatório enviado por e-mail</div>}
+      </div>
+      <div style={{maxWidth:720,margin:'0 auto',padding:'14px 16px 0'}}>
+        <div style={{background:feedback.bg,border:`1.5px solid ${feedback.border}`,borderRadius:16,padding:'18px 16px',marginBottom:12,display:'flex',alignItems:'center',gap:14}}>
+          <div style={{fontSize:44,flexShrink:0,lineHeight:1}}>{feedback.emoji}</div>
+          <div style={{flex:1}}>
+            <div style={{fontFamily:"'Sora',sans-serif",fontSize:17,fontWeight:900,color:feedback.cor,marginBottom:3}}>{feedback.titulo}</div>
+            <div style={{fontSize:12,color:feedback.cor,opacity:.85,lineHeight:1.5}}>{feedback.sub}</div>
+          </div>
+          <div style={{textAlign:'center',flexShrink:0}}>
+            <div style={{fontFamily:"'Sora',sans-serif",fontSize:32,fontWeight:900,color:feedback.cor,lineHeight:1}}>{score}</div>
+            <div style={{fontSize:9,color:feedback.cor,opacity:.7,fontWeight:700}}>/ 100</div>
+          </div>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:12}}>
+          {[
+            {icon:'✅',val:items.filter(i=>resps[i.id]==='sim').length,lbl:'Feitos'},
+            {icon:'❌',val:falhas,lbl:'Falhas'},
+            {icon:'🔴',val:criticos,lbl:'Críticos'},
+          ].map(({icon,val,lbl})=>(
+            <div key={lbl} style={{background:'#fff',borderRadius:12,padding:'12px 8px',textAlign:'center',border:'1px solid #E5E7EB'}}>
+              <div style={{fontSize:18}}>{icon}</div>
+              <div style={{fontFamily:"'Sora',sans-serif",fontSize:22,fontWeight:900,color:'#111',lineHeight:1}}>{val}</div>
+              <div style={{fontSize:10,color:'#9CA3AF',fontWeight:600,marginTop:2}}>{lbl}</div>
+            </div>
+          ))}
+        </div>
+        {falhasItems.length>0&&(
+          <div style={{background:'#fff',borderRadius:12,border:'1px solid #FECACA',padding:'14px 16px',marginBottom:12}}>
+            <div style={{fontSize:11,fontWeight:700,color:'#DC2626',textTransform:'uppercase',letterSpacing:.5,marginBottom:10}}>O que ficou pendente</div>
+            {falhasItems.map((item,i)=>{
+              const n=negs[item.id]||{};
+              return(
+                <div key={item.id} style={{display:'flex',gap:10,padding:'7px 0',borderBottom:i<falhasItems.length-1?'1px solid #FEF2F2':'none',alignItems:'flex-start'}}>
+                  <span style={{fontSize:14,flexShrink:0,marginTop:1}}>{item.n==='critico'?'🔴':'🟡'}</span>
+                  <div>
+                    <div style={{fontSize:13,fontWeight:600,color:'#111'}}>{item.ti}</div>
+                    {n.just&&<div style={{fontSize:11,color:'#6B7280',marginTop:2}}>→ {n.just}</div>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        <div style={{background:'#fff',borderRadius:12,border:'1px solid #E5E7EB',padding:'12px 14px',marginBottom:12}}>
+          <div style={{fontSize:11,fontWeight:700,color:'#9CA3AF',textTransform:'uppercase',letterSpacing:.5,marginBottom:4}}>Por que esse checklist existe</div>
+          <div style={{fontSize:13,color:'#374151',lineHeight:1.6}}>Cada item que você marca garante que o próximo turno começa bem — e que a Camila pode confiar na operação sem precisar estar presente. <b>Você é a operação.</b></div>
+        </div>
+        <div style={{display:'flex',gap:8,marginBottom:8}}>
+          <button onClick={handleWhatsApp} style={{flex:2,padding:13,background:'#25D366',color:'#fff',borderRadius:12,fontFamily:"'Sora',sans-serif",fontSize:13,fontWeight:700,cursor:'pointer',border:'none',display:'flex',alignItems:'center',justifyContent:'center',gap:6}}>
+            📲 Enviar no WhatsApp
+          </button>
+          <button onClick={handleCopy} style={{flex:1,padding:13,background:'#F3F4F6',color:'#374151',borderRadius:12,fontFamily:"'Sora',sans-serif",fontSize:13,fontWeight:700,cursor:'pointer',border:'1px solid #E5E7EB'}}>
+            📋 Copiar
+          </button>
+        </div>
+        <button onClick={onBack} style={{width:'100%',padding:11,background:'transparent',color:'#9CA3AF',borderRadius:12,fontSize:12,fontWeight:600,cursor:'pointer',border:'1px solid #E5E7EB'}}>
+          ← Novo turno
+        </button>
       </div>
     </div>
   );
 }
 
-/* ═══════════════════════════
-   CEO DASHBOARD
-═══════════════════════════ */
+
 function CEODashboard({user,onLogout,onBack}){
   const [tab,setTab]=useState('overview');
   const realData=useMemo(()=>{try{return JSON.parse(localStorage.getItem(CK_KEY)||'[]');}catch{return[];}});
-  const merged=useMemo(()=>realData.length===0?DEMO:[...realData,...DEMO.slice(0,6).map(d=>({...d,isDemo:true}))]  ,[realData]);
+  const merged=useMemo(()=>realData,[realData]);
 
   const kpi=useMemo(()=>{
     const r=merged,tot=r.length;
@@ -1863,7 +1875,7 @@ function UserManager({user,onBack,onLogout}){
   const [editKey,setEditKey]=useState(null);
   const [showNew,setShowNew]=useState(false);
   const [toast,setToast]=useState('');
-  const [newUser,setNewUser]=useState({name:'',login:'',role:'subgerente',pwd:'2026'});
+  const [newUser,setNewUser]=useState({name:'',login:'',role:'subgerente',pwd:'158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab'});
   const toastRef=React.useRef();
 
   const ROLES={subgerente:'Subgerente',gerente:'Gerente',suporte:'Suporte',ceo:'CEO'};
@@ -1886,7 +1898,7 @@ function UserManager({user,onBack,onLogout}){
   function resetPwd(key){
     if(!window.confirm('Resetar senha deste usuário para 2026?')) return;
     const u={...users};
-    u[key]={...u[key],pwd:'2026',first:false};
+    u[key]={...u[key],pwd:'158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab',first:false};
     saveAndRefresh(u);
     showMsg('🔑 Senha resetada para 2026.');
   }
@@ -1913,7 +1925,7 @@ function UserManager({user,onBack,onLogout}){
     const u={...users};
     u[key]={name:newUser.name.trim(),login:key,role:newUser.role,pwd:newUser.pwd||'2026',first:false,color:ROLE_COLORS[newUser.role]||'#555',active:true};
     saveAndRefresh(u);
-    setNewUser({name:'',login:'',role:'subgerente',pwd:'2026'});
+    setNewUser({name:'',login:'',role:'subgerente',pwd:'158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab'});
     setShowNew(false);
     showMsg('✅ Usuário criado! Senha: '+(newUser.pwd||'2026'));
   }
@@ -2075,6 +2087,31 @@ function App(){
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  const sw = `
+    const CACHE = 'konclui-v1';
+    const ASSETS = [location.href];
+    self.addEventListener('install', e => {
+      e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+      self.skipWaiting();
+    });
+    self.addEventListener('fetch', e => {
+      e.respondWith(
+        caches.match(e.request).then(r => r || fetch(e.request).then(res => {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+          return res;
+        }).catch(() => caches.match(e.request)))
+      );
+    });
+  `;
+  const blob = new Blob([sw], {type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob))
+    .catch(()=>{});
+}
 </script>
 </body>
 </html>
